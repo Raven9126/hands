@@ -728,12 +728,10 @@
     var yes = document.getElementById("coverageYes");
     var no = document.getElementById("coverageNo");
     var body = document.getElementById("coverageYesBody");
-    var suppliesBlock = document.getElementById("coverageSupplies");
     if (!yes || !no) return;
     var covered = hasCoverage();
     yes.hidden = !covered;
     no.hidden = covered || !state.city;
-    if (suppliesBlock) suppliesBlock.hidden = !covered;
     if (covered && body) {
       body.textContent = dict().coverageYesBody.replace("{city}", cityName(state.city));
     }
@@ -1075,7 +1073,7 @@
       }
       proposalAccepted = true;
       saveDraft();
-      showStep(6);
+      showStep(6, { replace: true });
     });
   }
 

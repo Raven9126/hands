@@ -1000,8 +1000,11 @@ button {
   gap: 1rem;
 }
 
-#coverageSupplies {
-  margin-top: 1.25rem;
+#coverageSupplies,
+.coverage-supplies {
+  margin-top: 1.35rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(31, 92, 68, 0.12);
 }
 
 .supplies-card {

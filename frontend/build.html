@@ -208,62 +208,62 @@
           <!-- Step 3: coverage + supplies -->
           <div class="wizard-pane" data-step="3">
             <div class="coverage-card" id="coverageYes" hidden>
-              <p class="step-pill-row"><span class="step-pill">3</span> <span data-i18n="coverageTitle">Cobertura e insumos</span></p>
+              <p class="step-pill-row"><span class="step-pill">3</span></p>
               <p class="eyebrow" data-i18n="coverageYesEyebrow">Buenas noticias</p>
               <h2 class="wizard-review-title" data-i18n="coverageYesTitle">Contamos con cobertura en tu zona</h2>
               <p class="other-hint" id="coverageYesBody"></p>
+
+              <div id="coverageSupplies" class="coverage-supplies">
+                <fieldset class="supplies">
+                  <legend data-i18n="suppliesLegend">¿Tienes productos de limpieza?</legend>
+                  <div class="supplies-grid supplies-grid-two" role="radiogroup" aria-label="Insumos">
+                    <button type="button" class="supplies-card is-selected" data-supplies="yes" aria-pressed="true">
+                      <span class="supplies-label" data-i18n="suppliesYes">Tengo implementos</span>
+                      <span class="supplies-icon" aria-hidden="true">
+                        <svg viewBox="0 0 120 100" fill="none">
+                          <ellipse cx="58" cy="88" rx="34" ry="6" fill="currentColor" opacity=".12"/>
+                          <path d="M38 52h40l-4 28H42l-4-28z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+                          <path d="M42 52c0-10 7-18 16-18s16 8 16 18" stroke="currentColor" stroke-width="2.4"/>
+                          <path d="M70 34c6 2 10 8 10 16v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                          <rect x="78" y="22" width="12" height="28" rx="3" stroke="currentColor" stroke-width="2.2"/>
+                          <path d="M81 22v-4a3 3 0 0 1 6 0v4" stroke="currentColor" stroke-width="2.2"/>
+                          <path d="M28 28v40M28 28h10l4 8H28" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                          <path d="M74 58c6 4 10 10 10 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                          <circle cx="34" cy="74" r="3.5" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="48" cy="78" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                          <circle cx="62" cy="76" r="3" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                      </span>
+                      <span class="supplies-meta" data-i18n="suppliesYesMeta">Usas tus propios productos y herramientas</span>
+                    </button>
+                    <button type="button" class="supplies-card" data-supplies="kit" aria-pressed="false">
+                      <span class="supplies-label" data-i18n="suppliesKit">Comprar kit</span>
+                      <span class="supplies-icon" aria-hidden="true">
+                        <svg viewBox="0 0 120 100" fill="none">
+                          <ellipse cx="60" cy="88" rx="36" ry="6" fill="currentColor" opacity=".12"/>
+                          <path d="M48 30h18c4 0 7 3 7 7v6H41v-6c0-4 3-7 7-7z" stroke="currentColor" stroke-width="2.2"/>
+                          <path d="M36 43h42l-3 30a6 6 0 0 1-6 5H45a6 6 0 0 1-6-5l-3-30z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+                          <path d="M52 52v18M62 52v18" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+                          <path d="M82 28v42M76 70h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                          <path d="M76 28h12l-2 8H78l-2-8z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+                          <path d="M28 36c0 8 5 14 12 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                          <circle cx="28" cy="30" r="5" stroke="currentColor" stroke-width="2"/>
+                          <path d="M88 22l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1 2-4z" fill="currentColor" opacity=".45"/>
+                          <path d="M102 34l1.5 3 3 .5-2.5 2 .5 3-2.5-1.5-2.5 1.5.5-3-2.5-2 3-.5 1.5-3z" fill="currentColor" opacity=".35"/>
+                        </svg>
+                      </span>
+                      <span class="supplies-meta" data-i18n="suppliesKitMeta">Jabón, cloro, suavizante, guantes y aromatizante</span>
+                    </button>
+                  </div>
+                  <p class="other-hint" id="kitHint" hidden data-i18n="suppliesKitHint">El kit se suma a la tarifa sugerida.</p>
+                </fieldset>
+              </div>
             </div>
             <div class="coverage-card is-wait" id="coverageNo" hidden>
-              <p class="step-pill-row"><span class="step-pill">3</span> <span data-i18n="coverageTitle">Cobertura e insumos</span></p>
+              <p class="step-pill-row"><span class="step-pill">3</span></p>
               <h2 class="wizard-review-title" data-i18n="coverageNoTitle">Esperamos servirte pronto</h2>
               <p class="other-hint" data-i18n="coverageNoBody">Aún no llegamos a esa ciudad. Déjanos tu zona en una próxima versión o prueba con una ciudad Hands.</p>
               <a class="btn btn-ghost" href="index.html" data-i18n="coverageHome">Volver al inicio</a>
-            </div>
-
-            <div id="coverageSupplies" hidden>
-              <fieldset class="supplies">
-                <legend data-i18n="suppliesLegend">¿Tienes productos de limpieza?</legend>
-                <div class="supplies-grid supplies-grid-two" role="radiogroup" aria-label="Insumos">
-                  <button type="button" class="supplies-card is-selected" data-supplies="yes" aria-pressed="true">
-                    <span class="supplies-label" data-i18n="suppliesYes">Tengo implementos</span>
-                    <span class="supplies-icon" aria-hidden="true">
-                      <svg viewBox="0 0 120 100" fill="none">
-                        <ellipse cx="58" cy="88" rx="34" ry="6" fill="currentColor" opacity=".12"/>
-                        <path d="M38 52h40l-4 28H42l-4-28z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-                        <path d="M42 52c0-10 7-18 16-18s16 8 16 18" stroke="currentColor" stroke-width="2.4"/>
-                        <path d="M70 34c6 2 10 8 10 16v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <rect x="78" y="22" width="12" height="28" rx="3" stroke="currentColor" stroke-width="2.2"/>
-                        <path d="M81 22v-4a3 3 0 0 1 6 0v4" stroke="currentColor" stroke-width="2.2"/>
-                        <path d="M28 28v40M28 28h10l4 8H28" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-                        <path d="M74 58c6 4 10 10 10 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <circle cx="34" cy="74" r="3.5" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="48" cy="78" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-                        <circle cx="62" cy="76" r="3" stroke="currentColor" stroke-width="1.8"/>
-                      </svg>
-                    </span>
-                    <span class="supplies-meta" data-i18n="suppliesYesMeta">Usas tus propios productos y herramientas</span>
-                  </button>
-                  <button type="button" class="supplies-card" data-supplies="kit" aria-pressed="false">
-                    <span class="supplies-label" data-i18n="suppliesKit">Comprar kit</span>
-                    <span class="supplies-icon" aria-hidden="true">
-                      <svg viewBox="0 0 120 100" fill="none">
-                        <ellipse cx="60" cy="88" rx="36" ry="6" fill="currentColor" opacity=".12"/>
-                        <path d="M48 30h18c4 0 7 3 7 7v6H41v-6c0-4 3-7 7-7z" stroke="currentColor" stroke-width="2.2"/>
-                        <path d="M36 43h42l-3 30a6 6 0 0 1-6 5H45a6 6 0 0 1-6-5l-3-30z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-                        <path d="M52 52v18M62 52v18" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-                        <path d="M82 28v42M76 70h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <path d="M76 28h12l-2 8H78l-2-8z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-                        <path d="M28 36c0 8 5 14 12 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <circle cx="28" cy="30" r="5" stroke="currentColor" stroke-width="2"/>
-                        <path d="M88 22l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1 2-4z" fill="currentColor" opacity=".45"/>
-                        <path d="M102 34l1.5 3 3 .5-2.5 2 .5 3-2.5-1.5-2.5 1.5.5-3-2.5-2 3-.5 1.5-3z" fill="currentColor" opacity=".35"/>
-                      </svg>
-                    </span>
-                    <span class="supplies-meta" data-i18n="suppliesKitMeta">Jabón, cloro, suavizante, guantes y aromatizante</span>
-                  </button>
-                </div>
-                <p class="other-hint" id="kitHint" hidden data-i18n="suppliesKitHint">El kit se suma a la tarifa sugerida.</p>
-              </fieldset>
             </div>
           </div>
 
@@ -357,7 +357,7 @@
               <p class="quote-note" data-i18n="quoteNote">Comisión fija del 12% incluida en el total. Pago con Bold o Wompi.</p>
               <div class="proposal-actions">
                 <button type="button" class="btn btn-primary btn-block" id="acceptProposal">
-                  <span data-i18n="proposalAccept">Aceptar propuesta</span>
+                  <span data-i18n="proposalAccept">Aceptar e ir al checkout</span>
                   <span aria-hidden="true">→</span>
                 </button>
                 <button type="button" class="btn btn-ghost btn-block" id="counterProposal" data-i18n="proposalCounter">Proponer otra tarifa</button>
