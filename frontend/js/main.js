@@ -926,7 +926,21 @@
     if (n >= 5) calcQuote();
     paintWizard();
     saveDraft();
-    if (!opts.silentScroll) window.scrollTo(0, 0);
+    if (!opts.silentScroll) {
+      if (n === 3 && hasCoverage()) {
+        // Keep "Buenas noticias" + kit choice in the same first view (below sticky header).
+        requestAnimationFrame(function () {
+          var card = document.getElementById("coverageYes");
+          if (!card) return;
+          var header = document.querySelector(".site-header") || document.querySelector("header");
+          var offset = (header ? header.getBoundingClientRect().height : 72) + 12;
+          var top = window.scrollY + card.getBoundingClientRect().top - offset;
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
     var nextHash = hashFor(n);
     if (location.hash !== nextHash) {
       // replaceState avoids stacking history when restoring from hash / draft.
