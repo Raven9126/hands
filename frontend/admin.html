@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Panel admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-body">
+  <!-- Decorative backdrop only -->
+  <div class="atmosphere atmosphere-admin" aria-hidden="true"></div>
+
+  <div class="admin-shell">
+    <!-- Left rail: brand, grouped navigation, exit to public site -->
+    <aside class="admin-side">
+      <a class="brand" href="index.html" aria-label="Hands">
+        <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+      </a>
+      <p class="admin-side-label" data-i18n="adminSide">Administración</p>
+      <nav class="admin-nav" aria-label="Admin">
+        <button type="button" class="admin-nav-btn is-active" data-panel="home" data-i18n="adminNavHome">Inicio</button>
+
+        <span class="admin-nav-group" data-i18n="adminNavGroupOp">OPERACIÓN</span>
+        <button type="button" class="admin-nav-btn" data-panel="services" data-i18n="adminNavServices">Reservas</button>
+        <button type="button" class="admin-nav-btn" data-panel="providers" data-i18n="adminNavProviders">Prestadores</button>
+        <button type="button" class="admin-nav-btn" data-panel="users" data-i18n="adminNavUsers">Usuarios</button>
+
+        <span class="admin-nav-group" data-i18n="adminNavGroupConfig">CONFIGURACIÓN</span>
+        <button type="button" class="admin-nav-btn" data-panel="roles" data-i18n="adminNavRoles">Roles</button>
+        <button type="button" class="admin-nav-btn" data-panel="cities" data-i18n="adminNavCities">Ciudades</button>
+      </nav>
+      <a class="admin-back" href="index.html" data-i18n="adminBack">← Sitio público</a>
+    </aside>
+
+    <div class="admin-main">
+      <!-- Context header: panel title, language, session, logout -->
+      <header class="admin-top">
+        <div>
+          <p class="eyebrow" data-i18n="adminPanelEyebrow">Panel Hands</p>
+          <h1 id="adminTitle" data-i18n="adminTitleHome">Inicio</h1>
+        </div>
+        <div class="admin-top-actions">
+          <div class="lang" role="group" aria-label="Idioma">
+            <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+          </div>
+          <div class="admin-user">
+            <p id="adminUserName">—</p>
+            <p id="adminUserRole">—</p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="logoutBtn" data-i18n="adminLogout">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <!-- Dashboard: KPIs, today's jobs, 7-day chart -->
+      <section class="admin-panel is-active" id="panel-home" aria-labelledby="adminTitle">
+        <div class="overview-stats">
+          <article>
+            <p class="stat-label" data-i18n="servicesToday">Servicios hoy</p>
+            <p class="stat-value" id="kpiToday">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="pendingAssign">Pendientes de asignar</p>
+            <p class="stat-value" id="kpiPending">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="inProgress">En curso</p>
+            <p class="stat-value" id="kpiProgress">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="completedToday">Completados hoy</p>
+            <p class="stat-value" id="kpiDone">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="monthJobs">Servicios del mes</p>
+            <p class="stat-value" id="kpiMonth">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="monthRevenue">Ingresos del mes</p>
+            <p class="stat-value" id="kpiRevenue">$0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="activeProviders">Prestadores activos</p>
+            <p class="stat-value" id="kpiProviders">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="activeHosts">Hosts activos</p>
+            <p class="stat-value" id="kpiHosts">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="visitsTotal">Visitas totales</p>
+            <p class="stat-value" id="kpiVisits">0</p>
+          </article>
+          <article>
+            <p class="stat-label" data-i18n="visitsToday">Visitas hoy</p>
+            <p class="stat-value" id="kpiVisitsToday">0</p>
+          </article>
+        </div>
+
+        <div class="admin-block">
+          <div class="admin-block-head">
+            <h2 data-i18n="adminHomeTodayTitle">Servicios de hoy</h2>
+          </div>
+          <div class="job-list" id="homeTodayList"></div>
+        </div>
+
+        <!-- Line chart: revenue vs job volume (Chart.js), range filters like StyleFactory -->
+        <div class="admin-block admin-chart-block">
+          <div class="admin-chart-head">
+            <div>
+              <h2 data-i18n="adminChartTitle">Ingresos vs servicios</h2>
+              <p data-i18n="adminChartLead">Evolución de ingresos y cantidad de servicios en el periodo.</p>
+            </div>
+            <div class="chart-filters" role="group" aria-label="Rango del gráfico">
+              <button type="button" class="is-active" data-chart-range="7d" data-i18n="adminChart7d">7 días</button>
+              <button type="button" data-chart-range="30d" data-i18n="adminChart30d">30 días</button>
+              <button type="button" data-chart-range="90d" data-i18n="adminChart90d">90 días</button>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="chart-legend-item">
+              <span class="chart-legend-swatch is-revenue" aria-hidden="true"></span>
+              <span data-i18n="adminChartRevenue">Ingresos</span>
+            </div>
+            <div class="chart-legend-item">
+              <span class="chart-legend-swatch is-jobs" aria-hidden="true"></span>
+              <span data-i18n="adminChartJobs">Servicios</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="jobsChart" aria-label="Ingresos y servicios"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services: filterable list or calendar assignment view -->
+      <section class="admin-panel" id="panel-services" hidden>
+        <div class="admin-toolbar">
+          <div class="view-toggle" role="group" aria-label="Vista de servicios">
+            <button type="button" class="chip is-active" data-services-view="list" data-i18n="adminViewList">Lista</button>
+            <button type="button" class="chip" data-services-view="calendar" data-i18n="adminViewCalendar">Calendario</button>
+          </div>
+          <div class="filter-chips" role="group" aria-label="Filtrar servicios">
+            <button type="button" class="chip is-active" data-job-filter="all" data-i18n="adminFilterAll">Todos</button>
+            <button type="button" class="chip" data-job-filter="pending" data-i18n="adminFilterPending">Pendientes</button>
+            <button type="button" class="chip" data-job-filter="assigned" data-i18n="adminFilterAssigned">Asignados</button>
+            <button type="button" class="chip" data-job-filter="in_progress" data-i18n="adminFilterInProgress">En curso</button>
+            <button type="button" class="chip" data-job-filter="completed" data-i18n="adminFilterCompleted">Completados</button>
+            <button type="button" class="chip" data-job-filter="cancelled" data-i18n="adminFilterCancelled">Cancelados</button>
+          </div>
+        </div>
+
+        <div id="servicesListView">
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <h2 data-i18n="adminServicesListTitle">Reservas</h2>
+              <p data-i18n="adminServicesListLead">Lista de reservas operativas. Filtra por estado o cambia a calendario.</p>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="adminColTime">Hora</th>
+                    <th data-i18n="adminColClient">Cliente</th>
+                    <th data-i18n="adminColPlace">Lugar</th>
+                    <th data-i18n="adminColStatus">Estado</th>
+                    <th data-i18n="adminColProvider">Prestador</th>
+                    <th data-i18n="adminColAction">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="servicesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar + day detail + unassigned queue -->
+        <div id="servicesCalView" hidden>
+          <div class="cal-layout">
+            <div class="admin-block">
+              <div class="admin-block-head">
+                <h2 data-i18n="adminTitleCalendar">Calendario</h2>
+                <p data-i18n="adminCalLead">Revisa los pedidos por día, asigna un prestador y confirma el horario.</p>
+              </div>
+              <div class="cal-toolbar">
+                <button type="button" class="cal-nav-btn" id="calPrev" aria-label="Mes anterior">‹</button>
+                <h2 id="calMonthLabel">—</h2>
+                <button type="button" class="cal-nav-btn" id="calNext" aria-label="Mes siguiente">›</button>
+                <button type="button" class="cal-today" id="calToday" data-i18n="adminCalToday">Hoy</button>
+              </div>
+              <div class="cal-weekdays" id="calWeekdays"></div>
+              <div class="cal-grid" id="calGrid"></div>
+            </div>
+
+            <div class="admin-block">
+              <div class="admin-block-head">
+                <h2 id="calDayTitle">—</h2>
+                <p data-i18n="adminCalDayLead">Servicios programados para este día.</p>
+              </div>
+              <div class="job-list" id="calDayJobs"></div>
+              <!-- Shown when assigning or reassigning a job -->
+              <form class="admin-form" id="assignForm" hidden novalidate>
+                <div class="admin-block-head">
+                  <h2 data-i18n="adminAssignTitle">Asignar horario</h2>
+                  <p data-i18n="adminAssignLead">Selecciona el prestador y confirma fecha y hora del servicio.</p>
+                </div>
+                <input type="hidden" id="assignJobId" />
+                <p class="job-meta" id="assignJobSummary"></p>
+                <label class="field">
+                  <span data-i18n="adminAssignProvider">Prestador</span>
+                  <select id="assignProvider" required>
+                    <option value="" data-i18n="adminAssignProviderPh">Selecciona un prestador</option>
+                  </select>
+                  <span class="field-error" id="assignProviderError" role="alert"></span>
+                </label>
+                <label class="field">
+                  <span data-i18n="whenDate">Fecha</span>
+                  <input type="date" id="assignDate" required />
+                  <span class="field-error" id="assignDateError" role="alert"></span>
+                </label>
+                <label class="field">
+                  <span data-i18n="whenTime">Hora</span>
+                  <select id="assignTime" required></select>
+                  <span class="field-error" id="assignTimeError" role="alert"></span>
+                </label>
+                <p class="form-msg" id="assignMsg" hidden></p>
+                <button type="submit" class="btn btn-primary" data-i18n="adminAssignSubmit">Guardar asignación</button>
+              </form>
+            </div>
+
+            <div class="admin-block cal-unassigned">
+              <div class="admin-block-head">
+                <h2 data-i18n="adminCalUnassigned">Pendientes de asignar</h2>
+                <p data-i18n="adminCalUnassignedLead">Pedidos pendientes de asignación. El host ya eligió fecha y hora.</p>
+              </div>
+              <div class="job-list" id="unassignedList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence review -->
+        <div id="evidenceReviewView" hidden>
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <div>
+                <button type="button" class="btn btn-ghost" id="evidenceBackBtn" data-i18n="evidenceBack">
+                  ← Volver a reservas
+                </button>
+                <h2 id="evidenceReviewTitle" data-i18n="evidenceReviewTitle">Revisión de evidencia</h2>
+                <p id="evidenceReviewMeta" data-i18n="evidenceReviewMetaDefault">
+                  Revisa las fotografías enviadas por el prestador antes de aprobarlas.
+                </p>
+              </div>
+            </div>
+
+            <div id="evidenceReviewContent"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Provider directory -->
+      <section class="admin-panel" id="panel-providers" hidden>
+        <div class="admin-block">
+          <div class="admin-block-head">
+            <h2 data-i18n="adminProvidersTitle">Prestadores</h2>
+            <p data-i18n="adminProvidersLead">Consulta el equipo, sus oficios y cuántos servicios tienen asignados.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th data-i18n="adminColProvider">Prestador</th>
+                  <th data-i18n="adminColTrade">Oficio</th>
+                  <th data-i18n="adminColStatus">Estado</th>
+                  <th data-i18n="adminColJobs">Servicios</th>
+                </tr>
+              </thead>
+              <tbody id="providerTable"></tbody>
+            </table>
+          </div>
+          <p class="role-empty" id="providersEmpty" data-i18n="adminProvidersEmpty">Aún no hay prestadores registrados.</p>
+        </div>
+      </section>
+
+      <!-- User directory + create-account form -->
+      <section class="admin-panel" id="panel-users" hidden>
+        <div class="filter-chips" role="group" aria-label="Filtrar usuarios">
+          <button type="button" class="chip is-active" data-user-filter="all" data-i18n="adminFilterAll">Todos</button>
+          <button type="button" class="chip" data-user-filter="host" data-i18n="adminAccessHost">Host</button>
+          <button type="button" class="chip" data-user-filter="provider" data-i18n="adminAccessProvider">Prestador (equipo)</button>
+          <button type="button" class="chip" data-user-filter="admin" data-i18n="adminAccessAdmin">Admin</button>
+        </div>
+
+        <div class="admin-grid">
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <h2 data-i18n="adminTeamTitle">Equipo y hosts</h2>
+              <p data-i18n="adminTeamLead">Usuarios con rol de acceso. Los oficios se asignan a prestadores.</p>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="adminColName">Nombre</th>
+                    <th data-i18n="adminColEmail">Correo</th>
+                    <th data-i18n="adminColRoles">Roles</th>
+                  </tr>
+                </thead>
+                <tbody id="userTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <form class="admin-block admin-form" id="userForm" novalidate>
+            <div class="admin-block-head">
+              <h2 data-i18n="adminUserFormTitle">Crear usuario</h2>
+              <p data-i18n="adminUserFormLead">Nombre, correo válido y contraseña. El prestador requiere un oficio.</p>
+            </div>
+            <label class="field">
+              <span data-i18n="authName">Nombre completo</span>
+              <input type="text" id="userName" name="name" autocomplete="name" required minlength="2" maxlength="60" aria-describedby="userNameHint userNameError" data-i18n-placeholder="phName" placeholder="María López" />
+              <small class="field-hint" id="userNameHint" data-i18n="hintName">Solo letras, espacios y guiones. 2 a 60 caracteres.</small>
+              <span class="field-error" id="userNameError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="authEmail">Correo</span>
+              <input type="email" id="userEmail" name="email" autocomplete="email" inputmode="email" required maxlength="80" spellcheck="false" aria-describedby="userEmailHint userEmailError" data-i18n-placeholder="phEmail" placeholder="tu@email.com" />
+              <small class="field-hint" id="userEmailHint" data-i18n="hintEmail">Correo válido, sin espacios. Máximo 80 caracteres.</small>
+              <span class="field-error" id="userEmailError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="authPassword">Contraseña</span>
+              <input type="password" id="userPassword" name="password" autocomplete="new-password" required minlength="12" maxlength="64" aria-describedby="userPasswordHint userPasswordError" />
+              <small class="field-hint" id="userPasswordHint" data-i18n="hintPasswordAdmin">Mínimo 12 caracteres, con mayúscula, minúscula, número y símbolo.</small>
+              <span class="field-error" id="userPasswordError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="authConfirm">Confirmar contraseña</span>
+              <input type="password" id="userConfirm" name="confirm" autocomplete="new-password" required minlength="12" maxlength="64" aria-describedby="userConfirmHint userConfirmError" />
+              <small class="field-hint" id="userConfirmHint" data-i18n="hintConfirm">Debe coincidir con la contraseña.</small>
+              <span class="field-error" id="userConfirmError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="adminAccess">Rol de acceso</span>
+              <select id="userAccess" required aria-describedby="userAccessError">
+                <option value="host" data-i18n="adminAccessHost">Host</option>
+                <option value="admin" data-i18n="adminAccessAdmin">Admin</option>
+                <option value="provider" data-i18n="adminAccessProvider">Prestador (equipo)</option>
+              </select>
+              <span class="field-error" id="userAccessError" role="alert"></span>
+            </label>
+            <fieldset class="field fieldset-roles">
+              <legend data-i18n="adminSvcRoles">Roles de servicio</legend>
+              <div class="role-checks" id="serviceRoleChecks"></div>
+              <p class="field-hint" data-i18n="adminSvcHint">Solo aplica a prestadores. Ej.: cleaner, jardinero, plomero.</p>
+              <span class="field-error" id="userServicesError" role="alert"></span>
+            </fieldset>
+            <p class="form-msg" id="userMsg" hidden></p>
+            <button type="submit" class="btn btn-primary" data-i18n="adminUserSubmit">Crear usuario</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- System roles (read-only) and service trades (editable) -->
+      <section class="admin-panel" id="panel-roles" hidden>
+        <div class="admin-grid">
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <h2 data-i18n="adminSysTitle">Roles del sistema</h2>
+              <p data-i18n="adminSysLead">Define los permisos de acceso de cada tipo de usuario.</p>
+              <p class="admin-help" data-i18n="adminSysNote">Estos roles son necesarios para el funcionamiento de la plataforma y no pueden eliminarse.</p>
+            </div>
+            <ul class="role-list" id="systemRoles"></ul>
+          </div>
+
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <h2 data-i18n="adminSvcTitle">Roles de servicio</h2>
+              <p data-i18n="adminSvcLead">Oficios que puedes asignar a tu equipo, como limpieza, jardinería o plomería.</p>
+            </div>
+            <ul class="role-list" id="serviceRoles"></ul>
+          </div>
+
+          <form class="admin-block admin-form" id="roleForm" novalidate>
+            <div class="admin-block-head">
+              <h2 data-i18n="adminRoleFormTitle">Crear nuevo rol</h2>
+              <p data-i18n="adminRoleFormLead">Escribe un nombre claro. El código se genera solo y la descripción es opcional.</p>
+            </div>
+            <label class="field">
+              <span data-i18n="adminRoleName">Nombre del rol</span>
+              <input type="text" id="roleName" name="name" required minlength="3" maxlength="40" aria-describedby="roleNameHint roleNameError" data-i18n-placeholder="phRoleName" placeholder="Jardinero" />
+              <small class="field-hint" id="roleNameHint" data-i18n="hintRoleName">Solo letras, espacios y guiones. 3 a 40 caracteres.</small>
+              <span class="field-error" id="roleNameError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="adminSlug">Código</span>
+              <input type="text" id="roleSlug" name="slug" required minlength="3" maxlength="40" spellcheck="false" autocomplete="off" aria-describedby="roleSlugHint roleSlugError" data-i18n-placeholder="phSlug" placeholder="jardinero" />
+              <small class="field-hint" id="roleSlugHint" data-i18n="hintSlug">Minúsculas, números y guiones. 3 a 40 caracteres.</small>
+              <span class="field-error" id="roleSlugError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="adminDesc">Descripción</span>
+              <textarea id="roleDesc" name="description" rows="3" maxlength="160" aria-describedby="roleDescHint roleDescError" data-i18n-placeholder="phRoleDesc" placeholder="Mantenimiento de jardines y terrazas en alojamientos."></textarea>
+              <small class="field-hint" id="roleDescHint" data-i18n="hintDesc">Opcional. Si la escribes, 10 a 160 caracteres.</small>
+              <span class="field-error" id="roleDescError" role="alert"></span>
+            </label>
+            <p class="form-msg" id="roleMsg" hidden></p>
+            <button type="submit" class="btn btn-primary" data-i18n="adminRoleSubmit">Crear rol</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Coverage cities used by the public builder -->
+      <section class="admin-panel" id="panel-cities" hidden>
+        <div class="admin-grid">
+          <div class="admin-block">
+            <div class="admin-block-head">
+              <h2 data-i18n="adminCitiesTitle">Ciudades</h2>
+              <p data-i18n="adminCitiesLead">Activa o desactiva ciudades disponibles para armar servicios.</p>
+            </div>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="adminColCity">Ciudad</th>
+                    <th data-i18n="adminColStatus">Estado</th>
+                    <th data-i18n="adminColActions">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="cityTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <form class="admin-block admin-form" id="cityForm" novalidate>
+            <div class="admin-block-head">
+              <h2 data-i18n="adminCityFormTitle">Agregar ciudad</h2>
+              <p data-i18n="adminCityFormLead">Nombre visible. El slug se genera automáticamente.</p>
+            </div>
+            <label class="field">
+              <span data-i18n="adminCityName">Nombre de la ciudad</span>
+              <input type="text" id="cityName" name="name" required minlength="2" maxlength="60" aria-describedby="cityNameError" data-i18n-placeholder="phCityName" placeholder="Bogotá" />
+              <span class="field-error" id="cityNameError" role="alert"></span>
+            </label>
+            <p class="form-msg" id="cityMsg" hidden></p>
+            <button type="submit" class="btn btn-primary" data-i18n="adminCitySubmit">Agregar ciudad</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Admin console scripts (order: i18n → validate → auth → data modules → Chart.js → UI) -->
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

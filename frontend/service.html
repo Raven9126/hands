@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Detalle del servicio</title>
+  <meta name="description" content="Detalle de servicios Hands para alojamientos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="index.html#como-funciona" data-i18n="navHow">Cómo funciona</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Detail shell driven by ?type=turnover|deep|areas|linen -->
+    <section class="section">
+      <div class="page-narrow service-detail">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="servicePageEyebrow">Servicio</p>
+          <h1 id="serviceTitle">Limpieza entre reservas</h1>
+          <p id="serviceLead">Dejamos el alojamiento listo para el próximo check-in. El tamaño y la tarifa se confirman al armar tu pedido.</p>
+        </div>
+
+        <figure class="service-hero">
+          <img id="serviceHeroImg" src="img/photos/living.jpg" alt="" width="960" height="540" />
+        </figure>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceDescTitle">Descripción</h2>
+          <p id="serviceDesc"></p>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceIncludedTitle">Qué incluye</h2>
+          <ul class="include-list" id="serviceIncluded"></ul>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceExcludedTitle">Qué no incluye</h2>
+          <ul class="include-list include-list-muted" id="serviceExcluded"></ul>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceHowTitle">Cómo se realiza</h2>
+          <p id="serviceHow"></p>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceBaTitle">Antes y después</h2>
+          <p class="service-ba-lead" data-i18n="serviceBaLead">Una muestra relacionada con este tipo de servicio.</p>
+          <div class="before-after-pair service-ba-pair" id="serviceBaPair">
+            <figure>
+              <img id="serviceBaBefore" src="img/photos/kitchen-before.jpg" alt="" width="480" height="360" />
+              <figcaption data-i18n="resultsBefore">Antes</figcaption>
+            </figure>
+            <figure>
+              <img id="serviceBaAfter" src="img/photos/kitchen-after.jpg" alt="" width="480" height="360" />
+              <figcaption data-i18n="resultsAfter">Después</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceExtrasTitle">Opcionales y complementos</h2>
+          <ul class="include-list" id="serviceExtras"></ul>
+        </div>
+
+        <div class="service-block">
+          <h2 class="section-subhead" data-i18n="serviceFaqTitle">Preguntas frecuentes</h2>
+          <div class="service-faq" id="serviceFaq"></div>
+        </div>
+
+        <div class="account-actions">
+          <a class="btn btn-primary" id="serviceBuildLink" href="build.html">
+            <span data-i18n="serviceCta">Armar este servicio</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-ghost" href="index.html#servicios" data-i18n="servicePageBack">← Ver todos los servicios</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/service.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

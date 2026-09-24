@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Arma tu servicio</title>
+  <meta name="description" content="Arma tu servicio Hands paso a paso: tamaño, nivel de aseo, dirección, cobertura, insumos y horario." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="builder-page">
+  <!-- Same public chrome as the landing page -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="index.html#como-funciona" data-i18n="navHow">Cómo funciona</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main class="section section-builder" id="build">
+    <!-- Seven-step booking wizard; panes toggle via data-step + #step-N hash -->
+    <div class="wizard" id="serviceWizard">
+      <div class="section-head wizard-head">
+        <p class="eyebrow" data-i18n="buildEyebrow">Paso a paso</p>
+        <h1 data-i18n="buildTitle">Arma tu servicio</h1>
+        <p class="wizard-meter-text" id="wizardProgress">Paso 1 de 7</p>
+        <div class="wizard-bar" aria-hidden="true"><span id="wizardBar"></span></div>
+      </div>
+
+      <div class="builder">
+        <div class="builder-flow">
+          <!-- Step 1: lodging size and cleaning intensity -->
+          <div class="wizard-pane is-on" data-step="1">
+            <fieldset class="size-field">
+              <legend><span class="step-pill">1</span> <span data-i18n="sizeLegend">Tamaño del apartamento</span></legend>
+              <div class="size-grid" role="radiogroup" aria-label="Tamaño">
+                <button type="button" class="size-card" data-size="xs" aria-pressed="false">
+                  <span class="size-thumb">
+                    <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                      <ellipse class="iso-ground" cx="80" cy="118" rx="42" ry="8"/>
+                      <polygon class="iso-roof" points="80,18 124,42 80,66 36,42"/>
+                      <polygon class="iso-a" points="36,42 80,66 80,102 36,78"/>
+                      <polygon class="iso-b" points="80,66 124,42 124,78 80,102"/>
+                      <polygon class="iso-dark" points="48,72 60,78 60,96 48,90"/>
+                      <polygon class="iso-glass" points="94,58 110,50 110,66 94,74"/>
+                      <polygon class="iso-leaf" points="118,70 126,54 134,70"/>
+                      <rect class="iso-pot" x="122" y="70" width="8" height="6" transform="skewX(-18)"/>
+                    </svg>
+                  </span>
+                  <span class="size-label" data-i18n="sizeXs">Studio</span>
+                  <span class="size-meta">&lt; 40 m²</span>
+                </button>
+                <button type="button" class="size-card is-selected" data-size="sm" aria-pressed="true">
+                  <span class="size-thumb">
+                    <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                      <ellipse class="iso-ground" cx="80" cy="118" rx="50" ry="8"/>
+                      <polygon class="iso-roof" points="58,16 118,36 86,54 26,34"/>
+                      <polygon class="iso-a" points="26,34 86,54 86,96 26,76"/>
+                      <polygon class="iso-b" points="86,54 118,36 118,78 86,96"/>
+                      <polygon class="iso-c" points="118,52 142,40 142,62 118,74"/>
+                      <polygon class="iso-roof" points="118,36 142,40 118,52" opacity=".9"/>
+                      <polygon class="iso-glass" points="42,48 56,53 56,68 42,63"/>
+                      <polygon class="iso-glass" points="62,56 76,61 76,76 62,71"/>
+                      <polygon class="iso-dark" points="96,70 108,64 108,86 96,92"/>
+                      <polygon class="iso-leaf" points="20,82 28,66 36,82"/>
+                    </svg>
+                  </span>
+                  <span class="size-label" data-i18n="sizeSm">1–2 hab</span>
+                  <span class="size-meta">40–70 m²</span>
+                </button>
+                <button type="button" class="size-card" data-size="md" aria-pressed="false">
+                  <span class="size-thumb">
+                    <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                      <ellipse class="iso-ground" cx="82" cy="118" rx="56" ry="8"/>
+                      <polygon class="iso-roof" points="74,10 126,32 86,54 34,32"/>
+                      <polygon class="iso-a" points="34,32 86,54 86,92 34,70"/>
+                      <polygon class="iso-b" points="86,54 126,32 126,70 86,92"/>
+                      <polygon class="iso-roof" points="34,32 64,22 86,34 86,54"/>
+                      <polygon class="iso-c" points="22,58 64,42 64,78 22,94"/>
+                      <polygon class="iso-a" points="22,58 34,52 34,70 22,76" opacity=".85"/>
+                      <polygon class="iso-glass" points="46,48 58,53 58,66 46,61"/>
+                      <polygon class="iso-glass" points="68,42 82,48 82,62 68,56"/>
+                      <polygon class="iso-glass" points="98,48 112,42 112,56 98,62"/>
+                      <polygon class="iso-dark" points="38,74 50,68 50,86 38,92"/>
+                      <rect class="iso-c" x="108" y="78" width="22" height="4" transform="skewX(-32)"/>
+                    </svg>
+                  </span>
+                  <span class="size-label" data-i18n="sizeMd">2–3 hab</span>
+                  <span class="size-meta">70–100 m²</span>
+                </button>
+                <button type="button" class="size-card" data-size="lg" aria-pressed="false">
+                  <span class="size-thumb">
+                    <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                      <ellipse class="iso-ground" cx="80" cy="120" rx="62" ry="8"/>
+                      <polygon class="iso-roof" points="78,6 138,28 92,52 32,30"/>
+                      <polygon class="iso-a" points="32,30 92,52 92,94 32,72"/>
+                      <polygon class="iso-b" points="92,52 138,28 138,70 92,94"/>
+                      <polygon class="iso-c" points="18,50 46,36 46,72 18,86"/>
+                      <polygon class="iso-roof" points="18,50 46,36 64,44 36,58"/>
+                      <polygon class="iso-b" points="118,74 148,58 148,78 118,94"/>
+                      <polygon class="iso-roof" points="92,52 138,28 148,34 118,58"/>
+                      <polygon class="iso-glass" points="44,42 56,47 56,60 44,55"/>
+                      <polygon class="iso-glass" points="64,38 78,44 78,58 64,52"/>
+                      <polygon class="iso-glass" points="104,42 118,36 118,50 104,56"/>
+                      <polygon class="iso-glass" points="124,40 136,34 136,48 124,54"/>
+                      <polygon class="iso-dark" points="48,70 60,64 60,84 48,90"/>
+                      <polyline class="iso-rail" points="118,74 132,66 148,58"/>
+                      <polygon class="iso-leaf" points="142,86 150,70 158,86"/>
+                    </svg>
+                  </span>
+                  <span class="size-label" data-i18n="sizeLg">Amplio</span>
+                  <span class="size-meta">100+ m²</span>
+                </button>
+              </div>
+            </fieldset>
+
+            <fieldset class="size-field intensity-field">
+              <legend><span data-i18n="intensityLegend">Nivel de aseo</span></legend>
+              <p class="other-hint" data-i18n="intensityHint">El tamaño mide el espacio; el nivel mide qué tan exigente es la limpieza.</p>
+              <div class="intensity-grid" role="radiogroup" aria-label="Nivel de aseo">
+                <button type="button" class="intensity-card" data-intensity="light" aria-pressed="false">
+                  <span class="intensity-label" data-i18n="intensityLight">Liviano</span>
+                  <span class="intensity-meta" data-i18n="intensityLightMeta">Pasada rápida de mantenimiento</span>
+                </button>
+                <button type="button" class="intensity-card is-selected" data-intensity="standard" aria-pressed="true">
+                  <span class="intensity-label" data-i18n="intensityStandard">Estándar</span>
+                  <span class="intensity-meta" data-i18n="intensityStandardMeta">Limpieza completa habitual</span>
+                </button>
+                <button type="button" class="intensity-card" data-intensity="intense" aria-pressed="false">
+                  <span class="intensity-label" data-i18n="intensityIntense">Intenso</span>
+                  <span class="intensity-meta" data-i18n="intensityIntenseMeta">Detalle profundo o desincrustado</span>
+                </button>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Step 2: address and contact; city options come from HandsCities -->
+          <div class="wizard-pane" data-step="2">
+            <fieldset class="address-field">
+              <legend><span class="step-pill">2</span> <span data-i18n="addressLegend">¿Dónde es el alojamiento?</span></legend>
+              <p class="other-hint" data-i18n="addressHint">El equipo llega con esta dirección. Incluye cómo entrar si hace falta.</p>
+              <div class="address-grid">
+                <label class="field" for="citySelect">
+                  <span data-i18n="cityLegend">Ciudad</span>
+                  <select id="citySelect" name="city" required>
+                    <option value="" data-i18n="cityPlaceholder">Selecciona una ciudad</option>
+                  </select>
+                  <span class="field-error" id="cityError" role="alert"></span>
+                </label>
+                <label class="field" for="serviceAddress">
+                  <span data-i18n="addressStreet">Dirección</span>
+                  <input type="text" id="serviceAddress" name="address" required minlength="8" maxlength="120" autocomplete="street-address" aria-describedby="addressHint addressError" data-i18n-placeholder="phAddress" placeholder="Cra 7 # 32-16" />
+                  <small class="field-hint" id="addressHint" data-i18n="addressStreetHint">Calle, carrera y número.</small>
+                  <span class="field-error" id="addressError" role="alert"></span>
+                </label>
+                <label class="field" for="serviceUnit">
+                  <span data-i18n="addressUnit">Apto / torre / interior</span>
+                  <input type="text" id="serviceUnit" name="unit" maxlength="40" autocomplete="address-line2" data-i18n-placeholder="phUnit" placeholder="Torre 2, apto 801" />
+                  <span class="field-error" id="unitError" role="alert"></span>
+                </label>
+                <label class="field" for="serviceNeighborhood">
+                  <span data-i18n="addressNeighborhood">Barrio</span>
+                  <input type="text" id="serviceNeighborhood" name="neighborhood" maxlength="40" data-i18n-placeholder="phNeighborhood" placeholder="Chapinero" />
+                  <span class="field-error" id="neighborhoodError" role="alert"></span>
+                </label>
+                <label class="field" for="servicePhone">
+                  <span data-i18n="addressPhone">Teléfono de contacto</span>
+                  <input type="tel" id="servicePhone" name="phone" required maxlength="20" inputmode="tel" autocomplete="tel" aria-describedby="phoneError" data-i18n-placeholder="phPhone" placeholder="300 123 4567" />
+                  <span class="field-error" id="phoneError" role="alert"></span>
+                </label>
+                <label class="field address-notes" for="serviceAccess">
+                  <span data-i18n="addressAccess">Cómo entrar</span>
+                  <textarea id="serviceAccess" name="access" rows="2" maxlength="160" data-i18n-placeholder="phAccess" placeholder="Portería, caja de llaves o código"></textarea>
+                  <small class="field-hint" data-i18n="addressAccessHint">Opcional. Código, portería o dónde dejar las llaves.</small>
+                  <span class="field-error" id="accessError" role="alert"></span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Step 3: coverage gate (shown/hidden from the selected city) -->
+          <div class="wizard-pane" data-step="3">
+            <div class="coverage-card" id="coverageYes" hidden>
+              <p class="step-pill-row"><span class="step-pill">3</span> <span data-i18n="coverageTitle">¿Tiene cobertura?</span></p>
+              <h2 class="wizard-review-title" data-i18n="coverageYesTitle">Sí, tenemos cobertura</h2>
+              <p class="other-hint" id="coverageYesBody"></p>
+            </div>
+            <div class="coverage-card is-wait" id="coverageNo" hidden>
+              <p class="step-pill-row"><span class="step-pill">3</span> <span data-i18n="coverageTitle">¿Tiene cobertura?</span></p>
+              <h2 class="wizard-review-title" data-i18n="coverageNoTitle">Esperamos servirte pronto</h2>
+              <p class="other-hint" data-i18n="coverageNoBody">Aún no llegamos a esa ciudad. Déjanos tu zona en una próxima versión o prueba con una ciudad Hands.</p>
+              <a class="btn btn-ghost" href="index.html" data-i18n="coverageHome">Volver al inicio</a>
+            </div>
+          </div>
+
+          <!-- Step 4: supplies / kit preference -->
+          <div class="wizard-pane" data-step="4">
+            <fieldset class="supplies">
+              <legend><span class="step-pill">4</span> <span data-i18n="suppliesLegend">¿Tienes productos de limpieza?</span></legend>
+              <div class="toggle-pair" role="group">
+                <button type="button" class="chip is-on" data-supplies="yes" aria-pressed="true" data-i18n="suppliesYes">Sí, yo los tengo</button>
+                <button type="button" class="chip" data-supplies="kit" aria-pressed="false" data-i18n="suppliesKit">No, quiero el kit</button>
+                <button type="button" class="chip" data-supplies="none" aria-pressed="false" data-i18n="suppliesNone">No, sin kit</button>
+              </div>
+              <p class="other-hint" id="kitHint" hidden data-i18n="suppliesKitHint">El kit se suma a la tarifa sugerida.</p>
+            </fieldset>
+          </div>
+
+          <!-- Step 5: urgent vs scheduled timing -->
+          <div class="wizard-pane" data-step="5">
+            <fieldset class="when-field">
+              <legend><span class="step-pill">5</span> <span data-i18n="timingLegend">¿Urgente o programado?</span></legend>
+              <div class="toggle-pair" role="group">
+                <button type="button" class="chip" data-timing="urgent" aria-pressed="false" data-i18n="timingUrgent">Urgente</button>
+                <button type="button" class="chip is-on" data-timing="scheduled" aria-pressed="true" data-i18n="timingScheduled">Programado</button>
+              </div>
+              <p class="other-hint" id="urgentHint" hidden data-i18n="timingUrgentHint">Asignamos el próximo cupo disponible de hoy, o el primero de mañana si ya no hay.</p>
+              <div id="scheduledBlock">
+                <p class="other-hint" data-i18n="whenHint">Día y hora de llegada del equipo, entre el check-out y el siguiente check-in.</p>
+                <div class="when-grid">
+                  <label class="field" for="serviceDate">
+                    <span data-i18n="whenDate">Fecha</span>
+                    <input type="date" id="serviceDate" name="serviceDate" required />
+                    <span class="field-error" id="dateError" role="alert"></span>
+                  </label>
+                  <div class="field time-field">
+                    <span id="timeLabel" data-i18n="whenTime">Hora de llegada</span>
+                    <p class="field-hint" data-i18n="whenTimeHint">Elige a qué hora debe llegar el equipo.</p>
+                    <div class="time-grid" id="timeSlots" role="radiogroup" aria-labelledby="timeLabel"></div>
+                    <input type="hidden" id="serviceTime" name="serviceTime" required value="" />
+                    <span class="field-error" id="timeError" role="alert"></span>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Step 6: quoted proposal + optional extras -->
+          <div class="wizard-pane" data-step="6">
+            <h2 class="wizard-review-title" data-i18n="proposalTitle">Propuesta sugerida</h2>
+            <p class="other-hint" data-i18n="proposalLead">Revisa la tarifa. Si la aceptas, pasas al checkout del pedido.</p>
+            <!-- Live quote; amounts filled by main.js -->
+            <aside class="quote" aria-live="polite">
+              <p class="quote-label" data-i18n="quoteLabel">Tarifa sugerida</p>
+              <p class="quote-price"><span id="quoteAmount">120.000</span> <span class="currency">COP</span></p>
+              <ul class="quote-breakdown">
+                <li><span data-i18n="quoteCity">Ciudad</span><span id="quoteCity">—</span></li>
+                <li><span data-i18n="quoteAddress">Dirección</span><span id="quoteAddress">—</span></li>
+                <li><span data-i18n="quoteWhen">Fecha y hora</span><span id="quoteWhen">—</span></li>
+                <li><span data-i18n="quoteTiming">Tipo</span><span id="quoteTiming">—</span></li>
+                <li><span data-i18n="quoteBase">Servicio base</span><span id="quoteBase">120.000</span></li>
+                <li><span data-i18n="quoteKit">Kit de insumos</span><span id="quoteKit">0</span></li>
+                <li><span data-i18n="quoteExtras">Extras</span><span id="quoteExtras">0</span></li>
+                <li><span data-i18n="quoteOther">Otros servicios</span><span id="quoteOther">0</span></li>
+                <li class="fee"><span data-i18n="quoteFee">Comisión Hands (12%)</span><span id="quoteFee">14.400</span></li>
+              </ul>
+              <p class="quote-note" data-i18n="quoteNote">Comisión fija del 12% incluida en el total. Pago con Bold o Wompi.</p>
+              <div class="proposal-actions">
+                <button type="button" class="btn btn-primary btn-block" id="acceptProposal">
+                  <span data-i18n="proposalAccept">Aceptar propuesta</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <button type="button" class="btn btn-ghost btn-block" id="counterProposal" data-i18n="proposalCounter">Proponer otra tarifa</button>
+              </div>
+              <p class="quote-hint" id="counterHint" hidden data-i18n="proposalCounterSoon">La tarifa de cliente llega en la siguiente iteración. Por ahora acepta la propuesta sugerida.</p>
+            </aside>
+
+            <details class="optional-block">
+              <summary data-i18n="optionalExtras">Extras y otros servicios (opcional)</summary>
+              <fieldset class="extras">
+                <legend data-i18n="extrasLegend">Extras de limpieza</legend>
+                <label class="check">
+                  <input type="checkbox" name="extra" value="linen" />
+                  <span data-i18n="extraLinen">Cambio de ropa de cama</span>
+                </label>
+                <label class="check">
+                  <input type="checkbox" name="extra" value="restock" />
+                  <span data-i18n="extraRestock">Reposición básica (papel, jabón)</span>
+                </label>
+              </fieldset>
+              <fieldset class="other-field">
+                <legend data-i18n="otherLegend">Otros servicios</legend>
+                <p class="other-hint" data-i18n="otherHint">Opcional. Suma oficios como jardinería o plomería al mismo pedido.</p>
+                <label class="city-label" for="otherSelect">
+                  <select id="otherSelect" name="other">
+                    <option value="" data-i18n="otherPlaceholder">Selecciona un servicio</option>
+                    <option value="jardinero" data-i18n="otherGardener">Jardinero</option>
+                    <option value="plomero" data-i18n="otherPlumber">Plomero</option>
+                  </select>
+                </label>
+                <div class="other-chips" id="otherChips"></div>
+              </fieldset>
+            </details>
+          </div>
+
+          <!-- Step 7: checkout handoff (payment gateway deferred) -->
+          <div class="wizard-pane" data-step="7">
+            <h2 class="wizard-review-title" data-i18n="checkoutTitle">Confirmación</h2>
+            <p class="other-hint" data-i18n="checkoutLead">Reserva de demostración: confirmas el pedido sin cobro real. El pago Bold/Wompi se integra después.</p>
+            <aside class="quote">
+              <p class="quote-label" data-i18n="checkoutFinal">Precio estimado</p>
+              <p class="quote-price"><span id="checkoutAmount">120.000</span> <span class="currency">COP</span></p>
+              <button type="button" class="btn btn-primary btn-block" id="confirmBtn">
+                <span data-i18n="quoteSend">Confirmar reserva</span>
+                <span aria-hidden="true">→</span>
+              </button>
+              <p class="quote-hint" id="confirmHint" hidden></p>
+            </aside>
+          </div>
+        </div>
+
+        <!-- Wizard back / continue controls -->
+        <div class="wizard-nav">
+          <button type="button" class="btn btn-ghost" id="wizardBack" hidden data-i18n="wizardBack">Atrás</button>
+          <button type="button" class="btn btn-primary" id="wizardNext">
+            <span data-i18n="wizardNext">Continuar</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <!-- Wizard, quote, and draft persistence -->
+  <script src="js/main.js"></script>
+</body>
+</html>

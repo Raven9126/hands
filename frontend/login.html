@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="auth-body">
+  <!-- Decorative backdrop only -->
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <header class="site-header auth-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma" data-i18n-aria="labelLang">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <!-- Host / admin sign-in; redirects by access role after success -->
+    <form class="auth-card" id="loginForm" novalidate>
+      <p class="eyebrow" data-i18n="loginEyebrow">Cuenta Hands</p>
+      <h1 data-i18n="loginTitle">Iniciar sesión</h1>
+      <p class="auth-lead" data-i18n="loginLead">Entra para cotizar, pagar y ver la evidencia de tus limpiezas.</p>
+
+      <label class="field">
+        <span data-i18n="authEmail">Correo</span>
+        <input type="email" id="loginEmail" name="email" autocomplete="email" inputmode="email" required maxlength="80" spellcheck="false" aria-describedby="loginEmailHint loginEmailError" data-i18n-placeholder="phEmail" placeholder="tu@email.com" />
+        <small class="field-hint" id="loginEmailHint" data-i18n="hintEmail">Correo válido, sin espacios. Máximo 80 caracteres.</small>
+        <span class="field-error" id="loginEmailError" role="alert"></span>
+      </label>
+      <label class="field">
+        <span data-i18n="authPassword">Contraseña</span>
+        <input type="password" id="loginPassword" name="password" autocomplete="current-password" required maxlength="64" aria-describedby="loginPasswordError" />
+        <span class="field-error" id="loginPasswordError" role="alert"></span>
+      </label>
+
+      <p class="form-msg is-error" id="loginMsg" hidden></p>
+
+      <button type="submit" class="btn btn-primary btn-block" data-i18n="loginSubmit">Entrar</button>
+
+      <p class="auth-switch">
+        <span data-i18n="loginNoAccount">¿No tienes cuenta?</span>
+        <a href="register.html" data-i18n="loginGoRegister">Regístrate</a>
+      </p>
+      <!-- Seeded demo accounts for local review only -->
+      <p class="auth-demo" data-i18n="loginDemo">Solo presentación local — host@hands.co / Hands@2026Co! · admin@hands.co / Hands@2026Co!</p>
+    </form>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/auth-pages.js"></script>
+</body>
+</html>

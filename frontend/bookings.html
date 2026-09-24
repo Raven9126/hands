@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Mis reservas</title>
+  <meta name="description" content="Listado de reservas Hands del anfitrión." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="bookings.html" data-i18n="navBookings">Mis reservas</a>
+      <a href="account.html" data-i18n="navAccount">Cuenta</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Host bookings list; rows rendered from HandsBookings filtered by session -->
+    <section class="section">
+      <div class="page-wide">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="bookingsEyebrow">Mis reservas</p>
+          <h1 data-i18n="bookingsTitle">Mis reservas</h1>
+          <p data-i18n="bookingsLead">Consulta el estado de tus servicios y abre el detalle.</p>
+        </div>
+
+        <div class="bookings-list">
+          <article class="booking-row">
+            <div class="booking-meta">
+              <span data-i18n="bookingsEx1Date">12 abr 2026 · 10:00</span>
+              <span data-i18n="bookingsEx1City">Bogotá</span>
+              <span class="status-chip is-done" data-i18n="bookingsStatusDone">Completada</span>
+            </div>
+            <a href="booking-detail.html" data-i18n="bookingsEx1Link">Limpieza entre reservas →</a>
+          </article>
+
+          <article class="booking-row">
+            <div class="booking-meta">
+              <span data-i18n="bookingsEx2Date">28 abr 2026 · 14:00</span>
+              <span data-i18n="bookingsEx2City">Medellín</span>
+              <span class="status-chip" data-i18n="bookingsStatusConfirmed">Confirmada</span>
+            </div>
+            <a href="booking-detail.html" data-i18n="bookingsEx2Link">Limpieza profunda →</a>
+          </article>
+
+          <article class="booking-row">
+            <div class="booking-meta">
+              <span data-i18n="bookingsEx3Date">05 may 2026 · 09:00</span>
+              <span data-i18n="bookingsEx3City">Chía</span>
+              <span class="status-chip is-pending" data-i18n="bookingsStatusPending">Pendiente</span>
+            </div>
+            <a href="booking-detail.html" data-i18n="bookingsEx3Link">Áreas específicas →</a>
+          </article>
+        </div>
+
+        <div class="bookings-empty" hidden>
+          <p data-i18n="bookingsEmpty">¿Sin próximas reservas? Arma un servicio nuevo cuando lo necesites.</p>
+          <a class="btn btn-primary" href="build.html" data-i18n="bookingsEmptyCta">Arma tu servicio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

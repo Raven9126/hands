@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Crear cuenta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="auth-body">
+  <!-- Decorative backdrop only -->
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <header class="site-header auth-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma" data-i18n-aria="labelLang">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <!-- Host self-registration: account + property (+ complex access when needed) -->
+    <form class="auth-card auth-card--wide" id="registerForm" novalidate>
+      <p class="eyebrow" data-i18n="registerEyebrow">Cuenta Hands</p>
+      <h1 data-i18n="registerTitle">Crear cuenta</h1>
+      <p class="auth-lead" data-i18n="registerLead">Regístrate como anfitrión, registra tu propiedad y confirma cómo accederá el equipo.</p>
+
+      <fieldset class="auth-section">
+        <legend data-i18n="regHostLegend">Datos del Host</legend>
+
+        <label class="field">
+          <span data-i18n="authName">Nombre completo</span>
+          <input type="text" id="regName" name="name" autocomplete="name" required minlength="2" maxlength="60" aria-describedby="regNameHint regNameError" data-i18n-placeholder="phName" placeholder="María López" />
+          <small class="field-hint" id="regNameHint" data-i18n="hintName">Solo letras, espacios y guiones. 2 a 60 caracteres.</small>
+          <span class="field-error" id="regNameError" role="alert"></span>
+        </label>
+        <label class="field">
+          <span data-i18n="authEmail">Correo</span>
+          <input type="email" id="regEmail" name="email" autocomplete="email" inputmode="email" required maxlength="80" spellcheck="false" aria-describedby="regEmailHint regEmailError" data-i18n-placeholder="phEmail" placeholder="tu@email.com" />
+          <small class="field-hint" id="regEmailHint" data-i18n="hintEmail">Correo válido, sin espacios. Máximo 80 caracteres.</small>
+          <span class="field-error" id="regEmailError" role="alert"></span>
+        </label>
+        <label class="field">
+          <span data-i18n="authPassword">Contraseña</span>
+          <input type="password" id="regPassword" name="password" autocomplete="new-password" required minlength="8" maxlength="64" aria-describedby="regPasswordHint regPasswordError" />
+          <small class="field-hint" id="regPasswordHint" data-i18n="hintPassword">Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.</small>
+          <span class="field-error" id="regPasswordError" role="alert"></span>
+        </label>
+        <label class="field">
+          <span data-i18n="authConfirm">Confirmar contraseña</span>
+          <input type="password" id="regConfirm" name="confirm" autocomplete="new-password" required minlength="8" maxlength="64" aria-describedby="regConfirmHint regConfirmError" />
+          <small class="field-hint" id="regConfirmHint" data-i18n="hintConfirm">Debe coincidir con la contraseña.</small>
+          <span class="field-error" id="regConfirmError" role="alert"></span>
+        </label>
+      </fieldset>
+
+      <fieldset class="auth-section">
+        <legend data-i18n="regPropertyLegend">Datos de la propiedad</legend>
+        <p class="auth-section-lead" data-i18n="regPropertyLead">Usamos estos datos para ubicar el servicio y orientar al prestador.</p>
+
+        <label class="field">
+          <span data-i18n="addressStreet">Dirección</span>
+          <input type="text" id="regAddress" name="address" required minlength="8" maxlength="120" autocomplete="street-address" aria-describedby="regAddressHint regAddressError" data-i18n-placeholder="phAddress" placeholder="Cra 7 # 32-16" />
+          <small class="field-hint" id="regAddressHint" data-i18n="addressStreetHint">Calle, carrera y número.</small>
+          <span class="field-error" id="regAddressError" role="alert"></span>
+        </label>
+
+        <div class="auth-grid">
+          <label class="field">
+            <span data-i18n="addressUnit">Apto / torre / interior</span>
+            <input type="text" id="regUnit" name="unit" maxlength="40" autocomplete="address-line2" data-i18n-placeholder="phUnit" placeholder="Torre 2, apto 801" aria-describedby="regUnitError" />
+            <span class="field-error" id="regUnitError" role="alert"></span>
+          </label>
+          <label class="field">
+            <span data-i18n="addressNeighborhood">Barrio</span>
+            <input type="text" id="regNeighborhood" name="neighborhood" maxlength="40" data-i18n-placeholder="phNeighborhood" placeholder="Chapinero" aria-describedby="regNeighborhoodError" />
+            <span class="field-error" id="regNeighborhoodError" role="alert"></span>
+          </label>
+        </div>
+
+        <label class="field">
+          <span data-i18n="addressPhone">Teléfono de contacto</span>
+          <input type="tel" id="regPhone" name="phone" required inputmode="tel" autocomplete="tel" data-i18n-placeholder="phPhone" placeholder="300 123 4567" aria-describedby="regPhoneError" />
+          <span class="field-error" id="regPhoneError" role="alert"></span>
+        </label>
+
+        <fieldset class="auth-choice">
+          <legend data-i18n="regComplexLegend">¿La propiedad está en un conjunto residencial?</legend>
+          <div class="chip-row" role="group" aria-labelledby="regComplexLegend">
+            <button type="button" class="chip" id="regComplexNo" data-complex="no" aria-pressed="false" data-i18n="regComplexNo">No</button>
+            <button type="button" class="chip" id="regComplexYes" data-complex="yes" aria-pressed="false" data-i18n="regComplexYes">Sí</button>
+          </div>
+          <span class="field-error" id="regComplexError" role="alert"></span>
+        </fieldset>
+
+        <div id="regComplexFields" class="auth-complex" hidden>
+          <p class="auth-section-lead" data-i18n="regComplexLead">Estos datos ayudan al prestador a entrar al conjunto.</p>
+
+          <label class="field">
+            <span data-i18n="regComplexName">Nombre del conjunto</span>
+            <input type="text" id="regComplexName" name="complexName" maxlength="80" data-i18n-placeholder="phComplexName" placeholder="Altos de la Sabana" aria-describedby="regComplexNameError" />
+            <span class="field-error" id="regComplexNameError" role="alert"></span>
+          </label>
+
+          <div class="auth-grid">
+            <label class="field">
+              <span data-i18n="regComplexTower">Torre / bloque</span>
+              <input type="text" id="regComplexTower" name="complexTower" maxlength="40" data-i18n-placeholder="phComplexTower" placeholder="Torre 3" aria-describedby="regComplexTowerError" />
+              <span class="field-error" id="regComplexTowerError" role="alert"></span>
+            </label>
+            <label class="field">
+              <span data-i18n="regComplexApt">Apartamento</span>
+              <input type="text" id="regComplexApt" name="complexApt" maxlength="40" data-i18n-placeholder="phComplexApt" placeholder="801" aria-describedby="regComplexAptError" />
+              <span class="field-error" id="regComplexAptError" role="alert"></span>
+            </label>
+          </div>
+
+          <fieldset class="auth-choice">
+            <legend data-i18n="regNeedsAuthLegend">¿Requiere autorización?</legend>
+            <div class="chip-row" role="group">
+              <button type="button" class="chip" id="regNeedsAuthNo" data-needs-auth="no" aria-pressed="false" data-i18n="regNeedsAuthNo">No</button>
+              <button type="button" class="chip" id="regNeedsAuthYes" data-needs-auth="yes" aria-pressed="false" data-i18n="regNeedsAuthYes">Sí</button>
+            </div>
+            <span class="field-error" id="regNeedsAuthError" role="alert"></span>
+          </fieldset>
+        </div>
+
+        <label class="field">
+          <span data-i18n="addressAccess">Cómo entrar</span>
+          <textarea id="regAccess" name="access" rows="3" maxlength="160" data-i18n-placeholder="phRegAccess" placeholder="Código de portería, dónde dejar llaves…" aria-describedby="regAccessHint regAccessError"></textarea>
+          <small class="field-hint" id="regAccessHint" data-i18n="regAccessHint">Opcional si no es conjunto. Recomendado cuando hay portería o códigos.</small>
+          <span class="field-error" id="regAccessError" role="alert"></span>
+        </label>
+      </fieldset>
+
+      <p class="form-msg is-error" id="registerMsg" hidden></p>
+
+      <button type="submit" class="btn btn-primary btn-block" data-i18n="registerSubmit">Crear cuenta</button>
+
+      <p class="auth-switch">
+        <span data-i18n="registerHasAccount">¿Ya tienes cuenta?</span>
+        <a href="login.html" data-i18n="registerGoLogin">Inicia sesión</a>
+      </p>
+    </form>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/auth-pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Limpieza profesional para alojamientos</title>
+  <meta name="description" content="Hands: limpieza profesional para alojamientos. Arma tu servicio, confirma y recibe evidencia del trabajo realizado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Site chrome: logo, primary nav, language, and auth actions -->
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="#top" data-i18n="navHome">Inicio</a>
+      <a href="#servicios" data-i18n="navServices">Servicios</a>
+      <a href="#resultados" data-i18n="navResults">Resultados</a>
+      <a href="#como-funciona" data-i18n="navHow">Cómo funciona</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Full-bleed landing hero -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="heroEyebrow">Espacios limpios. Mejores días.</p>
+        <h1>
+          <span data-i18n="heroTitle">Limpieza profesional para tu alojamiento</span>
+          <em data-i18n="heroItalic">Listo para el próximo check-in</em>
+        </h1>
+        <p class="hero-lead" data-i18n="heroLead">
+          Arma tu servicio en un minuto, confirma y recibe evidencia del trabajo realizado.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="build.html">
+            <span data-i18n="heroCta">Armar mi servicio</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-ghost" href="#como-funciona" data-i18n="heroSecondary">Ver cómo funciona</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="img/photos/hero.jpg" alt="" width="1400" height="900" />
+      </div>
+    </section>
+
+    <!-- Benefit strip under the hero -->
+    <section class="trust-bar" aria-label="Beneficios">
+      <article>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6.5v5.2c0 4.2 2.8 7.9 7 9.3 4.2-1.4 7-5.1 7-9.3V6.5L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3 data-i18n="feat1Title">Servicio confiable</h3>
+        <p data-i18n="feat1Body">Personal asignado y confirmación de cada servicio.</p>
+      </article>
+      <article>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21c4-3.2 7-6.4 7-10a7 7 0 1 0-14 0c0 3.6 3 6.8 7 10Z" stroke="currentColor" stroke-width="1.6"/><path d="M12 11.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        <h3 data-i18n="feat2Title">Insumos a tu medida</h3>
+        <p data-i18n="feat2Body">Tú eliges si utilizas tus propios productos o prefieres que Hands los incluya.</p>
+      </article>
+      <article>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 14.2 9l5.8.5-4.4 3.8 1.4 5.7L12 16.2 6.9 19l1.5-5.7L4 9.5 9.8 9 12 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <h3 data-i18n="feat3Title">Trabajo verificado</h3>
+        <p data-i18n="feat3Body">Evidencia del servicio para que puedas verificar el resultado.</p>
+      </article>
+      <article>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 3.5v3M16 3.5v3M4 10h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3 data-i18n="feat4Title">Horarios flexibles</h3>
+        <p data-i18n="feat4Body">Programa la limpieza según la disponibilidad de tu alojamiento.</p>
+      </article>
+    </section>
+
+    <!-- Real service offerings (size/type stays in the builder) -->
+    <section class="section" id="servicios">
+      <div class="services-head">
+        <div>
+          <p class="eyebrow" data-i18n="svcEyebrow">Nuestros servicios</p>
+          <h2 data-i18n="svcTitle">Limpieza pensada para cada necesidad</h2>
+        </div>
+        <p data-i18n="svcLead">Elige el tipo de servicio. El tamaño del alojamiento y la tarifa se definen al armar tu pedido.</p>
+      </div>
+      <div class="service-grid">
+        <article class="service-card">
+          <img src="img/photos/living.jpg" alt="" width="600" height="400" />
+          <h3 data-i18n="svc1Title">Limpieza entre reservas</h3>
+          <p data-i18n="svc1Body">Dejamos el alojamiento listo para recibir al próximo huésped.</p>
+          <a href="service.html?type=turnover" data-i18n="svcCta">Ver detalle →</a>
+        </article>
+        <article class="service-card">
+          <img src="img/photos/office.jpg" alt="" width="600" height="400" />
+          <h3 data-i18n="svc2Title">Limpieza profunda</h3>
+          <p data-i18n="svc2Body">Una limpieza completa cuando el espacio necesita más atención de lo habitual.</p>
+          <a href="service.html?type=deep" data-i18n="svcCta">Ver detalle →</a>
+        </article>
+        <article class="service-card">
+          <img src="img/photos/kitchen.jpg" alt="" width="600" height="400" />
+          <h3 data-i18n="svc3Title">Limpieza de áreas específicas</h3>
+          <p data-i18n="svc3Body">Enfócate en cocina, baños u otras zonas prioritarias.</p>
+          <a href="service.html?type=areas" data-i18n="svcCta">Ver detalle →</a>
+        </article>
+        <article class="service-card">
+          <img src="img/photos/boxes.jpg" alt="" width="600" height="400" />
+          <h3 data-i18n="svc4Title">Ropa de cama e insumos</h3>
+          <p data-i18n="svc4Body">Cambio de sábanas y reposición de insumos básicos.</p>
+          <a href="service.html?type=linen" data-i18n="svcCta">Ver detalle →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Before / after highlights; full gallery lives on results.html -->
+    <section class="section section-results" id="resultados">
+      <div class="section-head section-head-split">
+        <div>
+          <p class="eyebrow" data-i18n="resultsEyebrow">Antes y después</p>
+          <h2 data-i18n="resultsTitle">Resultados que hablan por sí solos</h2>
+        </div>
+        <p data-i18n="resultsLead">Mira ejemplos de transformaciones antes y después.</p>
+      </div>
+      <div class="before-after-grid">
+        <article class="before-after-card">
+          <div class="before-after-pair">
+            <figure>
+              <img src="img/photos/kitchen-before.jpg" alt="Cocina en desorden antes del servicio" width="480" height="360" />
+              <figcaption data-i18n="resultsBefore">Antes</figcaption>
+            </figure>
+            <figure>
+              <img src="img/photos/kitchen-after.jpg" alt="Cocina limpia y ordenada después del servicio" width="480" height="360" />
+              <figcaption data-i18n="resultsAfter">Después</figcaption>
+            </figure>
+          </div>
+          <h3 data-i18n="resultsKitchen">Cocina</h3>
+        </article>
+        <article class="before-after-card">
+          <div class="before-after-pair">
+            <figure>
+              <img src="img/photos/bedroom-before.jpg" alt="Habitación en desorden antes del servicio" width="480" height="360" />
+              <figcaption data-i18n="resultsBefore">Antes</figcaption>
+            </figure>
+            <figure>
+              <img src="img/photos/bedroom-after.jpg" alt="Habitación ordenada y lista para huéspedes" width="480" height="360" />
+              <figcaption data-i18n="resultsAfter">Después</figcaption>
+            </figure>
+          </div>
+          <h3 data-i18n="resultsRoom">Habitación</h3>
+        </article>
+        <article class="before-after-card">
+          <div class="before-after-pair">
+            <figure>
+              <img src="img/photos/bathroom-before.jpg" alt="Baño sucio y desordenado antes del servicio" width="480" height="360" />
+              <figcaption data-i18n="resultsBefore">Antes</figcaption>
+            </figure>
+            <figure>
+              <img src="img/photos/bathroom-after.jpg" alt="Baño limpio y ordenado después del servicio" width="480" height="360" />
+              <figcaption data-i18n="resultsAfter">Después</figcaption>
+            </figure>
+          </div>
+          <h3 data-i18n="resultsBath">Baño</h3>
+        </article>
+      </div>
+      <div class="section-more">
+        <a class="btn btn-ghost" href="results.html" data-i18n="resultsMore">Ver más resultados →</a>
+      </div>
+    </section>
+
+    <!-- Product flow explained in four steps -->
+    <section class="section section-how" id="como-funciona">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="howEyebrow">Proceso</p>
+        <h2 data-i18n="howTitle">Así de fácil funciona</h2>
+        <p data-i18n="howLead">Del armado del servicio a la evidencia final, en cuatro pasos claros.</p>
+      </div>
+      <ol class="how-grid">
+        <li class="how-step">
+          <span class="how-num">01</span>
+          <h3 data-i18n="how1Title">Arma tu servicio</h3>
+          <p data-i18n="how1Body">Selecciona ubicación, tamaño, nivel de aseo, fecha, hora y servicios adicionales.</p>
+        </li>
+        <li class="how-step">
+          <span class="how-num">02</span>
+          <h3 data-i18n="how2Title">Confirma tu reserva</h3>
+          <p data-i18n="how2Body">Revisa el detalle y confirma el servicio.</p>
+        </li>
+        <li class="how-step">
+          <span class="how-num">03</span>
+          <h3 data-i18n="how3Title">Nosotros nos encargamos</h3>
+          <p data-i18n="how3Body">Asignamos el personal y realizamos la limpieza.</p>
+        </li>
+        <li class="how-step">
+          <span class="how-num">04</span>
+          <h3 data-i18n="how4Title">Verifica el resultado</h3>
+          <p data-i18n="how4Body">Recibe fotografías y el informe del servicio.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Brand differentiation (not evidence gallery) -->
+    <section class="why" id="por-que">
+      <div class="why-photo">
+        <img src="img/photos/why-hands.jpg" alt="" width="640" height="480" />
+      </div>
+      <div class="why-copy">
+        <p class="eyebrow" data-i18n="whyEyebrow">Por qué Hands</p>
+        <h2 data-i18n="whyTitle">Más que limpiar: dejamos tu alojamiento listo</h2>
+        <p data-i18n="whyBody">Confirmación, recordatorios y evidencia fotográfica en cada servicio. Tú supervisas el resultado y tu huésped encuentra un espacio listo para recibirlo.</p>
+        <a class="btn btn-primary" href="build.html">
+          <span data-i18n="whyCta">Armar mi servicio</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Product preview of post-service evidence (demo, not a real booking) -->
+    <section class="section section-trust" id="evidencia">
+      <div class="quotes-head">
+        <div>
+          <p class="eyebrow" data-i18n="trustEyebrow">Evidencia del servicio</p>
+          <h2 data-i18n="trustTitle">Así verás la evidencia de tu servicio</h2>
+        </div>
+        <p data-i18n="trustLead">Vista de demostración: fotografías, personal asignado, calificación e informe. Los datos reales aparecerán en cada reserva completada.</p>
+      </div>
+      <div class="trust-demo">
+        <div class="photo-rail">
+          <figure class="photo-slot"><img src="img/photos/kitchen.jpg" alt="" /><figcaption data-i18n="photoKitchen">Cocina</figcaption></figure>
+          <figure class="photo-slot lit"><img src="img/photos/living.jpg" alt="" /><figcaption data-i18n="photoLiving">Estar</figcaption></figure>
+          <figure class="photo-slot"><img src="img/photos/office.jpg" alt="" /><figcaption data-i18n="photoRoom">Habitación</figcaption></figure>
+        </div>
+        <div class="rating-block">
+          <p class="cleaner-name" data-i18n="trustCleaner">Personal asignado · Equipo Hands</p>
+          <div class="stars" aria-label="4.8 de 5">
+            <span></span><span></span><span></span><span></span><span class="half"></span>
+          </div>
+          <p class="rating-score">4.8</p>
+          <a class="btn btn-ghost" href="booking-detail.html?id=job-demo-showcase" data-i18n="trustPdf">Ver detalle de ejemplo →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Host testimonials (separate from evidence) -->
+    <section class="section section-reviews" id="resenas">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="reviewsEyebrow">Reseñas</p>
+        <h2 data-i18n="reviewsTitle">Lo que dicen nuestros clientes</h2>
+        <p data-i18n="reviewsLead">Ejemplos de demostración. Las reseñas reales se publicarán cuando haya clientes.</p>
+      </div>
+      <div class="reviews-grid">
+        <article class="review-card">
+          <p class="review-stars" aria-label="5 de 5">★★★★★</p>
+          <p data-i18n="review1Body">“El apartamento quedó impecable y las fotos del servicio me dieron mucha tranquilidad.”</p>
+          <p class="review-author"><strong data-i18n="review1Name">María G.</strong> · <span data-i18n="review1City">Bogotá</span></p>
+        </article>
+        <article class="review-card">
+          <p class="review-stars" aria-label="5 de 5">★★★★★</p>
+          <p data-i18n="review2Body">“Armé el servicio en minutos. El equipo llegó a tiempo y el informe PDF quedó listo el mismo día.”</p>
+          <p class="review-author"><strong data-i18n="review2Name">Andrés P.</strong> · <span data-i18n="review2City">Medellín</span></p>
+        </article>
+        <article class="review-card">
+          <p class="review-stars" aria-label="5 de 5">★★★★★</p>
+          <p data-i18n="review3Body">“Ideal entre check-out y check-in. La calificación y las fotos me ayudan a confiar en cada turno.”</p>
+          <p class="review-author"><strong data-i18n="review3Name">Camila R.</strong> · <span data-i18n="review3City">Chía</span></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Closing CTA into the builder -->
+    <section class="section section-final-cta" id="reservar">
+      <div class="final-cta">
+        <h2 data-i18n="finalCtaTitle">Tu alojamiento, listo para el próximo huésped</h2>
+        <p data-i18n="finalCtaLead">Arma tu servicio en un minuto y recibe evidencia cuando terminemos.</p>
+        <a class="btn btn-primary" href="build.html">
+          <span data-i18n="finalCtaButton">Arma tu servicio</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared footer (public pages) -->
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <!-- Visit tracking, cities catalog, bookings helpers, then page logic -->
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

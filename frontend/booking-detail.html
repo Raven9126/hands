@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Detalle de reserva</title>
+  <meta name="description" content="Detalle de una reserva Hands: resumen, personal, fotos y calificación." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="bookings.html" data-i18n="navBookings">Mis reservas</a>
+      <a href="account.html" data-i18n="navAccount">Cuenta</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="page-wide">
+        <!-- Shown when id missing, not found, or host lacks access -->
+        <div class="booking-detail-missing account-block" id="bookingDetailMissing" hidden>
+          <h1 data-i18n="bookingDetailMissingTitle">Reserva no disponible</h1>
+          <p id="bookingDetailMissingLead" data-i18n="bookingDetailMissingLead">No encontramos esa reserva o no tienes permiso para verla.</p>
+          <a class="btn btn-ghost" href="bookings.html" data-i18n="bookingDetailBack">← Volver a mis reservas</a>
+        </div>
+
+        <div id="bookingDetailContent" hidden>
+          <div class="section-head">
+            <p class="eyebrow" data-i18n="bookingDetailEyebrow">Reserva</p>
+            <h1 data-i18n="bookingDetailTitle">Detalle del servicio</h1>
+            <p data-i18n="bookingDetailLead">Resumen y estado de tu servicio.</p>
+          </div>
+
+          <div class="booking-detail-layout">
+            <div class="booking-summary account-block">
+              <h2 class="section-subhead" data-i18n="bookingDetailSummary">Resumen</h2>
+              <dl>
+                <dt data-i18n="bookingDetailDateLabel">Fecha y hora</dt>
+                <dd id="bdWhen">—</dd>
+                <dt data-i18n="bookingDetailCityLabel">Ciudad</dt>
+                <dd id="bdCity">—</dd>
+                <dt data-i18n="bookingDetailPlaceLabel">Dirección</dt>
+                <dd id="bdPlace">—</dd>
+                <dt data-i18n="bookingDetailTypeLabel">Tamaño</dt>
+                <dd id="bdSize">—</dd>
+                <dt data-i18n="bookingDetailIntensityLabel">Nivel de aseo</dt>
+                <dd id="bdIntensity">—</dd>
+                <dt data-i18n="bookingDetailTotalLabel">Total</dt>
+                <dd id="bdTotal">—</dd>
+                <dt data-i18n="bookingDetailStatusLabel">Estado</dt>
+                <dd><span class="status-chip" id="bdStatus">—</span></dd>
+              </dl>
+              <p class="cleaner-name" id="bdStaff">—</p>
+            </div>
+
+            <div class="rating-block account-block" id="bdRatingBlock">
+              <p class="eyebrow" data-i18n="bookingDetailRatingLabel">Calificación</p>
+              <p class="booking-demo-note" id="bdRatingMessage" data-i18n="bookingDetailRatingPending">
+                Podrás calificar cuando el informe esté publicado.
+              </p>
+              <div class="stars is-interactive" id="bdStars" role="radiogroup" aria-label="Calificación" hidden>
+                <button type="button" class="star-btn" data-rating="1" aria-label="1">★</button>
+                <button type="button" class="star-btn" data-rating="2" aria-label="2">★</button>
+                <button type="button" class="star-btn" data-rating="3" aria-label="3">★</button>
+                <button type="button" class="star-btn" data-rating="4" aria-label="4">★</button>
+                <button type="button" class="star-btn" data-rating="5" aria-label="5">★</button>
+              </div>
+              <p class="rating-score" id="bdRatingScore" hidden>—</p>
+              <label class="field" id="bdRatingCommentField" hidden>
+                <span data-i18n="bookingDetailRatingComment">Comentario (opcional)</span>
+                <textarea id="bdRatingComment" rows="2" maxlength="300"></textarea>
+              </label>
+              <button type="button" class="btn btn-primary" id="bdRatingSubmit" hidden data-i18n="bookingDetailRatingSubmit">
+                Enviar calificación
+              </button>
+              <p class="form-msg" id="bdRatingMsg" role="alert" hidden></p>
+              <button type="button" class="btn btn-ghost" id="bdPdfBtn" disabled data-i18n="bookingDetailPdf">
+                Descargar informe PDF
+              </button>
+              <p class="booking-demo-note" id="bdPdfHint" hidden data-i18n="bookingDetailPdfHint">
+                Se abre el diálogo de impresión: elige “Guardar como PDF”.
+              </p>
+            </div>
+          </div>
+
+          <div class="booking-photos">
+            <h2 class="eyebrow" data-i18n="bookingDetailPhotos">Fotos del servicio</h2>
+
+            <p class="booking-demo-note" id="bdEvidenceMessage">
+              El informe aún no está publicado.
+            </p>
+
+            <div class="evidence-host-spaces" id="bdPublishedPhotos"></div>
+          </div>
+
+          <div class="account-actions">
+            <button type="button" class="btn btn-ghost" id="bdCancelBtn" hidden data-i18n="bookingsCancel">
+              Cancelar reserva
+            </button>
+            <a class="btn btn-ghost" href="bookings.html" data-i18n="bookingDetailBack">← Volver a mis reservas</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/report-pdf.js"></script>
+  <script src="js/booking-detail.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

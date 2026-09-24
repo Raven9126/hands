@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Mi cuenta</title>
+  <meta name="description" content="Cuenta de anfitrión Hands: perfil y propiedad." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="bookings.html" data-i18n="navBookings">Mis reservas</a>
+      <a href="account.html" data-i18n="navAccount">Cuenta</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="page-wide">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="accountEyebrow">Anfitrión</p>
+          <h1 data-i18n="accountTitle">Mi cuenta</h1>
+          <p data-i18n="accountLead">Revisa y edita tu perfil y los datos de acceso a tu propiedad.</p>
+        </div>
+
+        <form class="account-form" id="accountForm" novalidate>
+          <div class="account-grid">
+            <fieldset class="account-block auth-section">
+              <legend data-i18n="accountProfileTitle">Perfil</legend>
+              <label class="field">
+                <span data-i18n="authName">Nombre completo</span>
+                <input type="text" id="accName" name="name" autocomplete="name" required minlength="2" maxlength="60" />
+                <span class="field-error" id="accNameError" role="alert"></span>
+              </label>
+              <label class="field">
+                <span data-i18n="authEmail">Correo</span>
+                <input type="email" id="accEmail" name="email" readonly />
+                <small class="field-hint" data-i18n="accountEmailHint">El correo no se puede cambiar en esta versión.</small>
+              </label>
+            </fieldset>
+
+            <fieldset class="account-block auth-section">
+              <legend data-i18n="accountLodgingTitle">Propiedad y acceso</legend>
+              <label class="field">
+                <span data-i18n="addressStreet">Dirección</span>
+                <input type="text" id="accAddress" name="address" required minlength="8" maxlength="120" />
+                <span class="field-error" id="accAddressError" role="alert"></span>
+              </label>
+              <div class="auth-grid">
+                <label class="field">
+                  <span data-i18n="addressUnit">Apto / torre / interior</span>
+                  <input type="text" id="accUnit" name="unit" maxlength="40" />
+                  <span class="field-error" id="accUnitError" role="alert"></span>
+                </label>
+                <label class="field">
+                  <span data-i18n="addressNeighborhood">Barrio</span>
+                  <input type="text" id="accNeighborhood" name="neighborhood" maxlength="40" />
+                  <span class="field-error" id="accNeighborhoodError" role="alert"></span>
+                </label>
+              </div>
+              <label class="field">
+                <span data-i18n="addressPhone">Teléfono de contacto</span>
+                <input type="tel" id="accPhone" name="phone" required inputmode="tel" />
+                <span class="field-error" id="accPhoneError" role="alert"></span>
+              </label>
+
+              <fieldset class="auth-choice">
+                <legend data-i18n="regComplexLegend">¿La propiedad está en un conjunto residencial?</legend>
+                <div class="chip-row" role="group">
+                  <button type="button" class="chip" id="accComplexNo" data-complex="no" aria-pressed="false" data-i18n="regComplexNo">No</button>
+                  <button type="button" class="chip" id="accComplexYes" data-complex="yes" aria-pressed="false" data-i18n="regComplexYes">Sí</button>
+                </div>
+                <span class="field-error" id="accComplexError" role="alert"></span>
+              </fieldset>
+
+              <div id="accComplexFields" class="auth-complex" hidden>
+                <label class="field">
+                  <span data-i18n="regComplexName">Nombre del conjunto</span>
+                  <input type="text" id="accComplexName" name="complexName" maxlength="80" />
+                  <span class="field-error" id="accComplexNameError" role="alert"></span>
+                </label>
+                <div class="auth-grid">
+                  <label class="field">
+                    <span data-i18n="regComplexTower">Torre / bloque</span>
+                    <input type="text" id="accComplexTower" name="complexTower" maxlength="40" />
+                    <span class="field-error" id="accComplexTowerError" role="alert"></span>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="regComplexApt">Apartamento</span>
+                    <input type="text" id="accComplexApt" name="complexApt" maxlength="40" />
+                    <span class="field-error" id="accComplexAptError" role="alert"></span>
+                  </label>
+                </div>
+                <fieldset class="auth-choice">
+                  <legend data-i18n="regNeedsAuthLegend">¿Requiere autorización?</legend>
+                  <div class="chip-row" role="group">
+                    <button type="button" class="chip" id="accNeedsAuthNo" data-needs-auth="no" aria-pressed="false" data-i18n="regNeedsAuthNo">No</button>
+                    <button type="button" class="chip" id="accNeedsAuthYes" data-needs-auth="yes" aria-pressed="false" data-i18n="regNeedsAuthYes">Sí</button>
+                  </div>
+                  <span class="field-error" id="accNeedsAuthError" role="alert"></span>
+                </fieldset>
+              </div>
+
+              <label class="field">
+                <span data-i18n="addressAccess">Cómo entrar</span>
+                <textarea id="accAccess" name="access" rows="3" maxlength="160"></textarea>
+                <span class="field-error" id="accAccessError" role="alert"></span>
+              </label>
+            </fieldset>
+          </div>
+
+          <p class="form-msg" id="accountMsg" hidden role="alert"></p>
+
+          <div class="account-actions">
+            <button type="submit" class="btn btn-primary" data-i18n="accountSave">Guardar cambios</button>
+            <a class="btn btn-ghost" href="bookings.html" data-i18n="accountGoBookings">Ver mis reservas</a>
+            <a class="btn btn-ghost" href="build.html" data-i18n="accountGoBuild">Arma un servicio</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/account.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

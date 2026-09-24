@@ -1,0 +1,10 @@
+.env
+*.env.local
+.idea/
+.vscode/
+node_modules/
+__pycache__/
+*.pyc
+_privado/
+BRIEFING*.md
+backend/

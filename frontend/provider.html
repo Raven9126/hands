@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Portal de prestadores</title>
+  <meta name="description" content="Portal operativo Hands para prestadores: servicios asignados y registro de evidencia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="provider-body">
+  <div class="atmosphere atmosphere-admin" aria-hidden="true"></div>
+
+  <header class="provider-top">
+    <div class="provider-brand">
+      <a class="brand" href="provider.html" aria-label="Hands">
+        <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+      </a>
+      <div>
+        <p class="eyebrow" data-i18n="providerEyebrow">Portal de prestadores</p>
+        <p class="provider-brand-title" data-i18n="providerBrandTitle">Mis servicios</p>
+      </div>
+    </div>
+    <div class="provider-top-actions">
+      <a class="btn btn-text" href="index.html" data-i18n="adminBack">← Sitio público</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="provider-user">
+        <p id="providerUserName">—</p>
+        <p data-i18n="providerRoleLabel">Prestador</p>
+      </div>
+      <button type="button" class="btn btn-ghost" id="providerLogout" data-i18n="providerLogout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="provider-main">
+    <!-- List of jobs assigned to this provider -->
+    <section class="provider-panel is-active" id="providerListView" aria-labelledby="providerListTitle">
+      <div class="section-head">
+        <h1 id="providerListTitle" data-i18n="providerListTitle">Mis servicios</h1>
+        <p data-i18n="providerListLead">Solo ves las reservas que te asignaron. Registra la evidencia cuando el servicio esté listo.</p>
+      </div>
+
+      <div class="provider-jobs" id="providerJobs"></div>
+
+      <div class="bookings-empty" id="providerEmpty" hidden>
+        <p data-i18n="providerEmpty">No tienes servicios asignados por ahora.</p>
+      </div>
+    </section>
+
+    <!-- Evidence registration for one job -->
+    <section class="provider-panel" id="providerEvidenceView" hidden aria-labelledby="providerEvidenceTitle">
+      <button type="button" class="provider-back" id="providerBack" data-i18n="providerBack">← Mis servicios</button>
+
+      <div class="section-head">
+        <h1 id="providerEvidenceTitle" data-i18n="providerEvidenceTitle">Registrar evidencia</h1>
+        <p id="providerEvidenceMeta" class="provider-evidence-meta"></p>
+        <p class="provider-demo-note" data-i18n="providerDemoNote">Demostración: elige fotos de muestra desde img/photos/. La subida de archivos se conectará más adelante.</p>
+      </div>
+
+      <form class="provider-evidence-form" id="evidenceForm" novalidate>
+        <input type="hidden" id="evidenceJobId" value="" />
+
+        <div class="evidence-spaces" id="evidenceSpaces"></div>
+
+        <label class="field">
+          <span data-i18n="providerNotes">Observaciones</span>
+          <textarea id="evidenceNotes" name="notes" rows="3" maxlength="500" data-i18n-placeholder="providerNotesPh" placeholder="Notas para el equipo de revisión (opcional)"></textarea>
+        </label>
+
+        <p class="form-msg" id="evidenceFormMsg" role="alert" hidden></p>
+
+        <div class="provider-evidence-actions">
+          <button type="submit" class="btn btn-primary" data-i18n="providerSubmit">Enviar evidencia a revisión</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/provider.js"></script>
+</body>
+</html>

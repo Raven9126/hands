@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hands — Contacto</title>
+  <meta name="description" content="Contacta al equipo Hands." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Hands">
+      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="Principal">
+      <a href="index.html" data-i18n="navHome">Inicio</a>
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="index.html#como-funciona" data-i18n="navHow">Cómo funciona</a>
+
+      <div class="nav-mobile-actions" id="navMobileActions">
+        <a href="login.html" data-i18n="navLogin">Entrar</a>
+        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
+        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="auth-actions" id="authActions">
+        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
+        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
+      </div>
+      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
+      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="page-narrow">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="contactEyebrow">Hablemos</p>
+          <h1 data-i18n="contactTitle">Contacto</h1>
+          <p data-i18n="contactLead">Escríbenos con tu consulta. Responderemos lo antes posible.</p>
+        </div>
+
+        <div class="contact-layout">
+          <aside class="contact-info account-block">
+            <h2 class="section-subhead" data-i18n="contactInfoTitle">Información de contacto</h2>
+            <p data-i18n="contactInfoEmail">correo@hands.co</p>
+            <p data-i18n="contactInfoPhone">+57 300 000 0000</p>
+            <p data-i18n="contactInfoHours">Lunes a sábado · 8:00 – 18:00</p>
+          </aside>
+
+          <form class="contact-form" id="contactForm" novalidate>
+            <label class="field">
+              <span data-i18n="contactName">Nombre</span>
+              <input type="text" id="contactName" name="name" autocomplete="name" required maxlength="80" data-i18n-placeholder="phName" placeholder="Tu nombre" />
+            </label>
+            <label class="field">
+              <span data-i18n="contactEmail">Correo</span>
+              <input type="email" id="contactEmail" name="email" autocomplete="email" inputmode="email" required maxlength="80" spellcheck="false" data-i18n-placeholder="phEmail" placeholder="tu@email.com" />
+              <small class="field-hint" data-i18n="hintEmail">Correo válido, sin espacios. Máximo 80 caracteres.</small>
+            </label>
+            <label class="field">
+              <span data-i18n="contactPhone">Teléfono</span>
+              <input type="tel" id="contactPhone" name="phone" autocomplete="tel" inputmode="tel" maxlength="20" data-i18n-placeholder="phPhone" placeholder="300 000 0000" />
+            </label>
+            <label class="field">
+              <span data-i18n="contactReason">Motivo</span>
+              <select id="contactReason" name="reason" required>
+                <option value="" data-i18n="contactReasonPh">Selecciona un motivo</option>
+                <option value="service" data-i18n="contactReasonService">Consulta sobre un servicio</option>
+                <option value="booking" data-i18n="contactReasonBooking">Reserva o agenda</option>
+                <option value="support" data-i18n="contactReasonSupport">Soporte</option>
+                <option value="other" data-i18n="contactReasonOther">Otro</option>
+              </select>
+            </label>
+            <label class="field">
+              <span data-i18n="contactMessage">Mensaje</span>
+              <textarea id="contactMessage" name="message" required maxlength="1000" data-i18n-placeholder="phMessage" placeholder="¿En qué podemos ayudarte?"></textarea>
+            </label>
+
+            <p class="contact-note" data-i18n="contactNote">Demo local: el mensaje se guarda en este navegador. No hay envío a un servidor todavía.</p>
+
+            <button type="submit" class="btn btn-primary" data-i18n="contactSubmit">Enviar mensaje</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
+      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
+    </div>
+    <nav class="footer-nav" aria-label="Pie">
+      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
+      <a href="results.html" data-i18n="navResults">Resultados</a>
+      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
+      <a href="contact.html" data-i18n="navContact">Contacto</a>
+      <a href="login.html" data-i18n="navLogin">Entrar</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-copy">© 2026 Hands</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cities.js"></script>
+  <script src="js/visits.js"></script>
+  <script src="js/bookings.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
