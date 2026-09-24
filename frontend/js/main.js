@@ -12,8 +12,8 @@
   var EXTRA_PRICES = { linen: 18000, restock: 12000 };
   var BASE = { xs: 90000, sm: 120000, md: 155000, lg: 195000 };
   var INTENSITY_MULT = { light: 0.85, standard: 1, intense: 1.3 };
-  var DRAFT_KEY = "hands-draft-v2";
-  var TOTAL_STEPS = 7;
+  var DRAFT_KEY = "hands-draft-v3";
+  var TOTAL_STEPS = 6;
 
   var CITIES = {
     bogota: "Bogotá",
@@ -132,6 +132,7 @@
       ].forEach(function (key) {
         if (typeof draft[key] === "string") state[key] = draft[key];
       });
+      if (state.supplies === "none") state.supplies = "yes";
       if (Array.isArray(draft.other)) state.other = draft.other.slice();
       if (Array.isArray(draft.extras)) state.extras = draft.extras.slice();
       if (draft.proposalAccepted) proposalAccepted = true;
@@ -727,10 +728,12 @@
     var yes = document.getElementById("coverageYes");
     var no = document.getElementById("coverageNo");
     var body = document.getElementById("coverageYesBody");
+    var suppliesBlock = document.getElementById("coverageSupplies");
     if (!yes || !no) return;
     var covered = hasCoverage();
     yes.hidden = !covered;
     no.hidden = covered || !state.city;
+    if (suppliesBlock) suppliesBlock.hidden = !covered;
     if (covered && body) {
       body.textContent = dict().coverageYesBody.replace("{city}", cityName(state.city));
     }
@@ -776,10 +779,11 @@
 
   function setSupplies(value, silent) {
     state.supplies = value || "yes";
-    document.querySelectorAll("[data-supplies]").forEach(function (btn) {
-      var on = btn.getAttribute("data-supplies") === state.supplies;
-      btn.classList.toggle("is-on", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    document.querySelectorAll(".supplies-card").forEach(function (card) {
+      var on = card.getAttribute("data-supplies") === state.supplies;
+      card.classList.toggle("is-selected", on);
+      card.setAttribute("aria-pressed", on ? "true" : "false");
+      if (!on) card.classList.remove("is-popping");
     });
     var hint = document.getElementById("kitHint");
     if (hint) hint.hidden = state.supplies !== "kit";
@@ -789,12 +793,20 @@
     }
   }
 
+  function popSupplies(card) {
+    if (!card) return;
+    card.classList.remove("is-popping");
+    void card.offsetWidth;
+    card.classList.add("is-popping");
+  }
+
   function setTiming(value, silent) {
     state.timing = value || "scheduled";
-    document.querySelectorAll("[data-timing]").forEach(function (btn) {
-      var on = btn.getAttribute("data-timing") === state.timing;
-      btn.classList.toggle("is-on", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    document.querySelectorAll(".timing-card").forEach(function (card) {
+      var on = card.getAttribute("data-timing") === state.timing;
+      card.classList.toggle("is-selected", on);
+      card.setAttribute("aria-pressed", on ? "true" : "false");
+      if (!on) card.classList.remove("is-popping");
     });
     var scheduled = document.getElementById("scheduledBlock");
     var urgentHint = document.getElementById("urgentHint");
@@ -805,6 +817,13 @@
       calcQuote();
       saveDraft();
     }
+  }
+
+  function popTiming(card) {
+    if (!card) return;
+    card.classList.remove("is-popping");
+    void card.offsetWidth;
+    card.classList.add("is-popping");
   }
 
   /* --- Wizard navigation --- */
@@ -828,10 +847,9 @@
   function maxReachable() {
     if (!state.size || !state.intensity) return 1;
     if (!placeComplete()) return 2;
-    if (!hasCoverage()) return 3;
-    if (!state.supplies) return 4;
-    if (!whenReady()) return 5;
-    if (!proposalAccepted) return 6;
+    if (!hasCoverage() || !state.supplies) return 3;
+    if (!whenReady()) return 4;
+    if (!proposalAccepted) return 5;
     return TOTAL_STEPS;
   }
 
@@ -858,9 +876,8 @@
       }
       return true;
     }
-    if (step === 3) return hasCoverage();
-    if (step === 4) return !!state.supplies;
-    if (step === 5) {
+    if (step === 3) return hasCoverage() && !!state.supplies;
+    if (step === 4) {
       if (!validateWhen(true)) {
         var bad = document.querySelector("#serviceDate.is-invalid, .time-field.is-invalid");
         if (bad) {
@@ -871,7 +888,7 @@
       }
       return true;
     }
-    if (step === 6) return proposalAccepted;
+    if (step === 5) return proposalAccepted;
     return true;
   }
 
@@ -894,7 +911,7 @@
     var back = document.getElementById("wizardBack");
     var next = document.getElementById("wizardNext");
     var blocked = currentStep === 3 && !hasCoverage();
-    var hideNext = currentStep >= TOTAL_STEPS || currentStep === 6 || blocked;
+    var hideNext = currentStep >= TOTAL_STEPS || currentStep === 5 || blocked;
     if (back) back.hidden = currentStep <= 1;
     if (next) next.hidden = hideNext;
     renderAuthActions();
@@ -907,8 +924,8 @@
     var allowed = maxReachable();
     if (n > allowed) n = allowed;
     currentStep = n;
-    if (n === 5 && state.timing === "urgent") assignUrgentSlot();
-    if (n >= 6) calcQuote();
+    if (n === 4 && state.timing === "urgent") assignUrgentSlot();
+    if (n >= 5) calcQuote();
     paintWizard();
     saveDraft();
     if (!opts.silentScroll) window.scrollTo(0, 0);
@@ -1027,15 +1044,17 @@
     });
   });
 
-  document.querySelectorAll("[data-supplies]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      setSupplies(btn.getAttribute("data-supplies"));
+  document.querySelectorAll(".supplies-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      setSupplies(card.getAttribute("data-supplies"));
+      popSupplies(card);
     });
   });
 
-  document.querySelectorAll("[data-timing]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      setTiming(btn.getAttribute("data-timing"));
+  document.querySelectorAll(".timing-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      setTiming(card.getAttribute("data-timing"));
+      popTiming(card);
     });
   });
 
@@ -1056,7 +1075,7 @@
       }
       proposalAccepted = true;
       saveDraft();
-      showStep(7);
+      showStep(6);
     });
   }
 
@@ -1084,14 +1103,14 @@
         return;
       }
       if (!proposalAccepted) {
-        showStep(6);
+        showStep(5);
         return;
       }
       if (!window.HandsAuth || !window.HandsAuth.isLoggedIn()) {
         saveDraft();
         confirmHint.hidden = false;
         confirmHint.textContent = dict().quoteNeedLogin;
-        window.location.href = "login.html?next=" + encodeURIComponent("build.html#step-7");
+        window.location.href = "login.html?next=" + encodeURIComponent("build.html#step-6");
         return;
       }
       var session = window.HandsAuth.getSession();
@@ -1136,7 +1155,7 @@
   }
   if (wizardBack) {
     wizardBack.addEventListener("click", function () {
-      if (currentStep === 7) proposalAccepted = false;
+      if (currentStep === 6) proposalAccepted = false;
       showStep(currentStep - 1);
     });
   }

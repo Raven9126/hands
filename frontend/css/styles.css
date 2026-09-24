@@ -988,6 +988,219 @@ button {
   gap: 0.5rem;
 }
 
+.supplies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.supplies-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 36rem;
+  gap: 1rem;
+}
+
+#coverageSupplies {
+  margin-top: 1.25rem;
+}
+
+.supplies-card {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.65rem;
+  min-height: 13.5rem;
+  padding: 1.15rem 1rem 1.25rem;
+  text-align: center;
+  border: 1px solid rgba(31, 92, 68, 0.14);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(214, 236, 224, 0.55));
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(31, 92, 68, 0.06);
+  transition: border-color 200ms ease, background 200ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.supplies-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(31, 92, 68, 0.1);
+}
+
+.supplies-card.is-selected {
+  border-color: var(--primary);
+  background: linear-gradient(180deg, #e7f6ef, var(--mint));
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(31, 92, 68, 0.14);
+}
+
+.supplies-card.is-popping {
+  animation: cardPop 0.55s cubic-bezier(0.22, 1.35, 0.36, 1);
+}
+
+.supplies-icon {
+  display: grid;
+  place-items: center;
+  width: 7.5rem;
+  height: 6.2rem;
+  color: var(--primary);
+}
+
+.supplies-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.supplies-card:hover .supplies-icon,
+.supplies-card.is-selected .supplies-icon {
+  transform: scale(1.04);
+  transition: transform 220ms ease;
+}
+
+.supplies-label {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 650;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.supplies-meta {
+  max-width: 14rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.coverage-card .eyebrow {
+  margin: 0.35rem 0 0.25rem;
+}
+
+.timing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 36rem;
+  margin-bottom: 1rem;
+}
+
+.timing-card {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.65rem;
+  min-height: 13rem;
+  padding: 1.15rem 1rem 1.25rem;
+  text-align: center;
+  border: 1px solid rgba(31, 92, 68, 0.14);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(214, 236, 224, 0.55));
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(31, 92, 68, 0.06);
+  transition: border-color 200ms ease, background 200ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+
+.timing-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(31, 92, 68, 0.1);
+}
+
+.timing-card.is-selected {
+  border-color: var(--primary);
+  background: linear-gradient(180deg, #e7f6ef, var(--mint));
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(31, 92, 68, 0.14);
+}
+
+.timing-card.is-popping {
+  animation: cardPop 0.55s cubic-bezier(0.22, 1.35, 0.36, 1);
+}
+
+.timing-icon {
+  display: grid;
+  place-items: center;
+  width: 7.5rem;
+  height: 6rem;
+  color: var(--primary);
+}
+
+.timing-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.timing-card:hover .timing-icon,
+.timing-card.is-selected .timing-icon {
+  transform: scale(1.04);
+  transition: transform 220ms ease;
+}
+
+.timing-label {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 650;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.timing-meta {
+  max-width: 14rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.proposal-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.15rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(31, 92, 68, 0.12);
+  border-radius: 20px;
+  background: linear-gradient(120deg, rgba(231, 246, 239, 0.9), rgba(255, 255, 255, 0.65));
+}
+
+.proposal-hero-icon {
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 4.2rem;
+  color: var(--primary);
+}
+
+.proposal-hero-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.proposal-hero .wizard-review-title {
+  margin: 0.15rem 0 0.35rem;
+}
+
+.proposal-hero .other-hint {
+  margin: 0;
+}
+
+.quote-proposal {
+  border-radius: 22px;
+  box-shadow: 0 14px 34px rgba(31, 92, 68, 0.08);
+}
+
+@media (max-width: 640px) {
+  .timing-grid {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .proposal-hero {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+}
+
 .chip {
   padding: 0.65rem 1rem;
   border-radius: 999px;
@@ -2340,6 +2553,14 @@ button {
 
   .intensity-grid {
     grid-template-columns: 1fr;
+  }
+
+  .supplies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .supplies-grid-two {
+    max-width: none;
   }
 
   .final-cta {
