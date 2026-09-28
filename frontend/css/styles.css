@@ -807,6 +807,20 @@ button {
   gap: 0.55rem;
 }
 
+.counter-panel {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px dashed rgba(31, 92, 68, 0.28);
+  border-radius: 14px;
+  background: rgba(231, 246, 239, 0.55);
+}
+
+.quote-breakdown li[hidden] {
+  display: none;
+}
+
 .optional-block {
   margin-top: 1.4rem;
   padding: 0.85rem 1rem;
@@ -1366,8 +1380,8 @@ button {
 }
 
 .coverage-supplies .supplies-icon {
-  width: 5.5rem;
-  height: 4.5rem;
+  width: 6.8rem;
+  height: 5.4rem;
 }
 
 .coverage-supplies .supplies-label {
@@ -1384,9 +1398,49 @@ button {
   height: 100%;
 }
 
+.scene-icon .scene-ground {
+  fill: rgba(31, 92, 68, 0.14);
+}
+
+.scene-icon .scene-soft {
+  fill: #d7eee3;
+}
+
+.scene-icon .scene-deep {
+  fill: #1f5c44;
+}
+
+.scene-icon .scene-mint {
+  fill: #5ba37e;
+}
+
+.scene-icon .scene-accent {
+  fill: #c9a24a;
+}
+
+.scene-icon .scene-line {
+  fill: none;
+  stroke: #1f5c44;
+}
+
+.scene-icon .scene-stroke-deep {
+  fill: none;
+  stroke: #1f5c44;
+}
+
+.scene-icon .scene-stroke-mint {
+  fill: none;
+  stroke: #5ba37e;
+}
+
+.scene-icon .scene-stroke-accent {
+  fill: none;
+  stroke: #c9a24a;
+}
+
 .supplies-card:hover .supplies-icon,
 .supplies-card.is-selected .supplies-icon {
-  transform: scale(1.04);
+  transform: scale(1.06);
   transition: transform 220ms ease;
 }
 
@@ -1466,7 +1520,7 @@ button {
 
 .timing-card:hover .timing-icon,
 .timing-card.is-selected .timing-icon {
-  transform: scale(1.04);
+  transform: scale(1.06);
   transition: transform 220ms ease;
 }
 

@@ -93,6 +93,7 @@
     time: "",
     extras: [],
     other: [],
+    counterAmount: null,
   };
 
   function dict() {
@@ -140,6 +141,9 @@
       if (state.supplies === "none") state.supplies = "yes";
       if (Array.isArray(draft.other)) state.other = draft.other.slice();
       if (Array.isArray(draft.extras)) state.extras = draft.extras.slice();
+      if (typeof draft.counterAmount === "number" && draft.counterAmount > 0) {
+        state.counterAmount = draft.counterAmount;
+      }
       if (draft.proposalAccepted) proposalAccepted = true;
       if (draft.step) currentStep = Number(draft.step) || 1;
     } catch (e) {}
@@ -180,6 +184,7 @@
           timing: state.timing,
           extras: extrasSelected(),
           other: state.other,
+          counterAmount: state.counterAmount,
           proposalAccepted: proposalAccepted,
           step: currentStep,
         })
@@ -340,13 +345,18 @@
     var other = otherTotal();
     var subtotal = base + kit + extras + other;
     var fee = subtotal * COMMISSION;
+    var suggested = subtotal + fee;
+    var usingCounter = typeof state.counterAmount === "number" && state.counterAmount > 0;
     return {
       base: base,
       kit: kit,
       extras: extras,
       other: other,
       fee: fee,
-      total: subtotal + fee,
+      suggested: suggested,
+      counter: usingCounter ? state.counterAmount : 0,
+      usingCounter: usingCounter,
+      total: usingCounter ? state.counterAmount : suggested,
     };
   }
 
@@ -578,7 +588,7 @@
     var quickAmount = document.getElementById("quickQuoteAmount");
     if (amount) amount.textContent = formatCop(q.total);
     if (checkout) checkout.textContent = formatCop(q.total);
-    if (quickAmount) quickAmount.textContent = formatCop(q.total);
+    if (quickAmount) quickAmount.textContent = formatCop(q.suggested || q.total);
     if (!amount) return q;
 
     document.getElementById("quoteBase").textContent = formatCop(q.base);
@@ -586,7 +596,19 @@
     document.getElementById("quoteExtras").textContent = formatCop(q.extras);
     var otherEl = document.getElementById("quoteOther");
     if (otherEl) otherEl.textContent = formatCop(q.other);
+    var kitRow = document.getElementById("quoteKitRow");
+    if (kitRow) kitRow.hidden = !(q.kit > 0);
+    var extrasRow = document.getElementById("quoteExtrasRow");
+    if (extrasRow) extrasRow.hidden = !(q.extras > 0);
+    var otherRow = document.getElementById("quoteOtherRow");
+    if (otherRow) otherRow.hidden = !(q.other > 0);
+    var counterRow = document.getElementById("quoteCounterRow");
+    var counterEl = document.getElementById("quoteCounter");
+    if (counterRow) counterRow.hidden = !q.usingCounter;
+    if (counterEl) counterEl.textContent = q.usingCounter ? formatCop(q.counter) : "—";
     document.getElementById("quoteFee").textContent = formatCop(q.fee);
+    var feeRow = document.querySelector(".quote-breakdown .fee");
+    if (feeRow) feeRow.hidden = !!q.usingCounter;
     var cityEl = document.getElementById("quoteCity");
     if (cityEl) cityEl.textContent = cityName(state.city);
     var addressEl = document.getElementById("quoteAddress");
@@ -992,7 +1014,11 @@
         goIncomplete(dict().quoteNeedWhen);
         return;
       }
+      state.counterAmount = null;
+      var panel = document.getElementById("counterPanel");
+      if (panel) panel.hidden = true;
       proposalAccepted = true;
+      calcQuote();
       saveDraft();
       showStep(6, { replace: true });
     });
@@ -1001,11 +1027,45 @@
   var counterProposal = document.getElementById("counterProposal");
   if (counterProposal) {
     counterProposal.addEventListener("click", function () {
+      var panel = document.getElementById("counterPanel");
       var hint = document.getElementById("counterHint");
       if (hint) {
-        hint.hidden = false;
-        hint.textContent = dict().proposalCounterSoon;
+        hint.hidden = true;
+        hint.textContent = "";
       }
+      if (panel) {
+        panel.hidden = false;
+        var input = document.getElementById("counterAmount");
+        if (input) {
+          if (!input.value) input.value = String(quoteTotals().suggested || 120000);
+          input.focus();
+          input.select();
+        }
+      }
+    });
+  }
+
+  var counterConfirm = document.getElementById("counterConfirm");
+  if (counterConfirm) {
+    counterConfirm.addEventListener("click", function () {
+      if (!whenComplete()) {
+        goIncomplete(dict().quoteNeedWhen);
+        return;
+      }
+      var input = document.getElementById("counterAmount");
+      var error = document.getElementById("counterError");
+      var raw = input ? Number(input.value) : 0;
+      if (!raw || raw < 50000 || !isFinite(raw)) {
+        if (error) error.textContent = dict().proposalCounterInvalid;
+        if (input) input.focus();
+        return;
+      }
+      if (error) error.textContent = "";
+      state.counterAmount = Math.round(raw);
+      proposalAccepted = true;
+      calcQuote();
+      saveDraft();
+      showStep(6, { replace: true });
     });
   }
 
@@ -1054,6 +1114,7 @@
           extras: extrasSelected(),
           other: state.other.slice(),
           total: quote.total,
+          proposedRate: !!quote.usingCounter,
         });
       }
       clearDraft();
