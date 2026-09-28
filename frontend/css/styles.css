@@ -124,20 +124,90 @@ button {
 .nav {
   display: none;
   justify-content: center;
-  gap: 1.75rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--ink-soft);
 }
 
-.nav a {
-  padding-bottom: 0.15rem;
-  border-bottom: 1px solid transparent;
+/* Section links as pill buttons (Inicio, Servicios, Resultados, Cómo funciona) */
+.nav > a.nav-shine {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.95rem;
+  border: 1px solid rgba(84, 98, 106, 0.22);
+  border-radius: 999px;
+  background: rgba(120, 132, 140, 0.14);
+  color: #4a575e;
+  border-bottom: 1px solid rgba(84, 98, 106, 0.22);
+  overflow: hidden;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
-.nav a:hover {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
+.nav > a.nav-shine:hover {
+  background: rgba(100, 112, 120, 0.28);
+  color: #2f3a40;
+  border-color: rgba(70, 82, 90, 0.35);
+  box-shadow: 0 4px 12px rgba(54, 69, 79, 0.08);
+}
+
+.nav > a.nav-shine.is-active {
+  background: rgba(90, 102, 110, 0.42);
+  color: #f4f7f8;
+  border-color: rgba(70, 82, 90, 0.55);
+  font-weight: 650;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Shine sweep on navbar links and primary CTAs */
+.nav-shine,
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nav-shine::after,
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -40%;
+  width: 40%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 45%,
+    transparent 70%
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nav-shine:hover::after,
+.btn-shine:hover::after,
+.nav-shine:focus-visible::after,
+.btn-shine:focus-visible::after {
+  animation: navShine 0.75s ease;
+}
+
+@keyframes navShine {
+  to {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-shine::after,
+  .btn-shine::after {
+    display: none;
+  }
 }
 
 .header-actions {
@@ -270,10 +340,236 @@ button {
   margin-top: 1.8rem;
 }
 
-.hero-visual img {
+.hero-visual {
+  position: relative;
+  min-height: min(62vh, 560px);
+}
+
+.hero-visual img,
+.hero-slide img {
   width: 100%;
   height: min(62vh, 560px);
   object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hero-carousel {
+  position: relative;
+  height: 100%;
+  min-height: inherit;
+  overflow: hidden;
+  background: #d7e4dd;
+  cursor: grab;
+  outline: none;
+}
+
+.hero-carousel.is-dragging {
+  cursor: grabbing;
+}
+
+.hero-carousel-track {
+  display: flex;
+  height: 100%;
+  min-height: inherit;
+  transition: transform 380ms ease;
+  will-change: transform;
+}
+
+.hero-carousel.is-dragging .hero-carousel-track {
+  transition: none;
+}
+
+.hero-slide {
+  position: relative;
+  flex: 0 0 100%;
+  margin: 0;
+  min-height: inherit;
+  opacity: 0.55;
+  transform: scale(0.985);
+  transition: opacity 380ms ease, transform 380ms ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-carousel-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(54, 69, 79, 0.42);
+  color: #f7fbf8;
+  font-size: 1.55rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 200ms ease, background 200ms ease;
+}
+
+.hero-carousel:hover .hero-carousel-btn,
+.hero-carousel:focus-within .hero-carousel-btn,
+.hero-carousel.is-hover-left .hero-carousel-prev,
+.hero-carousel.is-hover-right .hero-carousel-next {
+  opacity: 1;
+}
+
+.hero-carousel-prev { left: 0.85rem; }
+.hero-carousel-next { right: 0.85rem; }
+
+.hero-carousel-btn:hover {
+  background: rgba(54, 69, 79, 0.72);
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 0.9rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.4rem;
+  transform: translateX(-50%);
+}
+
+.hero-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-dot.is-active {
+  width: 1.25rem;
+  background: #fff;
+}
+
+/* Hero broom hover effect over the carousel visual */
+.hero-broom {
+  position: absolute;
+  z-index: 5;
+  width: 5.75rem;
+  height: 5.75rem;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 18px rgba(54, 69, 79, 0.28));
+}
+
+.hero-broom-img,
+.hero-broom-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hero-wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.62) 50%,
+    rgba(255, 255, 255, 0) 65%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  background-position: 100% 0;
+}
+
+.hero-broom[data-broom="static"] {
+  right: 1rem;
+  bottom: 2.6rem;
+  opacity: 0;
+  transform: translateY(10px) rotate(-8deg);
+  transition: opacity 220ms ease, transform 280ms ease;
+}
+
+.hero-carousel:hover .hero-broom[data-broom="static"],
+.hero-carousel:focus-within .hero-broom[data-broom="static"] {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+.hero-carousel:has(.hero-broom[data-broom="sweep"]) {
+  cursor: none;
+}
+
+.hero-carousel:has(.hero-broom[data-broom="sweep"]) .hero-carousel-btn,
+.hero-carousel:has(.hero-broom[data-broom="sweep"]) .hero-dot {
+  cursor: pointer;
+}
+
+.hero-broom[data-broom="sweep"] {
+  left: 12%;
+  top: 28%;
+  width: 6.5rem;
+  height: 6.5rem;
+  opacity: 0;
+  transform: rotate(-8deg) scale(0.92);
+  transition: opacity 100ms ease;
+  will-change: left, top;
+}
+
+.hero-carousel.is-broom-active .hero-broom[data-broom="sweep"] {
+  opacity: 1;
+}
+
+.hero-carousel.is-sweeping .hero-wipe {
+  opacity: 1;
+  animation: heroWipePass 1.25s ease-out both;
+}
+
+.hero-carousel.is-sweeping .hero-slide.is-active img {
+  animation: heroCleanReveal 1.25s ease both;
+}
+
+@keyframes heroWipePass {
+  0% { background-position: 100% 0; opacity: 0; }
+  15% { opacity: 1; }
+  100% { background-position: -40% 0; opacity: 0.4; }
+}
+
+@keyframes heroCleanReveal {
+  0% { filter: brightness(0.65) saturate(0.7); }
+  55% { filter: brightness(1.22) saturate(1.15); }
+  100% { filter: brightness(1.08) saturate(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel-track,
+  .hero-slide,
+  .hero-broom { transition: none; }
+
+  .hero-carousel.is-sweeping .hero-wipe,
+  .hero-carousel.is-sweeping .hero-slide.is-active img {
+    animation: none;
+  }
+
+  .hero-carousel:has(.hero-broom[data-broom="sweep"]) {
+    cursor: default;
+  }
+
+  .hero-carousel.is-broom-active .hero-broom[data-broom="sweep"] {
+    right: 1rem;
+    left: auto;
+    top: auto;
+    bottom: 2.6rem;
+  }
 }
 
 .trust-bar {
@@ -1827,9 +2123,21 @@ button {
 
   .nav.is-open { display: flex; }
 
+  .nav > a.nav-shine {
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 2.6rem;
+    padding: 0.65rem 1rem;
+    border-radius: 14px;
+  }
+
   .nav a {
     padding: 0.7rem 0;
     border-bottom: 1px solid var(--line);
+  }
+
+  .nav > a.nav-shine {
+    border-bottom: 1px solid rgba(84, 98, 106, 0.22);
   }
 
   .nav-mobile-actions {
@@ -1941,7 +2249,14 @@ button {
     padding-right: 2rem;
   }
 
-  .hero-visual img {
+  .hero-visual,
+  .hero-visual img,
+  .hero-slide img {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .hero-carousel {
     height: 100%;
     min-height: 100%;
   }
@@ -3307,6 +3622,27 @@ button {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem 1rem;
+}
+
+.provider-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  font-size: 0.92rem;
+  font-weight: 550;
+  color: var(--ink-soft);
+}
+
+.provider-nav a {
+  padding-bottom: 0.1rem;
+  border-bottom: 1px solid transparent;
+}
+
+.provider-nav a:hover,
+.provider-nav a.is-active {
+  color: var(--primary-deep);
+  border-bottom-color: var(--primary);
 }
 
 .provider-user p {

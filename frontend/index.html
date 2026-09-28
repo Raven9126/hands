@@ -8,41 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=hero-b5" />
 </head>
 <body>
   <!-- Site chrome: logo, primary nav, language, and auth actions -->
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Hands">
-      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
-    </a>
-
-    <nav class="nav" id="siteNav" aria-label="Principal">
-      <a href="#top" data-i18n="navHome">Inicio</a>
-      <a href="#servicios" data-i18n="navServices">Servicios</a>
-      <a href="#resultados" data-i18n="navResults">Resultados</a>
-      <a href="#como-funciona" data-i18n="navHow">Cómo funciona</a>
-
-      <div class="nav-mobile-actions" id="navMobileActions">
-        <a href="login.html" data-i18n="navLogin">Entrar</a>
-        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
-        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
-      </div>
-    </nav>
-
-    <div class="header-actions">
-      <div class="lang" role="group" aria-label="Idioma">
-        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
-        <button type="button" class="lang-btn" data-lang="en">EN</button>
-      </div>
-      <div class="auth-actions" id="authActions">
-        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
-        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
-      </div>
-      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
-      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
-    </div>
-  </header>
+    <div id="site-header"></div>
 
   <main id="top">
     <!-- Full-bleed landing hero -->
@@ -64,8 +34,34 @@
           <a class="btn btn-ghost" href="#como-funciona" data-i18n="heroSecondary">Ver cómo funciona</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <img src="img/photos/hero.jpg" alt="" width="1400" height="900" />
+      <div class="hero-visual" id="heroCarousel" data-hero-carousel>
+        <div class="hero-carousel" tabindex="0" aria-roledescription="carrusel" aria-label="Espacios limpios Hands">
+          <div class="hero-carousel-track">
+            <figure class="hero-slide is-active">
+              <img src="img/photos/hero-carousel-1.png" alt="" width="1400" height="788" draggable="false" />
+            </figure>
+            <figure class="hero-slide">
+              <img src="img/photos/hero-carousel-2.png" alt="" width="1400" height="788" draggable="false" />
+            </figure>
+            <figure class="hero-slide">
+              <img src="img/photos/hero-carousel-3.png" alt="" width="1400" height="788" draggable="false" />
+            </figure>
+          </div>
+
+          <button type="button" class="hero-carousel-btn hero-carousel-prev" data-hero-prev aria-label="Imagen anterior">‹</button>
+          <button type="button" class="hero-carousel-btn hero-carousel-next" data-hero-next aria-label="Imagen siguiente">›</button>
+
+          <div class="hero-carousel-dots" role="tablist" aria-label="Diapositivas">
+            <button type="button" class="hero-dot is-active" data-hero-dot="0" aria-label="Foto 1" aria-selected="true"></button>
+            <button type="button" class="hero-dot" data-hero-dot="1" aria-label="Foto 2" aria-selected="false"></button>
+            <button type="button" class="hero-dot" data-hero-dot="2" aria-label="Foto 3" aria-selected="false"></button>
+          </div>
+
+          <div class="hero-wipe" aria-hidden="true"></div>
+          <div class="hero-broom" data-broom="sweep" aria-hidden="true">
+            <img class="hero-broom-img" src="img/brand/broom-ref.png" alt="" width="128" height="128" draggable="false" />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -297,31 +293,17 @@
     </section>
   </main>
 
-  <!-- Shared footer (public pages) -->
-  <footer class="site-footer">
-    <div class="footer-brand">
-      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
-      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
-    </div>
-    <nav class="footer-nav" aria-label="Pie">
-      <a href="#servicios" data-i18n="navServices">Servicios</a>
-      <a href="results.html" data-i18n="navResults">Resultados</a>
-      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
-      <a href="contact.html" data-i18n="navContact">Contacto</a>
-      <a href="login.html" data-i18n="navLogin">Entrar</a>
-    </nav>
-    <div class="footer-meta">
-      <p class="footer-copy">© 2026 Hands</p>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Visit tracking, cities catalog, bookings helpers, then page logic -->
   <script src="js/i18n.js"></script>
   <script src="js/validate.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/layout.js"></script>
   <script src="js/cities.js"></script>
   <script src="js/visits.js"></script>
   <script src="js/bookings.js"></script>
+  <script src="js/hero-carousel.js?v=hero-b5"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

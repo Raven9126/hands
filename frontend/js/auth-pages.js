@@ -16,12 +16,19 @@
     });
   }
 
-  document.querySelectorAll(".lang-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      localStorage.setItem("hands-lang", btn.getAttribute("data-lang"));
-      applyI18n();
+  function wireLang() {
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      if (btn.dataset.authLangBound === "1") return;
+      btn.dataset.authLangBound = "1";
+      btn.addEventListener("click", function () {
+        localStorage.setItem("hands-lang", btn.getAttribute("data-lang"));
+        applyI18n();
+      });
     });
-  });
+  }
+
+  wireLang();
+  window.addEventListener("hands:chrome-ready", wireLang);
 
   function nextValue() {
     return new URLSearchParams(window.location.search).get("next") || "";

@@ -483,30 +483,51 @@
   }
 
   /* --- Wire UI --- */
-  document.getElementById("providerUserName").textContent = session.name || session.email;
+  function fillProviderChrome() {
+    var nameEl = document.getElementById("providerUserName");
+    if (nameEl) nameEl.textContent = session.name || session.email || "—";
+  }
 
-  document.getElementById("providerLogout").addEventListener("click", function () {
-    Auth.logout();
-    window.location.href = "login.html";
-  });
+  function wireProviderLogout() {
+    var btn = document.getElementById("providerLogout");
+    if (!btn || btn.dataset.providerBound === "1") return;
+    btn.dataset.providerBound = "1";
+    btn.addEventListener("click", function () {
+      Auth.logout();
+      window.location.href = "login.html";
+    });
+  }
+
+  function wireProviderLang() {
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      if (btn.dataset.providerLangBound === "1") return;
+      btn.dataset.providerLangBound = "1";
+      btn.addEventListener("click", function () {
+        localStorage.setItem("hands-lang", btn.getAttribute("data-lang"));
+        applyI18n();
+        if (activeJobId) {
+          showEvidence(activeJobId);
+        } else {
+          renderJobs();
+        }
+      });
+    });
+  }
+
+  function onChromeReady() {
+    fillProviderChrome();
+    wireProviderLogout();
+    wireProviderLang();
+  }
+
+  onChromeReady();
+  window.addEventListener("hands:chrome-ready", onChromeReady);
 
   document.getElementById("providerBack").addEventListener("click", function () {
     showList();
   });
 
   document.getElementById("evidenceForm").addEventListener("submit", onSubmit);
-
-  document.querySelectorAll(".lang-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      localStorage.setItem("hands-lang", btn.getAttribute("data-lang"));
-      applyI18n();
-      if (activeJobId) {
-        showEvidence(activeJobId);
-      } else {
-        renderJobs();
-      }
-    });
-  });
 
   applyI18n();
   showList();

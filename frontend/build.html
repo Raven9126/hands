@@ -12,37 +12,7 @@
 </head>
 <body class="builder-page">
   <!-- Same public chrome as the landing page -->
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Hands">
-      <img class="brand-mark" src="img/brand/hands-logo.png" alt="Hands" width="160" height="160" />
-    </a>
-
-    <nav class="nav" id="siteNav" aria-label="Principal">
-      <a href="index.html" data-i18n="navHome">Inicio</a>
-      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
-      <a href="results.html" data-i18n="navResults">Resultados</a>
-      <a href="index.html#como-funciona" data-i18n="navHow">Cómo funciona</a>
-
-      <div class="nav-mobile-actions" id="navMobileActions">
-        <a href="login.html" data-i18n="navLogin">Entrar</a>
-        <a href="register.html" data-i18n="navRegister">Crear cuenta</a>
-        <a class="nav-mobile-cta" href="build.html" data-i18n="navCta">Reservar</a>
-      </div>
-    </nav>
-
-    <div class="header-actions">
-      <div class="lang" role="group" aria-label="Idioma">
-        <button type="button" class="lang-btn is-active" data-lang="es">ES</button>
-        <button type="button" class="lang-btn" data-lang="en">EN</button>
-      </div>
-      <div class="auth-actions" id="authActions">
-        <a class="btn btn-text" href="login.html" data-i18n="navLogin">Entrar</a>
-        <a class="btn btn-ghost" href="register.html" data-i18n="navRegister">Crear cuenta</a>
-      </div>
-      <a class="btn btn-primary header-cta" href="build.html" data-i18n="navCta">Reservar</a>
-      <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" data-i18n="menu">Menú</button>
-    </div>
-  </header>
+    <div id="site-header"></div>
 
   <main class="section section-builder" id="build">
     <!-- Six-step booking wizard; panes toggle via data-step + #step-N hash -->
@@ -421,26 +391,12 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-brand">
-      <img class="brand-mark brand-mark-footer" src="img/brand/hands-logo.png" alt="" width="120" height="120" />
-      <p data-i18n="footerTag">Limpieza profesional para alojamientos</p>
-    </div>
-    <nav class="footer-nav" aria-label="Pie">
-      <a href="index.html#servicios" data-i18n="navServices">Servicios</a>
-      <a href="results.html" data-i18n="navResults">Resultados</a>
-      <a href="build.html" data-i18n="navBuild">Armar servicio</a>
-      <a href="contact.html" data-i18n="navContact">Contacto</a>
-      <a href="login.html" data-i18n="navLogin">Entrar</a>
-    </nav>
-    <div class="footer-meta">
-      <p class="footer-copy">© 2026 Hands</p>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <script src="js/i18n.js"></script>
   <script src="js/validate.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/layout.js"></script>
   <script src="js/cities.js"></script>
   <script src="js/visits.js"></script>
   <script src="js/bookings.js"></script>

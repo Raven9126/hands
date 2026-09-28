@@ -303,121 +303,11 @@
     } catch (e) {}
   }
 
-  /* --- Auth header + mobile menu actions --- */
+  /* --- Auth header + mobile menu actions (shared via HandsLayout) --- */
   function renderAuthActions() {
-    var box = document.getElementById("authActions");
-    var mobile = document.getElementById("navMobileActions");
-    if ((!box && !mobile) || !window.HandsAuth) return;
-    var d = dict();
-    var session = window.HandsAuth.getSession();
-    var nextLogin = wizard
-      ? "login.html?next=" + encodeURIComponent("build.html#step-" + currentStep)
-      : "login.html";
-    var nextRegister = wizard
-      ? "register.html?next=" + encodeURIComponent("build.html#step-" + currentStep)
-      : "register.html";
-
-    function wireLogout(root) {
-      if (!root) return;
-      var logoutBtn = root.querySelector("[data-logout]");
-      if (!logoutBtn) return;
-      logoutBtn.addEventListener("click", function () {
-        window.HandsAuth.logout();
-        renderAuthActions();
-        window.location.href = "index.html";
-      });
-    }
-
-    if (!session) {
-      var guestHeader =
-        '<a class="btn btn-text" href="' +
-        nextLogin +
-        '" data-i18n="navLogin">' +
-        d.navLogin +
-        "</a>" +
-        '<a class="btn btn-ghost" href="' +
-        nextRegister +
-        '" data-i18n="navRegister">' +
-        d.navRegister +
-        "</a>";
-      var guestMobile =
-        '<a href="' +
-        nextLogin +
-        '" data-i18n="navLogin">' +
-        d.navLogin +
-        "</a>" +
-        '<a href="' +
-        nextRegister +
-        '" data-i18n="navRegister">' +
-        d.navRegister +
-        "</a>" +
-        '<a class="nav-mobile-cta" href="build.html" data-i18n="navCta">' +
-        d.navCta +
-        "</a>";
-      if (box) box.innerHTML = guestHeader;
-      if (mobile) mobile.innerHTML = guestMobile;
+    if (window.HandsLayout && typeof window.HandsLayout.renderAuthActions === "function") {
+      window.HandsLayout.renderAuthActions();
       return;
-    }
-
-    var roleLink = "";
-    var roleMobile = "";
-    if (session.access === "provider") {
-      roleLink =
-        '<a class="btn btn-text" href="provider.html" data-i18n="navProviderJobs">' +
-        (d.navProviderJobs || "Mis servicios") +
-        "</a>";
-      roleMobile =
-        '<a href="provider.html" data-i18n="navProviderJobs">' +
-        (d.navProviderJobs || "Mis servicios") +
-        "</a>";
-    } else if (session.access === "admin") {
-      roleLink =
-        '<a class="btn btn-text" href="admin.html" data-i18n="adminPanelEyebrow">' +
-        (d.adminPanelEyebrow || "Admin") +
-        "</a>";
-      roleMobile =
-        '<a href="admin.html" data-i18n="adminPanelEyebrow">' +
-        (d.adminPanelEyebrow || "Admin") +
-        "</a>";
-    } else {
-      roleMobile =
-        '<a href="account.html" data-i18n="accountTitle">' +
-        (d.accountTitle || d.navAccount) +
-        "</a>" +
-        '<a href="bookings.html" data-i18n="navBookings">' +
-        (d.navBookings || "Mis reservas") +
-        "</a>";
-    }
-
-    if (box) {
-      box.innerHTML =
-        '<span class="auth-hello">' +
-        d.navAccount +
-        " " +
-        session.name.split(" ")[0] +
-        "</span>" +
-        roleLink +
-        '<button type="button" class="btn btn-ghost" data-logout data-i18n="navLogout">' +
-        d.navLogout +
-        "</button>";
-      wireLogout(box);
-    }
-
-    if (mobile) {
-      mobile.innerHTML =
-        '<span class="auth-hello">' +
-        d.navAccount +
-        " " +
-        session.name.split(" ")[0] +
-        "</span>" +
-        roleMobile +
-        '<a class="nav-mobile-cta" href="build.html" data-i18n="navCta">' +
-        d.navCta +
-        "</a>" +
-        '<button type="button" data-logout data-i18n="navLogout">' +
-        d.navLogout +
-        "</button>";
-      wireLogout(mobile);
     }
   }
 
@@ -965,13 +855,23 @@
   applyHostPropertyDefaults();
 
   /* --- Event wiring --- */
-  document.querySelectorAll(".lang-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      state.lang = btn.getAttribute("data-lang");
-      localStorage.setItem("hands-lang", state.lang);
-      applyI18n();
-      window.dispatchEvent(new CustomEvent("hands:langchange"));
+  function wireLangButtons() {
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      if (btn.dataset.mainLangBound === "1") return;
+      btn.dataset.mainLangBound = "1";
+      btn.addEventListener("click", function () {
+        state.lang = btn.getAttribute("data-lang");
+        localStorage.setItem("hands-lang", state.lang);
+        applyI18n();
+        window.dispatchEvent(new CustomEvent("hands:langchange"));
+      });
     });
+  }
+
+  wireLangButtons();
+  window.addEventListener("hands:chrome-ready", function () {
+    wireLangButtons();
+    renderAuthActions();
   });
 
   var citySelect = document.getElementById("citySelect");
