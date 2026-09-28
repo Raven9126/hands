@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=hero-b5" />
+  <link rel="stylesheet" href="css/styles.css?v=quote-1" />
 </head>
 <body>
   <!-- Site chrome: logo, primary nav, language, and auth actions -->
@@ -27,11 +27,11 @@
           Arma tu servicio en un minuto, confirma y recibe evidencia del trabajo realizado.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="build.html">
-            <span data-i18n="heroCta">Armar mi servicio</span>
+          <a class="btn btn-primary btn-shine" href="#cotizar">
+            <span data-i18n="heroCtaQuote">Cotizar en 20 segundos</span>
             <span aria-hidden="true">→</span>
           </a>
-          <a class="btn btn-ghost" href="#como-funciona" data-i18n="heroSecondary">Ver cómo funciona</a>
+          <a class="btn btn-ghost" href="build.html" data-i18n="heroCta">Armar mi servicio</a>
         </div>
       </div>
       <div class="hero-visual" id="heroCarousel" data-hero-carousel>
@@ -87,6 +87,75 @@
         <h3 data-i18n="feat4Title">Horarios flexibles</h3>
         <p data-i18n="feat4Body">Programa la limpieza según la disponibilidad de tu alojamiento.</p>
       </article>
+    </section>
+
+    <!-- Fast quote: size + address + intensity → wizard draft -->
+    <section class="section section-quick-quote" id="cotizar" aria-labelledby="quickQuoteTitle">
+      <div class="quick-quote" data-quick-quote>
+        <header class="quick-quote-head">
+          <p class="eyebrow" data-i18n="quickQuoteEyebrow">Cotización rápida</p>
+          <h2 id="quickQuoteTitle" data-i18n="quickQuoteTitle">Cotiza tu servicio en ~20 segundos</h2>
+          <p data-i18n="quickQuoteLead">Tamaño, dirección y nivel de aseo. Te mostramos una tarifa estimada y sigues armando el pedido.</p>
+        </header>
+
+        <form class="quick-quote-form" id="quickQuoteForm" novalidate>
+          <fieldset class="quick-quote-field">
+            <legend data-i18n="sizeLegend">Tamaño del apartamento</legend>
+            <div class="quick-quote-chips" role="radiogroup" aria-label="Tamaño">
+              <button type="button" class="quick-chip" data-qq-size="xs" aria-pressed="false"><span data-i18n="sizeXs">Studio</span></button>
+              <button type="button" class="quick-chip is-selected" data-qq-size="sm" aria-pressed="true"><span data-i18n="sizeSm">1–2 hab</span></button>
+              <button type="button" class="quick-chip" data-qq-size="md" aria-pressed="false"><span data-i18n="sizeMd">2–3 hab</span></button>
+              <button type="button" class="quick-chip" data-qq-size="lg" aria-pressed="false"><span data-i18n="sizeLg">Amplio</span></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="quick-quote-field">
+            <legend data-i18n="intensityLegend">Nivel de aseo</legend>
+            <div class="quick-quote-chips" role="radiogroup" aria-label="Nivel de aseo">
+              <button type="button" class="quick-chip" data-qq-intensity="light" aria-pressed="false">
+                <span data-i18n="intensityLight">Liviano</span>
+              </button>
+              <button type="button" class="quick-chip is-selected" data-qq-intensity="standard" aria-pressed="true">
+                <span data-i18n="intensityStandard">Estándar</span>
+              </button>
+              <button type="button" class="quick-chip" data-qq-intensity="intense" aria-pressed="false">
+                <span data-i18n="intensityIntense">Intenso</span>
+              </button>
+            </div>
+          </fieldset>
+
+          <div class="quick-quote-place">
+            <label class="field" for="quickCitySelect">
+              <span data-i18n="cityLegend">Ciudad</span>
+              <select id="quickCitySelect" name="city" required>
+                <option value="" data-i18n="cityPlaceholder">Selecciona una ciudad</option>
+              </select>
+              <span class="field-error" id="quickCityError" role="alert"></span>
+            </label>
+            <label class="field" for="quickAddress">
+              <span data-i18n="addressStreet">Dirección</span>
+              <input type="text" id="quickAddress" name="address" required minlength="8" maxlength="120" autocomplete="street-address" data-i18n-placeholder="phAddress" placeholder="Cra 7 # 32-16" />
+              <span class="field-error" id="quickAddressError" role="alert"></span>
+            </label>
+          </div>
+
+          <div class="quick-quote-result">
+            <div class="quick-quote-estimate">
+              <p class="quick-quote-label" data-i18n="quickQuoteEstimate">Tarifa estimada</p>
+              <p class="quick-quote-price">
+                <span id="quickQuoteAmount">120.000</span>
+                <span class="currency">COP</span>
+              </p>
+              <p class="quick-quote-note" data-i18n="quickQuoteNote">Incluye comisión Hands. Se afina en el armado del servicio.</p>
+            </div>
+            <button type="submit" class="btn btn-primary btn-shine" id="quickQuoteSubmit">
+              <span data-i18n="quickQuoteCta">Continuar con esta cotización</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p class="quick-quote-hint" id="quickQuoteHint" hidden></p>
+          </div>
+        </form>
+      </div>
     </section>
 
     <!-- Real service offerings (size/type stays in the builder) -->
@@ -296,7 +365,7 @@
   <div id="site-footer"></div>
 
   <!-- Visit tracking, cities catalog, bookings helpers, then page logic -->
-  <script src="js/i18n.js"></script>
+  <script src="js/i18n.js?v=quote-1"></script>
   <script src="js/validate.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/layout.js"></script>
@@ -304,6 +373,6 @@
   <script src="js/visits.js"></script>
   <script src="js/bookings.js"></script>
   <script src="js/hero-carousel.js?v=hero-b5"></script>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=quote-1"></script>
 </body>
 </html>

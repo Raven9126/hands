@@ -34,9 +34,12 @@
   }
 
   function fillCitySelect() {
-    var select = document.getElementById("citySelect");
-    if (!select) return;
-    var current = state.city || select.value;
+    var selects = [
+      document.getElementById("citySelect"),
+      document.getElementById("quickCitySelect"),
+    ].filter(Boolean);
+    if (!selects.length) return;
+    var current = state.city || selects[0].value;
     var placeholder = dict().cityPlaceholder || "Selecciona una ciudad";
     var html = '<option value="">' + placeholder + "</option>";
     var cities = window.HandsCities
@@ -60,8 +63,10 @@
       ">" +
       (dict().cityOther || "Otra ciudad") +
       "</option>";
-    select.innerHTML = html;
-    if (current) select.value = current;
+    selects.forEach(function (select) {
+      select.innerHTML = html;
+      if (current) select.value = current;
+    });
   }
 
   var OTHER_PRICES = { jardinero: 70000, plomero: 90000 };
@@ -156,7 +161,7 @@
   }
 
   function saveDraft() {
-    if (!wizard) return;
+    if (!wizard && !document.getElementById("quickQuoteForm")) return;
     try {
       sessionStorage.setItem(
         DRAFT_KEY,
@@ -570,8 +575,10 @@
     var q = quoteTotals();
     var amount = document.getElementById("quoteAmount");
     var checkout = document.getElementById("checkoutAmount");
+    var quickAmount = document.getElementById("quickQuoteAmount");
     if (amount) amount.textContent = formatCop(q.total);
     if (checkout) checkout.textContent = formatCop(q.total);
+    if (quickAmount) quickAmount.textContent = formatCop(q.total);
     if (!amount) return q;
 
     document.getElementById("quoteBase").textContent = formatCop(q.base);
@@ -1080,6 +1087,123 @@
     });
   }
 
+  function syncQuickQuoteUi() {
+    var form = document.getElementById("quickQuoteForm");
+    if (!form) return;
+    form.querySelectorAll("[data-qq-size]").forEach(function (btn) {
+      var on = btn.getAttribute("data-qq-size") === state.size;
+      btn.classList.toggle("is-selected", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    form.querySelectorAll("[data-qq-intensity]").forEach(function (btn) {
+      var on = btn.getAttribute("data-qq-intensity") === state.intensity;
+      btn.classList.toggle("is-selected", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    var city = document.getElementById("quickCitySelect");
+    if (city && state.city) city.value = state.city;
+    var address = document.getElementById("quickAddress");
+    if (address) address.value = state.address || "";
+  }
+
+  function showQuickQuoteHint(message) {
+    var hint = document.getElementById("quickQuoteHint");
+    if (!hint) return;
+    if (!message) {
+      hint.hidden = true;
+      hint.textContent = "";
+      return;
+    }
+    hint.hidden = false;
+    hint.textContent = message;
+  }
+
+  function initQuickQuote() {
+    var form = document.getElementById("quickQuoteForm");
+    if (!form || form.dataset.bound === "1") return;
+    form.dataset.bound = "1";
+
+    syncQuickQuoteUi();
+    calcQuote();
+
+    form.addEventListener("click", function (event) {
+      var sizeBtn = event.target.closest("[data-qq-size]");
+      if (sizeBtn) {
+        state.size = sizeBtn.getAttribute("data-qq-size");
+        syncQuickQuoteUi();
+        calcQuote();
+        saveDraft();
+        return;
+      }
+      var intensityBtn = event.target.closest("[data-qq-intensity]");
+      if (intensityBtn) {
+        state.intensity = intensityBtn.getAttribute("data-qq-intensity");
+        syncQuickQuoteUi();
+        calcQuote();
+        saveDraft();
+      }
+    });
+
+    var city = document.getElementById("quickCitySelect");
+    if (city) {
+      city.addEventListener("change", function () {
+        state.city = city.value;
+        showQuickQuoteHint("");
+        document.getElementById("quickCityError").textContent = "";
+        calcQuote();
+        saveDraft();
+      });
+    }
+
+    var address = document.getElementById("quickAddress");
+    if (address) {
+      address.addEventListener("input", function () {
+        state.address = String(address.value || "");
+        showQuickQuoteHint("");
+        document.getElementById("quickAddressError").textContent = "";
+      });
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var V = window.HandsValidate;
+      var cityVal = city ? city.value : state.city;
+      var addressVal = address
+        ? String(address.value || "").replace(/\s+/g, " ").trim()
+        : String(state.address || "").replace(/\s+/g, " ").trim();
+
+      state.city = cityVal;
+      state.address = addressVal;
+
+      var cityError = document.getElementById("quickCityError");
+      var addressError = document.getElementById("quickAddressError");
+      if (cityError) cityError.textContent = "";
+      if (addressError) addressError.textContent = "";
+      showQuickQuoteHint("");
+
+      if (!cityVal || cityVal === "otra") {
+        if (cityError) cityError.textContent = dict().quickQuoteNeedCity;
+        showQuickQuoteHint(dict().quickQuoteNeedCity);
+        if (city) city.focus();
+        return;
+      }
+
+      var addressCheck = V ? V.address(addressVal) : { ok: !!addressVal && addressVal.length >= 8 };
+      if (!addressCheck.ok) {
+        var msg = V && addressCheck.error ? dict()[addressCheck.error] || dict().quickQuoteNeedAddress : dict().quickQuoteNeedAddress;
+        if (addressError) addressError.textContent = msg;
+        showQuickQuoteHint(msg);
+        if (address) address.focus();
+        return;
+      }
+
+      currentStep = 2;
+      proposalAccepted = false;
+      saveDraft();
+      window.location.href = "build.html#2";
+    });
+  }
+
   var pdfLink = document.querySelector('[data-i18n="trustPdf"]');
   if (pdfLink) {
     pdfLink.setAttribute("href", "booking-detail.html?id=job-demo-showcase");
@@ -1111,6 +1235,7 @@
     dateInput.value = state.date;
   }
   applyI18n();
+  initQuickQuote();
   if (wizard) {
     var hashed = stepFromHash();
     showStep(hashed || currentStep, { replace: true, silentScroll: true });
