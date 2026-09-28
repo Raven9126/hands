@@ -49,26 +49,6 @@
     return (selector && wrap.querySelector(selector)) || wrap.firstElementChild;
   }
 
-  function markActiveNav() {
-    var path = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-    if (!path || path === "/") path = "index.html";
-    var hash = (location.hash || "").toLowerCase();
-    var full = path + hash;
-
-    document.querySelectorAll("#siteNav > a[data-nav-match]").forEach(function (link) {
-      var match = (link.getAttribute("data-nav-match") || "").toLowerCase();
-      var on = false;
-      if (match.indexOf("#") !== -1) {
-        on = full === match || (path === "index.html" && hash && match.indexOf(hash) !== -1);
-      } else if (match === "index.html") {
-        on = (path === "index.html" || path === "") && !hash;
-      } else {
-        on = path === match;
-      }
-      link.classList.toggle("is-active", on);
-    });
-  }
-
   function bindMenu() {
     var menuBtn = document.getElementById("menuBtn");
     var siteNav = document.getElementById("siteNav");
@@ -207,9 +187,7 @@
     applyI18n();
     bindMenu();
     renderAuthActions();
-    markActiveNav();
     wireLogout(document);
-    window.addEventListener("hashchange", markActiveNav);
     window.dispatchEvent(new CustomEvent("hands:chrome-ready"));
   }
 
@@ -259,6 +237,5 @@
     mountFooter: mountFooter,
     mountNavbar: mountNavbar,
     renderAuthActions: renderAuthActions,
-    markActiveNav: markActiveNav,
   };
 })();
