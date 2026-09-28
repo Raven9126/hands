@@ -1052,8 +1052,13 @@
         goIncomplete(dict().quoteNeedWhen);
         return;
       }
+      if (!hasCoverage() || !placeComplete()) {
+        goIncomplete(dict().quoteNeedAddress);
+        return;
+      }
       var input = document.getElementById("counterAmount");
       var error = document.getElementById("counterError");
+      var hint = document.getElementById("counterHint");
       var raw = input ? Number(input.value) : 0;
       if (!raw || raw < 50000 || !isFinite(raw)) {
         if (error) error.textContent = dict().proposalCounterInvalid;
@@ -1061,11 +1066,57 @@
         return;
       }
       if (error) error.textContent = "";
-      state.counterAmount = Math.round(raw);
-      proposalAccepted = true;
-      calcQuote();
-      saveDraft();
-      showStep(6, { replace: true });
+
+      if (!window.HandsAuth || !window.HandsAuth.isLoggedIn()) {
+        saveDraft();
+        if (hint) {
+          hint.hidden = false;
+          hint.textContent = dict().quoteNeedLogin;
+        }
+        window.location.href = "login.html?next=" + encodeURIComponent("build.html#5");
+        return;
+      }
+
+      var session = window.HandsAuth.getSession();
+      var suggested = quoteTotals().suggested || quoteTotals().total;
+      var amount = Math.round(raw);
+      if (!window.HandsBookings) return;
+
+      HandsBookings.create({
+        hostName: session.name,
+        hostEmail: session.email,
+        city: state.city,
+        address: state.address,
+        unit: state.unit,
+        neighborhood: state.neighborhood,
+        phone: state.phone,
+        access: state.access,
+        size: state.size,
+        intensity: state.intensity,
+        date: state.date,
+        time: state.time,
+        timing: state.timing,
+        supplies: state.supplies === "yes" ? "yes" : "no",
+        kit: state.supplies === "kit",
+        extras: extrasSelected(),
+        other: state.other.slice(),
+        total: suggested,
+        rateProposal: {
+          amount: amount,
+          suggestedAmount: Math.round(suggested),
+          status: "pending",
+        },
+      });
+
+      clearDraft();
+      proposalAccepted = false;
+      state.counterAmount = null;
+      if (hint) {
+        hint.hidden = false;
+        hint.textContent = dict().proposalCounterSent;
+      }
+      counterConfirm.disabled = true;
+      window.location.href = "bookings.html?rate=pending";
     });
   }
 
@@ -1114,7 +1165,7 @@
           extras: extrasSelected(),
           other: state.other.slice(),
           total: quote.total,
-          proposedRate: !!quote.usingCounter,
+          paymentStatus: "unpaid",
         });
       }
       clearDraft();

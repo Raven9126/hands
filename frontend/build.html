@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=wiz-icons-14" />
+  <link rel="stylesheet" href="css/styles.css?v=wiz-icons-17" />
 </head>
 <body class="builder-page">
   <!-- Same public chrome as the landing page -->
@@ -222,14 +222,14 @@
                 <button type="button" class="timing-card" data-timing="urgent" aria-pressed="false">
                   <span class="timing-label" data-i18n="timingUrgent">Inmediato</span>
                   <span class="timing-icon timing-icon-photo" aria-hidden="true">
-                    <img src="img/icons/timing-urgent.png?v=1" alt="" width="160" height="160" decoding="async" />
+                    <img src="img/icons/timing-urgent.png?v=2" alt="" width="160" height="160" decoding="async" />
                   </span>
                   <span class="timing-meta" data-i18n="timingUrgentMeta">Lo antes posible hoy o mañana temprano</span>
                 </button>
                 <button type="button" class="timing-card is-selected" data-timing="scheduled" aria-pressed="true">
                   <span class="timing-label" data-i18n="timingScheduled">Programado</span>
                   <span class="timing-icon timing-icon-photo" aria-hidden="true">
-                    <img src="img/icons/timing-scheduled.png?v=1" alt="" width="160" height="160" decoding="async" />
+                    <img src="img/icons/timing-scheduled.png?v=2" alt="" width="160" height="160" decoding="async" />
                   </span>
                   <span class="timing-meta" data-i18n="timingScheduledMeta">Tú eliges fecha y hora de llegada</span>
                 </button>
@@ -258,19 +258,11 @@
           <!-- Step 5: quoted proposal + optional extras -->
           <div class="wizard-pane" data-step="5">
             <div class="proposal-hero">
-              <span class="proposal-hero-icon" aria-hidden="true">
-                <svg viewBox="0 0 120 88" fill="none">
-                  <ellipse cx="60" cy="78" rx="36" ry="6" fill="currentColor" opacity=".12"/>
-                  <rect x="34" y="18" width="52" height="52" rx="10" stroke="currentColor" stroke-width="2.6"/>
-                  <path d="M46 40h28M46 50h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                  <circle cx="78" cy="24" r="14" fill="var(--mint)" stroke="currentColor" stroke-width="2.2"/>
-                  <path d="M72 24l4 4 8-8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+              <span class="proposal-hero-icon proposal-hero-icon-photo" aria-hidden="true">
+                <img src="img/icons/proposal-crystal.png?v=1" alt="" width="160" height="160" decoding="async" />
               </span>
               <div>
-                <p class="eyebrow" data-i18n="proposalEyebrow">Tu cotización</p>
-                <h2 class="wizard-review-title" data-i18n="proposalTitle">Propuesta sugerida</h2>
-                <p class="other-hint" data-i18n="proposalLead">Revisa la tarifa. Si la aceptas, pasas al checkout del pedido.</p>
+                <p class="eyebrow proposal-hero-title" data-i18n="proposalEyebrow">Tu cotización</p>
               </div>
             </div>
             <aside class="quote quote-proposal" aria-live="polite">
@@ -302,7 +294,7 @@
                   <input type="number" id="counterAmount" name="counterAmount" min="50000" step="1000" inputmode="numeric" data-i18n-placeholder="proposalCounterPh" placeholder="150000" />
                   <span class="field-error" id="counterError" role="alert"></span>
                 </label>
-                <button type="button" class="btn btn-primary btn-block" id="counterConfirm" data-i18n="proposalCounterConfirm">Usar mi tarifa e ir al checkout</button>
+                <button type="button" class="btn btn-primary btn-block" id="counterConfirm" data-i18n="proposalCounterConfirm">Enviar propuesta al equipo Hands</button>
               </div>
               <p class="quote-hint" id="counterHint" hidden></p>
             </aside>

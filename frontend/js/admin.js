@@ -850,6 +850,50 @@
     });
   }
 
+  function rateProposalActionsHtml(job) {
+    var proposal = job && job.rateProposal;
+    if (!proposal || proposal.status !== "pending") return "";
+    return (
+      '<div class="admin-rate-box">' +
+      "<p><strong>" +
+      escapeHtml(t("adminRatePendingLabel")) +
+      "</strong></p>" +
+      "<p>" +
+      escapeHtml(t("adminRateSuggested")) +
+      ": " +
+      formatCop(proposal.suggestedAmount) +
+      " · " +
+      escapeHtml(t("adminRateHost")) +
+      ": " +
+      formatCop(proposal.amount) +
+      "</p>" +
+      '<button type="button" class="btn btn-primary" data-rate-approve="' +
+      escapeHtml(job.id) +
+      '">' +
+      escapeHtml(t("adminRateApprove")) +
+      "</button>" +
+      '<button type="button" class="btn btn-ghost" data-rate-reject="' +
+      escapeHtml(job.id) +
+      '">' +
+      escapeHtml(t("adminRateReject")) +
+      "</button></div>"
+    );
+  }
+
+  function rateStatusChip(job) {
+    var proposal = job && job.rateProposal;
+    if (!proposal) return "";
+    var label =
+      proposal.status === "pending"
+        ? t("bookingsRatePending")
+        : proposal.status === "approved"
+          ? t("bookingsRateApproved")
+          : t("bookingsRateRejected");
+    return (
+      '<span class="status-pill is-pending">' + escapeHtml(label) + "</span> "
+    );
+  }
+
   /* --- Services list & calendar --- */
   function renderServicesList() {
     var body = document.getElementById("servicesTableBody");
@@ -861,6 +905,9 @@
         return String(a.date).localeCompare(String(b.date));
       })
       .filter(function (job) {
+        if (jobFilter === "rates") {
+          return !!(job.rateProposal && job.rateProposal.status === "pending");
+        }
         return jobFilter === "all" || jobStatus(job) === jobFilter;
       });
 
@@ -886,13 +933,16 @@
           escapeHtml(B.cityName(job.city)) +
           " · " +
           escapeHtml(B.formatPlace(job)) +
-          '</td><td><span class="' +
+          '</td><td>' +
+          rateStatusChip(job) +
+          '<span class="' +
           statusClass(status) +
           '">' +
           statusLabel(status) +
           "</span></td><td>" +
           escapeHtml(job.assigneeName || t("adminUnassigned")) +
           '</td><td class="admin-job-actions">' +
+          rateProposalActionsHtml(job) +
           assignButtonHtml(job) +
           statusActionsHtml(job) +
           evidenceButtonHtml(job) +
@@ -1381,6 +1431,30 @@
       calCursor = new Date(job.date + "T00:00:00");
       renderCalendar();
       openAssign(job.id);
+      return;
+    }
+
+    var rateApprove = ev.target.closest("[data-rate-approve]");
+    if (rateApprove && B && B.reviewRateProposal) {
+      var approved = B.reviewRateProposal(rateApprove.getAttribute("data-rate-approve"), "approved");
+      if (!approved.ok) {
+        window.alert(approved.error || t("adminRateNotPending"));
+        return;
+      }
+      window.alert(t("adminRateApprovedMsg"));
+      persistAndRefresh();
+      return;
+    }
+
+    var rateReject = ev.target.closest("[data-rate-reject]");
+    if (rateReject && B && B.reviewRateProposal) {
+      var rejected = B.reviewRateProposal(rateReject.getAttribute("data-rate-reject"), "rejected");
+      if (!rejected.ok) {
+        window.alert(rejected.error || t("adminRateNotPending"));
+        return;
+      }
+      window.alert(t("adminRateRejectedMsg"));
+      persistAndRefresh();
       return;
     }
 

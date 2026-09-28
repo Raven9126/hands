@@ -42,6 +42,7 @@ window.HandsBookings = (function () {
     intense: "intensityIntense",
   };
   var PHOTO_STATUSES = ["pending", "approved", "rejected"];
+  var RATE_PROPOSAL_STATUSES = ["pending", "approved", "rejected"];
 
   /* --- Date / time helpers --- */
   function pad(n) {
@@ -127,6 +128,23 @@ window.HandsBookings = (function () {
     };
   }
 
+  function normalizeRateProposal(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var status = raw.status;
+    if (RATE_PROPOSAL_STATUSES.indexOf(status) === -1) return null;
+    var amount = Number(raw.amount);
+    if (!amount || !isFinite(amount) || amount <= 0) return null;
+    return {
+      amount: Math.round(amount),
+      suggestedAmount: Math.round(Number(raw.suggestedAmount) || amount),
+      status: status,
+      submittedAt: raw.submittedAt || "",
+      reviewedAt: raw.reviewedAt || "",
+      reviewNote: raw.reviewNote != null ? String(raw.reviewNote) : "",
+      paidAt: raw.paidAt || "",
+    };
+  }
+
   /** Ensure every job has evidence / report / rating, including legacy localStorage rows. */
   function normalizeJob(job) {
     if (!job || typeof job !== "object") return job;
@@ -138,6 +156,8 @@ window.HandsBookings = (function () {
     var reportPhotos = Array.isArray(report.photos) ? report.photos.slice() : [];
     return Object.assign({}, job, {
       intensity: normalizeIntensity(job.intensity),
+      rateProposal: normalizeRateProposal(job.rateProposal),
+      paymentStatus: job.paymentStatus || "unpaid",
       evidence: {
         photos: photos,
         notes: evidence.notes != null ? String(evidence.notes) : "",
@@ -628,6 +648,19 @@ window.HandsBookings = (function () {
 
   /* --- Mutations --- */
   function create(payload) {
+    var rateProposal = null;
+    if (payload.rateProposal && typeof payload.rateProposal === "object") {
+      rateProposal = normalizeRateProposal(
+        Object.assign({}, payload.rateProposal, {
+          status: payload.rateProposal.status || "pending",
+          submittedAt: payload.rateProposal.submittedAt || new Date().toISOString(),
+        })
+      );
+    }
+    var paymentStatus = payload.paymentStatus || "unpaid";
+    if (rateProposal && rateProposal.status === "pending") {
+      paymentStatus = "awaiting_rate";
+    }
     var job = normalizeJob({
       id: "job-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 6),
       createdAt: new Date().toISOString(),
@@ -650,6 +683,8 @@ window.HandsBookings = (function () {
       other: payload.other || [],
       total: payload.total || 0,
       status: "pending",
+      paymentStatus: paymentStatus,
+      rateProposal: rateProposal,
       assigneeEmail: "",
       assigneeName: "",
       evidence: emptyEvidence(),
@@ -667,6 +702,93 @@ window.HandsBookings = (function () {
     return read().find(function (job) {
       return job.id === id;
     }) || null;
+  }
+
+  function listPendingRateProposals() {
+    return list().filter(function (job) {
+      return job.rateProposal && job.rateProposal.status === "pending";
+    });
+  }
+
+  /**
+   * Admin approves or rejects a host-proposed rate.
+   * Approval sets job.total to the proposed amount and unlocks checkout.
+   */
+  function reviewRateProposal(jobId, status, note) {
+    if (status !== "approved" && status !== "rejected") {
+      return { ok: false, error: msg("adminRateInvalid", "Invalid rate decision.") };
+    }
+    var jobs = read();
+    var index = findJobIndex(jobs, jobId);
+    if (index === -1) return { ok: false, error: t("adminAssignMissing") };
+    var job = jobs[index];
+    var proposal = normalizeRateProposal(job.rateProposal);
+    if (!proposal || proposal.status !== "pending") {
+      return {
+        ok: false,
+        error: msg("adminRateNotPending", "There is no pending rate proposal for this booking."),
+      };
+    }
+    var nextProposal = Object.assign({}, proposal, {
+      status: status,
+      reviewedAt: new Date().toISOString(),
+      reviewNote: note != null ? String(note) : "",
+    });
+    var patch = {
+      rateProposal: nextProposal,
+    };
+    if (status === "approved") {
+      patch.total = proposal.amount;
+      patch.paymentStatus = "ready_to_pay";
+    } else {
+      patch.paymentStatus = "rate_rejected";
+    }
+    jobs[index] = Object.assign({}, job, patch);
+    write(jobs);
+    return { ok: true, job: normalizeJob(jobs[index]) };
+  }
+
+  /** Host may checkout only when Hands rate was accepted or admin approved a counter-offer. */
+  function hostCanCheckout(job) {
+    if (!job) return false;
+    if (job.paymentStatus === "paid") return false;
+    var proposal = normalizeRateProposal(job.rateProposal);
+    if (!proposal) return job.paymentStatus !== "awaiting_rate";
+    if (proposal.status === "pending") return false;
+    if (proposal.status === "rejected") return false;
+    return proposal.status === "approved" && job.paymentStatus === "ready_to_pay";
+  }
+
+  /** Demo checkout after an approved counter-rate (or standard unpaid booking). */
+  function markPaid(jobId, hostEmail) {
+    var jobs = read();
+    var index = findJobIndex(jobs, jobId);
+    if (index === -1) return { ok: false, error: t("adminAssignMissing") };
+    var job = jobs[index];
+    if (hostEmail && String(job.hostEmail || "").toLowerCase() !== String(hostEmail).toLowerCase()) {
+      return { ok: false, error: msg("bookingsNotYours", "This booking does not belong to your account.") };
+    }
+    if (!hostCanCheckout(job) && !(job.paymentStatus === "unpaid" && !job.rateProposal)) {
+      return {
+        ok: false,
+        error: msg(
+          "bookingsCheckoutBlocked",
+          "Checkout is blocked until Hands accepts the proposed rate."
+        ),
+      };
+    }
+    var proposal = normalizeRateProposal(job.rateProposal);
+    var patch = {
+      paymentStatus: "paid",
+    };
+    if (proposal) {
+      patch.rateProposal = Object.assign({}, proposal, {
+        paidAt: new Date().toISOString(),
+      });
+    }
+    jobs[index] = Object.assign({}, job, patch);
+    write(jobs);
+    return { ok: true, job: normalizeJob(jobs[index]) };
   }
 
   /* --- Evidence / report / rating (separate from operational status) --- */
@@ -947,6 +1069,10 @@ window.HandsBookings = (function () {
     monthCounts: monthCounts,
     create: create,
     get: get,
+    listPendingRateProposals: listPendingRateProposals,
+    reviewRateProposal: reviewRateProposal,
+    hostCanCheckout: hostCanCheckout,
+    markPaid: markPaid,
     listByAssignee: listByAssignee,
     submitEvidence: submitEvidence,
     reviewPhoto: reviewPhoto,
@@ -1048,6 +1174,19 @@ document.addEventListener("DOMContentLoaded", function () {
     meta.appendChild(city);
     meta.appendChild(status);
 
+    if (job.rateProposal) {
+      var rateChip = document.createElement("span");
+      rateChip.className = "status-chip is-pending";
+      if (job.rateProposal.status === "pending") {
+        rateChip.textContent = dict.bookingsRatePending || "Tarifa en revisión";
+      } else if (job.rateProposal.status === "approved") {
+        rateChip.textContent = dict.bookingsRateApproved || "Tarifa aprobada · listo para checkout";
+      } else {
+        rateChip.textContent = dict.bookingsRateRejected || "Tarifa rechazada";
+      }
+      meta.appendChild(rateChip);
+    }
+
     var actions = document.createElement("div");
     actions.className = "booking-row-actions";
 
@@ -1055,6 +1194,27 @@ document.addEventListener("DOMContentLoaded", function () {
     link.href = "booking-detail.html?id=" + encodeURIComponent(job.id);
     link.textContent = dict.bookingsViewLink || "Ver reserva →";
     actions.appendChild(link);
+
+    if (
+      HandsBookings.hostCanCheckout &&
+      HandsBookings.hostCanCheckout(job) &&
+      job.paymentStatus === "ready_to_pay"
+    ) {
+      var payBtn = document.createElement("button");
+      payBtn.type = "button";
+      payBtn.className = "btn btn-primary";
+      payBtn.textContent = dict.bookingsCheckoutCta || "Ir al checkout";
+      payBtn.addEventListener("click", function () {
+        var result = HandsBookings.markPaid(job.id, session.email);
+        if (!result.ok) {
+          window.alert(result.error || dict.bookingsCheckoutBlocked || "Checkout bloqueado");
+          return;
+        }
+        window.alert(dict.bookingsCheckoutDone || "Pago registrado (demo)");
+        window.location.reload();
+      });
+      actions.appendChild(payBtn);
+    }
 
     if (HandsBookings.hostCanCancel(job, session.email)) {
       var cancelBtn = document.createElement("button");
