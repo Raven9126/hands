@@ -1372,16 +1372,57 @@ button {
   font-size: 1rem;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .coverage-supplies .supplies-card {
-  min-height: 9.5rem;
-  gap: 0.4rem;
-  padding: 0.85rem 0.75rem 0.95rem;
+  min-height: 12.5rem;
+  gap: 0.45rem;
+  padding: 0.85rem 0.75rem 1.1rem;
   border-radius: 16px;
+  overflow: hidden;
 }
 
 .coverage-supplies .supplies-icon {
   width: 6.8rem;
   height: 5.4rem;
+}
+
+.coverage-supplies .supplies-icon-photo {
+  width: 5.6rem;
+  height: 5.6rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.coverage-supplies .supplies-icon-photo-wide {
+  width: 7.2rem;
+  height: 7.2rem;
+}
+
+.supplies-icon-photo img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.coverage-supplies .supplies-card:has(.supplies-icon-photo) .supplies-meta {
+  margin-top: 0.45rem;
+  position: relative;
+  z-index: 1;
 }
 
 .coverage-supplies .supplies-label {
@@ -1444,12 +1485,17 @@ button {
   transition: transform 220ms ease;
 }
 
+.supplies-card:hover .supplies-icon-photo,
+.supplies-card.is-selected .supplies-icon-photo {
+  transform: none;
+}
+
 .supplies-label {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 650;
-  font-size: 1.15rem;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   color: var(--ink);
 }
 
@@ -1477,7 +1523,7 @@ button {
   justify-items: center;
   align-content: start;
   gap: 0.65rem;
-  min-height: 13rem;
+  min-height: 14.5rem;
   padding: 1.15rem 1rem 1.25rem;
   text-align: center;
   border: 1px solid rgba(31, 92, 68, 0.14);
@@ -1486,6 +1532,7 @@ button {
   color: var(--ink);
   box-shadow: 0 8px 22px rgba(31, 92, 68, 0.06);
   transition: border-color 200ms ease, background 200ms ease, transform 220ms ease, box-shadow 220ms ease;
+  overflow: hidden;
 }
 
 .timing-card:hover {
@@ -1513,6 +1560,20 @@ button {
   color: var(--primary);
 }
 
+.timing-icon-photo {
+  width: 7.2rem;
+  height: 7.2rem;
+  overflow: hidden;
+}
+
+.timing-icon-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
 .timing-icon svg {
   width: 100%;
   height: 100%;
@@ -1524,12 +1585,17 @@ button {
   transition: transform 220ms ease;
 }
 
+.timing-card:hover .timing-icon-photo,
+.timing-card.is-selected .timing-icon-photo {
+  transform: none;
+}
+
 .timing-label {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 650;
-  font-size: 1.15rem;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
 .timing-meta {
