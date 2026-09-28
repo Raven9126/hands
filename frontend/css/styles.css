@@ -817,6 +817,16 @@ button {
   background: rgba(231, 246, 239, 0.55);
 }
 
+.counter-panel[hidden] {
+  display: none !important;
+}
+
+#counterProposal.is-open {
+  border-color: var(--primary);
+  background: rgba(231, 246, 239, 0.85);
+  color: var(--primary-deep);
+}
+
 .quote-breakdown li[hidden] {
   display: none;
 }

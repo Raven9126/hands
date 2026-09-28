@@ -1017,6 +1017,11 @@
       state.counterAmount = null;
       var panel = document.getElementById("counterPanel");
       if (panel) panel.hidden = true;
+      var counterBtn = document.getElementById("counterProposal");
+      if (counterBtn) {
+        counterBtn.classList.remove("is-open");
+        counterBtn.setAttribute("aria-expanded", "false");
+      }
       proposalAccepted = true;
       calcQuote();
       saveDraft();
@@ -1033,8 +1038,12 @@
         hint.hidden = true;
         hint.textContent = "";
       }
-      if (panel) {
-        panel.hidden = false;
+      if (!panel) return;
+      var open = panel.hidden;
+      panel.hidden = !open;
+      counterProposal.classList.toggle("is-open", open);
+      counterProposal.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
         var input = document.getElementById("counterAmount");
         if (input) {
           if (!input.value) input.value = String(quoteTotals().suggested || 120000);
@@ -1043,6 +1052,8 @@
         }
       }
     });
+    counterProposal.setAttribute("aria-expanded", "false");
+    counterProposal.setAttribute("aria-controls", "counterPanel");
   }
 
   var counterConfirm = document.getElementById("counterConfirm");
