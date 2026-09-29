@@ -2,7 +2,9 @@
 
 Aplicación web de Hands: cotización, armado de servicio, reservas, evidencia fotográfica (antes/después), informe publicado y calificación.
 
-HTML, CSS y JavaScript. Persistencia en el navegador (`localStorage` / `sessionStorage`). Sin API en esta versión.
+HTML, CSS y JavaScript. El acceso (login, registro y sesión) usa la API Spring Boot a través de `js/api.js`. Reservas y paneles de admin/provider siguen en almacenamiento local del navegador mientras se migran a la API.
+
+Guía de arranque del front y conexión a la API: [`frontend/README.md`](frontend/README.md).
 
 ---
 
@@ -22,7 +24,9 @@ HTML, CSS y JavaScript. Persistencia en el navegador (`localStorage` / `sessionS
 | Frontend | HTML5, CSS3, JavaScript ES6+ |
 | Tipografía | Outfit, Playfair Display |
 | Idiomas | Español / English |
-| Persistencia | `localStorage` / `sessionStorage` |
+| Auth | API REST + JWT (`js/api.js`) |
+| Datos locales | Reservas y operación admin/provider en `localStorage` |
+| API (desarrollo) | Spring Boot en `http://localhost:8081` — ver `frontend/README.md` |
 | Informe PDF | Impresión del navegador |
 | Despliegue | GitHub Pages (`main`) |
 
@@ -70,7 +74,7 @@ Reserva de ejemplo con informe y calificación:
 | Evidencia | Flujo host → admin → provider → informe |
 | PDF | Desde el detalle de la reserva |
 
-Pagos Bold / Wompi y API quedan fuera de esta versión (confirmación de demostración sin cobro real).
+Pagos en línea (Bold / Wompi) aún no están en el front estático. El checkout de demostración no realiza cobro real.
 
 ---
 
@@ -103,9 +107,10 @@ hands/
     ├── *.html
     ├── css/styles.css
     ├── js/
+    │   ├── api.js
+    │   ├── auth.js
     │   ├── layout.js
     │   ├── i18n.js
-    │   ├── auth.js
     │   ├── main.js
     │   ├── bookings.js
     │   ├── admin.js
@@ -134,6 +139,8 @@ npx --yes serve -l 8777 .
 ```
 
 http://localhost:8777
+
+Para auth contra la API en local: Postgres en el puerto `5433` y Spring Boot en `8081` (detalle en [`frontend/README.md`](frontend/README.md)).
 
 Rama de trabajo: `Dev`. Publicación en Pages desde `main`.
 
