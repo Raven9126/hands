@@ -99,13 +99,86 @@
         </header>
 
         <form class="quick-quote-form" id="quickQuoteForm" novalidate>
-          <fieldset class="quick-quote-field">
+          <fieldset class="quick-quote-field size-field">
             <legend data-i18n="sizeLegend">Tamaño del apartamento</legend>
-            <div class="quick-quote-chips" role="radiogroup" aria-label="Tamaño">
-              <button type="button" class="quick-chip" data-qq-size="xs" aria-pressed="false"><span data-i18n="sizeXs">Studio</span></button>
-              <button type="button" class="quick-chip is-selected" data-qq-size="sm" aria-pressed="true"><span data-i18n="sizeSm">1–2 hab</span></button>
-              <button type="button" class="quick-chip" data-qq-size="md" aria-pressed="false"><span data-i18n="sizeMd">2–3 hab</span></button>
-              <button type="button" class="quick-chip" data-qq-size="lg" aria-pressed="false"><span data-i18n="sizeLg">Amplio</span></button>
+            <div class="size-grid" role="radiogroup" aria-label="Tamaño">
+              <button type="button" class="size-card" data-size="xs" aria-pressed="false">
+                <span class="size-thumb">
+                  <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                    <ellipse class="iso-ground" cx="80" cy="118" rx="42" ry="8"/>
+                    <polygon class="iso-roof" points="80,18 124,42 80,66 36,42"/>
+                    <polygon class="iso-a" points="36,42 80,66 80,102 36,78"/>
+                    <polygon class="iso-b" points="80,66 124,42 124,78 80,102"/>
+                    <polygon class="iso-dark" points="48,72 60,78 60,96 48,90"/>
+                    <polygon class="iso-glass" points="94,58 110,50 110,66 94,74"/>
+                    <polygon class="iso-leaf" points="118,70 126,54 134,70"/>
+                    <rect class="iso-pot" x="122" y="70" width="8" height="6" transform="skewX(-18)"/>
+                  </svg>
+                </span>
+                <span class="size-label" data-i18n="sizeXs">Studio</span>
+                <span class="size-meta">&lt; 40 m²</span>
+              </button>
+              <button type="button" class="size-card is-selected" data-size="sm" aria-pressed="true">
+                <span class="size-thumb">
+                  <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                    <ellipse class="iso-ground" cx="80" cy="118" rx="50" ry="8"/>
+                    <polygon class="iso-roof" points="58,16 118,36 86,54 26,34"/>
+                    <polygon class="iso-a" points="26,34 86,54 86,96 26,76"/>
+                    <polygon class="iso-b" points="86,54 118,36 118,78 86,96"/>
+                    <polygon class="iso-c" points="118,52 142,40 142,62 118,74"/>
+                    <polygon class="iso-roof" points="118,36 142,40 118,52" opacity=".9"/>
+                    <polygon class="iso-glass" points="42,48 56,53 56,68 42,63"/>
+                    <polygon class="iso-glass" points="62,56 76,61 76,76 62,71"/>
+                    <polygon class="iso-dark" points="96,70 108,64 108,86 96,92"/>
+                    <polygon class="iso-leaf" points="20,82 28,66 36,82"/>
+                  </svg>
+                </span>
+                <span class="size-label" data-i18n="sizeSm">1–2 hab</span>
+                <span class="size-meta">40–70 m²</span>
+              </button>
+              <button type="button" class="size-card" data-size="md" aria-pressed="false">
+                <span class="size-thumb">
+                  <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                    <ellipse class="iso-ground" cx="82" cy="118" rx="56" ry="8"/>
+                    <polygon class="iso-roof" points="74,10 126,32 86,54 34,32"/>
+                    <polygon class="iso-a" points="34,32 86,54 86,92 34,70"/>
+                    <polygon class="iso-b" points="86,54 126,32 126,70 86,92"/>
+                    <polygon class="iso-roof" points="34,32 64,22 86,34 86,54"/>
+                    <polygon class="iso-c" points="22,58 64,42 64,78 22,94"/>
+                    <polygon class="iso-a" points="22,58 34,52 34,70 22,76" opacity=".85"/>
+                    <polygon class="iso-glass" points="46,48 58,53 58,66 46,61"/>
+                    <polygon class="iso-glass" points="68,42 82,48 82,62 68,56"/>
+                    <polygon class="iso-glass" points="98,48 112,42 112,56 98,62"/>
+                    <polygon class="iso-dark" points="38,74 50,68 50,86 38,92"/>
+                    <rect class="iso-c" x="108" y="78" width="22" height="4" transform="skewX(-32)"/>
+                  </svg>
+                </span>
+                <span class="size-label" data-i18n="sizeMd">2–3 hab</span>
+                <span class="size-meta">70–100 m²</span>
+              </button>
+              <button type="button" class="size-card" data-size="lg" aria-pressed="false">
+                <span class="size-thumb">
+                  <svg class="size-iso" viewBox="0 0 160 130" aria-hidden="true">
+                    <ellipse class="iso-ground" cx="80" cy="120" rx="62" ry="8"/>
+                    <polygon class="iso-roof" points="78,6 138,28 92,52 32,30"/>
+                    <polygon class="iso-a" points="32,30 92,52 92,94 32,72"/>
+                    <polygon class="iso-b" points="92,52 138,28 138,70 92,94"/>
+                    <polygon class="iso-c" points="18,50 46,36 46,72 18,86"/>
+                    <polygon class="iso-roof" points="18,50 46,36 64,44 36,58"/>
+                    <polygon class="iso-b" points="118,74 148,58 148,78 118,94"/>
+                    <polygon class="iso-roof" points="92,52 138,28 148,34 118,58"/>
+                    <polygon class="iso-glass" points="44,42 56,47 56,60 44,55"/>
+                    <polygon class="iso-glass" points="64,38 78,44 78,58 64,52"/>
+                    <polygon class="iso-glass" points="104,42 118,36 118,50 104,56"/>
+                    <polygon class="iso-glass" points="124,40 136,34 136,48 124,54"/>
+                    <polygon class="iso-dark" points="48,70 60,64 60,84 48,90"/>
+                    <polyline class="iso-rail" points="118,74 132,66 148,58"/>
+                    <polygon class="iso-leaf" points="142,86 150,70 158,86"/>
+                  </svg>
+                </span>
+                <span class="size-label" data-i18n="sizeLg">Amplio</span>
+                <span class="size-meta">100+ m²</span>
+              </button>
             </div>
           </fieldset>
 

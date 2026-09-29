@@ -2719,7 +2719,7 @@ button {
 }
 
 .quick-quote {
-  max-width: 52rem;
+  max-width: 56rem;
   margin-inline: auto;
   padding: clamp(1.6rem, 4vw, 2.4rem);
   border-radius: 22px;
@@ -2868,6 +2868,16 @@ button {
   margin: 0;
   color: #9b3b2e;
   font-size: 0.9rem;
+}
+
+.quick-quote-field .size-grid {
+  margin-top: 0.35rem;
+}
+
+@media (min-width: 720px) {
+  .quick-quote-field .size-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {

@@ -1213,10 +1213,10 @@
   function syncQuickQuoteUi() {
     var form = document.getElementById("quickQuoteForm");
     if (!form) return;
-    form.querySelectorAll("[data-qq-size]").forEach(function (btn) {
-      var on = btn.getAttribute("data-qq-size") === state.size;
-      btn.classList.toggle("is-selected", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    form.querySelectorAll(".size-card").forEach(function (card) {
+      var on = card.getAttribute("data-size") === state.size;
+      card.classList.toggle("is-selected", on);
+      card.setAttribute("aria-pressed", on ? "true" : "false");
     });
     form.querySelectorAll("[data-qq-intensity]").forEach(function (btn) {
       var on = btn.getAttribute("data-qq-intensity") === state.intensity;
@@ -1250,14 +1250,7 @@
     calcQuote();
 
     form.addEventListener("click", function (event) {
-      var sizeBtn = event.target.closest("[data-qq-size]");
-      if (sizeBtn) {
-        state.size = sizeBtn.getAttribute("data-qq-size");
-        syncQuickQuoteUi();
-        calcQuote();
-        saveDraft();
-        return;
-      }
+      // Size uses shared .size-card handlers (setSize / popSize) elsewhere in this file.
       var intensityBtn = event.target.closest("[data-qq-intensity]");
       if (intensityBtn) {
         state.intensity = intensityBtn.getAttribute("data-qq-intensity");
