@@ -66,8 +66,8 @@ Reserva de ejemplo con informe y calificación:
 
 | Área | Detalle |
 |------|---------|
-| Landing | Hero con carrusel, cotización rápida (~20 s), servicios y proceso |
-| Wizard | Ciudad, tamaño, insumos/kit, intensidad, agenda, cotización y checkout |
+| Landing | Hero con carrusel, cotización rápida (~20 s) con las mismas tarjetas de tamaño del wizard, servicios y proceso |
+| Wizard | Ciudad, tamaño (casitas isométricas), insumos/kit, intensidad, agenda, cotización y checkout |
 | Tarifas | Total con comisión Hands (12%); el host puede proponer otra tarifa |
 | Layout | Navbar y footer por rol (`components/` + `layout.js`) |
 | i18n | ES / EN en toda la interfaz |
@@ -82,7 +82,7 @@ Pagos en línea (Bold / Wompi) aún no están en el front estático. El checkout
 
 | Sección | Archivo | Descripción |
 |---------|---------|-------------|
-| Inicio | `frontend/index.html` | Landing y cotización rápida |
+| Inicio | `frontend/index.html` | Landing y cotización rápida (`#cotizar`) |
 | Armar servicio | `frontend/build.html` | Wizard de reserva |
 | Login / Registro | `frontend/login.html` · `register.html` | Acceso por rol |
 | Mis reservas | `frontend/bookings.html` | Listado y cancelación |

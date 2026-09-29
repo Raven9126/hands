@@ -21,6 +21,15 @@ Puertos habituales (`5500`, `3000`, `8777`) deben estar permitidos en CORS del b
 
 ---
 
+## Cotización rápida (`index.html#cotizar`)
+
+- Tamaño: mismas tarjetas isométricas del wizard (`.size-card` / `data-size`), no chips de texto.
+- Nivel de aseo: chips (`data-qq-intensity`).
+- Ciudad + dirección → estimado en vivo → CTA a `build.html` con borrador en `localStorage`.
+- Lógica compartida en `js/main.js` (`setSize`, `calcQuote`, `initQuickQuote`).
+
+---
+
 ## Conexión a la API
 
 | Ítem | Valor |
@@ -70,6 +79,7 @@ set -a && source ../.env && set +a
 | `js/api.js` | Cliente HTTP (`/api/v1/*`), token y auth |
 | `js/auth.js` | Sesión de UI; login y registro vía API |
 | `js/auth-pages.js` | Formularios de `login.html` y `register.html` |
+| `js/main.js` | Wizard, cotización rápida, quote |
 | `js/bookings.js` | Reservas (almacenamiento local) |
 | `js/layout.js` | Navbar y footer según rol |
 
@@ -81,3 +91,4 @@ Las páginas HTML cargan `api.js` antes de `auth.js`.
 
 - El paquete `backend/` es local por ahora y no forma parte del despliegue en GitHub Pages.
 - Cuando exista un entorno de staging, configurar la URL con `HANDS_API_URL` o la meta `hands-api-url`.
+- Diagramas de producto: `img/diagrams/flow-00` … `flow-07` (logo de marca `img/brand/hands-logo.png`).
