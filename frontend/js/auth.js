@@ -1,8 +1,9 @@
 /**
- * HandsAuth — local account store, session, registration, and login.
+ * HandsAuth — session + account helpers for the Hands UI.
  *
- * Passwords are stored as PBKDF2-SHA-256 digests (never plaintext). A production
- * API should use Argon2id or bcrypt on the server instead of client-side hashing.
+ * When HandsApi is present (js/api.js), login/register/logout go to the Spring
+ * Boot API (Bearer JWT). Admin createAccount and the local demo directory remain
+ * in localStorage for tooling that is not yet API-backed.
  * Session payloads omit the password hash. Demo accounts are seeded on first load.
  */
 window.HandsAuth = (function () {
@@ -13,6 +14,17 @@ window.HandsAuth = (function () {
   var HASH_PREFIX = "pbkdf2$v1$";
   var PBKDF2_ITERATIONS = 120000;
   var readyPromise = null;
+
+  function usesApi() {
+    return !!(window.HandsApi && window.HandsApi.auth);
+  }
+
+  function apiErrorMessage(err, fallback) {
+    if (!err) return fallback;
+    if (err.code === "EMAIL_TAKEN") return fallback;
+    if (err.message) return err.message;
+    return fallback;
+  }
 
   var DEMO = [
     {
@@ -198,6 +210,19 @@ window.HandsAuth = (function () {
       }
 
       writeAccounts(next);
+
+      if (usesApi() && window.HandsApi.getToken()) {
+        try {
+          var remote = await window.HandsApi.auth.me();
+          if (remote) setSession(remote);
+        } catch (e) {
+          if (e && (e.status === 401 || e.status === 403)) {
+            window.HandsApi.clearToken();
+            localStorage.removeItem(SESSION_KEY);
+          }
+        }
+      }
+
       return next;
     })();
 
@@ -221,6 +246,7 @@ window.HandsAuth = (function () {
   /** Persist a password-free session snapshot used by gated pages. */
   function setSession(user) {
     var session = {
+      id: user.id || null,
       name: user.name,
       email: user.email,
       access: user.access,
@@ -400,6 +426,34 @@ window.HandsAuth = (function () {
       if (!built.ok) return built;
       var propertyCheck = validateProperty(payload.property);
       if (!propertyCheck.ok) return propertyCheck;
+
+      if (usesApi()) {
+        return window.HandsApi.auth
+          .register({
+            name: built.user.name,
+            email: built.user.email,
+            password: built.plainPassword,
+            confirm: payload.confirm,
+            property: propertyCheck.property,
+          })
+          .then(function (result) {
+            setSession(result.user);
+            return { ok: true, user: getSession() };
+          })
+          .catch(function (err) {
+            var V = window.HandsValidate;
+            var message = apiErrorMessage(
+              err,
+              err && err.code === "EMAIL_TAKEN" ? V.t("valEmailExists") : V.t("valFormFix")
+            );
+            return {
+              ok: false,
+              field: err && err.code === "EMAIL_TAKEN" ? "email" : "form",
+              message: message,
+            };
+          });
+      }
+
       return hashPassword(built.plainPassword).then(function (digest) {
         var user = {
           name: built.user.name,
@@ -450,6 +504,23 @@ window.HandsAuth = (function () {
       if (!emailCheck.ok) return { ok: false, field: "email", message: emailCheck.error };
       var passCheck = V.loginPassword(password);
       if (!passCheck.ok) return { ok: false, field: "password", message: passCheck.error };
+
+      if (usesApi()) {
+        return window.HandsApi.auth
+          .login(String(email || "").trim().toLowerCase(), password)
+          .then(function (result) {
+            setSession(result.user);
+            return { ok: true, user: getSession() };
+          })
+          .catch(function (err) {
+            return {
+              ok: false,
+              field: "form",
+              message: apiErrorMessage(err, V.t("loginInvalid")),
+            };
+          });
+      }
+
       var user = findByEmail(email);
       if (!user) return { ok: false, field: "form", message: V.t("loginInvalid") };
       return verifyPassword(password, user.password).then(function (match) {
@@ -481,6 +552,9 @@ window.HandsAuth = (function () {
 
   function logout() {
     localStorage.removeItem(SESSION_KEY);
+    if (usesApi()) {
+      window.HandsApi.auth.logout();
+    }
   }
 
   /** Reload session snapshot from the accounts store (e.g. after demo property seed). */
