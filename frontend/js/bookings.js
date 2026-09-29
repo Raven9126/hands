@@ -100,6 +100,13 @@ window.HandsBookings = (function () {
       value.indexOf("img/photos/") === 0 ||
       value.indexOf("img/diagrams/") === 0
     ) {
+      // Collapse legacy nested paths (diagrams/frontend|backend/) back to flat diagrams/.
+      if (value.indexOf("img/diagrams/frontend/") === 0) {
+        return "img/diagrams/" + value.slice("img/diagrams/frontend/".length);
+      }
+      if (value.indexOf("img/diagrams/backend/") === 0) {
+        return "img/diagrams/" + value.slice("img/diagrams/backend/".length);
+      }
       return value;
     }
     if (value.indexOf("img/") !== 0) return value;
