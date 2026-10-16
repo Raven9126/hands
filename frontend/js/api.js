@@ -5,7 +5,8 @@
  *   1. window.HANDS_API_URL
  *   2. <meta name="hands-api-url" content="…">
  *   3. localStorage "hands-api-url"
- *   4. http://localhost:8081 (local default)
+ *   4. GitHub Pages → https://api.heptaforgeco.com
+ *   5. http://localhost:8081 (local default)
  *
  * Auth uses Bearer JWT in localStorage ("hands-access-token").
  */
@@ -13,6 +14,7 @@ window.HandsApi = (function () {
   var TOKEN_KEY = "hands-access-token";
   var URL_KEY = "hands-api-url";
   var DEFAULT_BASE = "http://localhost:8081";
+  var PAGES_BASE = "https://api.heptaforgeco.com";
 
   function metaApiUrl() {
     var el = document.querySelector('meta[name="hands-api-url"]');
@@ -30,6 +32,15 @@ window.HandsApi = (function () {
       if (fromStore) return String(fromStore).trim().replace(/\/$/, "");
     } catch (e) {
       /* ignore */
+    }
+    var host = "";
+    try {
+      host = String(window.location.hostname || "");
+    } catch (e2) {
+      host = "";
+    }
+    if (host === "raven9126.github.io" || /\.github\.io$/i.test(host)) {
+      return PAGES_BASE;
     }
     return DEFAULT_BASE;
   }
