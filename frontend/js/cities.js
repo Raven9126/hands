@@ -84,6 +84,35 @@ window.HandsCities = (function () {
     return pending;
   }
 
+  /**
+   * Re-reads the full catalog, including cities that are not offered yet.
+   *
+   * <p>Only the admin panel needs inactive cities, and it authenticates, so this uses
+   * the administration endpoint. It also clears `pending` so the next ready() call
+   * reflects the change.
+   */
+  function reload() {
+    var admin = window.HandsApi && window.HandsApi.adminCities;
+    var auth = window.HandsAuth && window.HandsAuth.getSession && window.HandsAuth.getSession();
+    if (!admin || !auth || auth.access !== "admin") {
+      pending = null;
+      return ready();
+    }
+    pending = admin
+      .list()
+      .then(function (rows) {
+        var list = normalise(rows);
+        cache = list.length ? list : cache || FALLBACK.slice();
+        live = list.length > 0;
+        return cache;
+      })
+      .catch(function () {
+        pending = null;
+        return ready();
+      });
+    return pending;
+  }
+
   function current() {
     return cache || FALLBACK.slice();
   }
@@ -118,28 +147,9 @@ window.HandsCities = (function () {
   }
 
   /**
-   * Admin-only mutations. The catalog is server-owned, so these are not persisted
-   * locally; the admin panel will call the API once that endpoint exists.
+   * Mutations are not offered here: the catalog is owned by the server. The admin panel
+   * calls HandsApi.adminCities directly and then reloads this module.
    */
-  function add(name) {
-    var label = String(name || "").trim();
-    if (label.length < 2) return { ok: false, error: "short" };
-    var id = slugify(label);
-    if (!id) return { ok: false, error: "slug" };
-    if (current().some(function (c) { return c.id === id; })) {
-      return { ok: false, error: "exists" };
-    }
-    return { ok: false, error: "readonly" };
-  }
-
-  function toggle() {
-    return false;
-  }
-
-  function remove() {
-    return false;
-  }
-
   function count() {
     return list(false).length;
   }
@@ -148,13 +158,11 @@ window.HandsCities = (function () {
 
   return {
     ready: ready,
+    reload: reload,
     isLive: isLive,
     list: list,
     nameById: nameById,
     isActive: isActive,
-    add: add,
-    toggle: toggle,
-    remove: remove,
     count: count,
     slugify: slugify,
   };

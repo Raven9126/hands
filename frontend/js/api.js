@@ -256,6 +256,25 @@ window.HandsApi = (function () {
     },
   };
 
+  /** Coverage administration. Every call requires an ADMIN token. */
+  var adminCities = {
+    /** Full catalog, including cities that are not offered yet. */
+    list: function () {
+      return request("/admin/cities", { method: "GET" });
+    },
+    /** Enables or disables coverage. Cities are never deleted. */
+    setActive: function (slug, active) {
+      return request("/admin/cities/" + encodeURIComponent(slug) + "/active", {
+        method: "PATCH",
+        body: { active: !!active },
+      });
+    },
+    /** Adds coverage, or reactivates a city that was previously disabled. */
+    add: function (name) {
+      return request("/admin/cities", { method: "POST", body: { name: name } });
+    },
+  };
+
   return {
     baseUrl: baseUrl,
     getToken: getToken,
@@ -264,6 +283,7 @@ window.HandsApi = (function () {
     request: request,
     auth: auth,
     catalog: catalog,
+    adminCities: adminCities,
     toLocalUser: toLocalUser,
     ApiError: ApiError,
   };

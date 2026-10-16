@@ -490,8 +490,11 @@ window.HandsI18n = {
     adminCityCreated: "Ciudad agregada.",
     adminCityExists: "Esa ciudad ya existe.",
     adminCityNameShort: "Usa al menos 2 caracteres.",
-    adminCityReadOnly:
-      "Las ciudades se administran desde el servidor. El cambio desde este panel aún no está disponible.",
+    adminCitySaved: "Cobertura actualizada.",
+    adminCitySaveFailed: "No se pudo guardar el cambio. Revisa tu conexión.",
+    adminCityForbidden: "Solo un administrador puede cambiar la cobertura.",
+    adminCityDeactivateHint:
+      "Las ciudades no se eliminan porque las reservas las referencian. Usa Desactivar para dejar de ofrecerla.",
     adminCityActive: "Activa",
     adminCityInactive: "Inactiva",
     adminCityActivate: "Activar",
@@ -1239,8 +1242,11 @@ window.HandsI18n = {
     adminCityCreated: "City added.",
     adminCityExists: "That city already exists.",
     adminCityNameShort: "Use at least 2 characters.",
-    adminCityReadOnly:
-      "Cities are managed on the server. Changing them from this panel is not available yet.",
+    adminCitySaved: "Coverage updated.",
+    adminCitySaveFailed: "The change could not be saved. Check your connection.",
+    adminCityForbidden: "Only an administrator can change coverage.",
+    adminCityDeactivateHint:
+      "Cities are not deleted because bookings reference them. Use Deactivate to stop offering one.",
     adminCityActive: "Active",
     adminCityInactive: "Inactive",
     adminCityActivate: "Activate",

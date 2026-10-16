@@ -646,6 +646,31 @@
   }
 
   /* --- Cities panel --- */
+
+  /**
+   * Persists a coverage change and refreshes both the panel and the cached catalog.
+   * @param {Promise} request pending API call
+   * @param {string} okMessage shown on success
+   * @param {string} failMessage shown when the call fails
+   */
+  function saveCityChange(request, okMessage, failMessage) {
+    request
+      .then(function () {
+        showMsg("cityMsg", okMessage, true);
+        return window.HandsCities.reload ? window.HandsCities.reload() : null;
+      })
+      .then(function () {
+        renderCities();
+      })
+      .catch(function (err) {
+        var message =
+          err && err.status === 403 ? t("adminCityForbidden") : failMessage;
+        if (err && err.message && err.status !== 403) message = err.message;
+        showMsg("cityMsg", message, false);
+        renderCities();
+      });
+  }
+
   function renderCities() {
     var body = document.getElementById("cityTable");
     if (!body || !window.HandsCities) return;
@@ -667,10 +692,6 @@
           (active ? "0" : "1") +
           '">' +
           (active ? t("adminCityDeactivate") : t("adminCityActivate")) +
-          '</button><button type="button" class="btn-link" data-remove-city="' +
-          escapeHtml(city.id) +
-          '">' +
-          t("adminRemove") +
           "</button></td></tr>"
         );
       })
@@ -1460,24 +1481,26 @@
 
     var toggleCity = ev.target.closest("[data-toggle-city]");
     if (toggleCity && window.HandsCities) {
-      // Coverage is owned by the server. Until the admin endpoint exists, the panel
-      // reports that the change cannot be saved rather than silently doing nothing.
-      if (!window.HandsCities.toggle(
-        toggleCity.getAttribute("data-toggle-city"),
-        toggleCity.getAttribute("data-active") === "1"
-      )) {
-        window.alert(t("adminCityReadOnly"));
-      }
-      renderCities();
+      // Coverage is owned by the server, so the change is persisted through the API and
+      // the public catalog is reloaded afterwards.
+      var slug = toggleCity.getAttribute("data-toggle-city");
+      var next = toggleCity.getAttribute("data-active") === "1";
+      toggleCity.disabled = true;
+      saveCityChange(
+        window.HandsApi
+          ? window.HandsApi.adminCities.setActive(slug, next)
+          : Promise.reject(new Error("no-api")),
+        t("adminCitySaved"),
+        t("adminCitySaveFailed")
+      );
       return;
     }
 
     var removeCity = ev.target.closest("[data-remove-city]");
     if (removeCity && window.HandsCities) {
-      if (!window.HandsCities.remove(removeCity.getAttribute("data-remove-city"))) {
-        window.alert(t("adminCityReadOnly"));
-      }
-      renderCities();
+      // Cities are never deleted: bookings reference them. Deactivating is the way to
+      // stop offering coverage, and it can be undone.
+      window.alert(t("adminCityDeactivateHint"));
     }
   });
 
@@ -1750,23 +1773,42 @@
       }
       err.textContent = "";
       cityName.classList.remove("is-invalid");
-      var result = window.HandsCities.add(label);
-      if (!result.ok) {
-        err.textContent =
-          result.error === "exists"
-            ? t("adminCityExists")
-            : result.error === "readonly"
-              ? t("adminCityReadOnly")
-              : t("adminCityNameShort");
-        showMsg("cityMsg", t("valFormFix"), false);
+      if (!window.HandsApi || !window.HandsApi.adminCities) {
+        showMsg("cityMsg", t("adminCitySaveFailed"), false);
         return;
       }
-      cityForm.reset();
-      showMsg("cityMsg", t("adminCityCreated"), true);
-      renderCities();
+      var submitBtn = cityForm.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      window.HandsApi.adminCities
+        .add(label)
+        .then(function () {
+          cityForm.reset();
+          showMsg("cityMsg", t("adminCityCreated"), true);
+          return window.HandsCities.reload();
+        })
+        .then(function () {
+          renderCities();
+        })
+        .catch(function (error) {
+          if (error && error.code === "CITY_EXISTS") err.textContent = t("adminCityExists");
+          else if (error && error.status === 403) showMsg("cityMsg", t("adminCityForbidden"), false);
+          else showMsg("cityMsg", t("adminCitySaveFailed"), false);
+        })
+        .then(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 
   applyI18n();
   showPanel("home");
+
+  /**
+   * The admin panel needs inactive cities too, which the public catalog does not return.
+   * The full list is fetched once on load; a failure leaves the public list in place so
+   * the panel still renders.
+   */
+  if (window.HandsCities && typeof window.HandsCities.reload === "function") {
+    window.HandsCities.reload().then(renderCities, renderCities);
+  }
 })();
