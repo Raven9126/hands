@@ -10,6 +10,7 @@ window.HandsCities = (function () {
     { id: "bogota", name: "Bogotá", active: true },
     { id: "cajica", name: "Cajicá", active: true },
     { id: "chia", name: "Chía", active: true },
+    { id: "girardot", name: "Girardot", active: true },
     { id: "medellin", name: "Medellín", active: true },
     { id: "tunja", name: "Tunja", active: true },
     { id: "zipaquira", name: "Zipaquirá", active: true },

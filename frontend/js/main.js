@@ -19,6 +19,7 @@
     bogota: "Bogotá",
     cajica: "Cajicá",
     chia: "Chía",
+    girardot: "Girardot",
     medellin: "Medellín",
     tunja: "Tunja",
     zipaquira: "Zipaquirá",
