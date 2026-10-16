@@ -807,26 +807,6 @@ button {
   gap: 0.55rem;
 }
 
-.counter-panel {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 0.85rem;
-  padding: 0.9rem 1rem;
-  border: 1px dashed rgba(31, 92, 68, 0.28);
-  border-radius: 14px;
-  background: rgba(231, 246, 239, 0.55);
-}
-
-.counter-panel[hidden] {
-  display: none !important;
-}
-
-#counterProposal.is-open {
-  border-color: var(--primary);
-  background: rgba(231, 246, 239, 0.85);
-  color: var(--primary-deep);
-}
-
 .quote-breakdown li[hidden] {
   display: none;
 }

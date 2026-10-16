@@ -273,40 +273,24 @@
                 <li><span data-i18n="quoteAddress">Dirección</span><span id="quoteAddress">—</span></li>
                 <li><span data-i18n="quoteWhen">Fecha y hora</span><span id="quoteWhen">—</span></li>
                 <li><span data-i18n="quoteTiming">Tipo</span><span id="quoteTiming">—</span></li>
-                <li><span data-i18n="quoteBase">Servicio base</span><span id="quoteBase">120.000</span></li>
+                <li id="quoteBaseRow"><span data-i18n="quoteBase">Servicio base</span><span id="quoteBase">120.000</span></li>
                 <li id="quoteKitRow"><span data-i18n="quoteKit">Kit de insumos</span><span id="quoteKit">0</span></li>
                 <li id="quoteExtrasRow"><span data-i18n="quoteExtras">Extras</span><span id="quoteExtras">0</span></li>
                 <li id="quoteOtherRow"><span data-i18n="quoteOther">Otros servicios</span><span id="quoteOther">0</span></li>
-                <li id="quoteCounterRow" hidden><span data-i18n="quoteCounter">Tu tarifa propuesta</span><span id="quoteCounter">—</span></li>
-                <li class="fee"><span data-i18n="quoteFee">Comisión Hands (12%)</span><span id="quoteFee">14.400</span></li>
               </ul>
-              <p class="quote-note" data-i18n="quoteNote">Comisión fija del 12% incluida en el total. Pago con Bold o Wompi.</p>
+              <p class="quote-note" data-i18n="quoteNote">Precio final con todo incluido. Pago con Bold o Wompi.</p>
               <div class="proposal-actions">
                 <button type="button" class="btn btn-primary btn-block btn-shine" id="acceptProposal">
                   <span data-i18n="proposalAccept">Checkout</span>
                   <span aria-hidden="true">→</span>
                 </button>
-                <button type="button" class="btn btn-ghost btn-block" id="counterProposal" data-i18n="proposalCounter">Proponer mi tarifa</button>
               </div>
-              <div class="counter-panel" id="counterPanel" hidden>
-                <label class="field" for="counterAmount">
-                  <span data-i18n="proposalCounterLabel">Tu tarifa propuesta (COP)</span>
-                  <input type="number" id="counterAmount" name="counterAmount" min="50000" step="1000" inputmode="numeric" data-i18n-placeholder="proposalCounterPh" placeholder="150000" />
-                  <span class="field-error" id="counterError" role="alert"></span>
-                </label>
-                <button type="button" class="btn btn-primary btn-block" id="counterConfirm" data-i18n="proposalCounterConfirm">Enviar propuesta al equipo Hands</button>
-              </div>
-              <p class="quote-hint" id="counterHint" hidden></p>
             </aside>
 
             <details class="optional-block">
               <summary data-i18n="optionalExtras">Extras y otros servicios (opcional)</summary>
               <fieldset class="extras">
                 <legend data-i18n="extrasLegend">Extras de limpieza</legend>
-                <label class="check">
-                  <input type="checkbox" name="extra" value="linen" />
-                  <span data-i18n="extraLinen">Cambio de ropa de cama</span>
-                </label>
                 <label class="check">
                   <input type="checkbox" name="extra" value="restock" />
                   <span data-i18n="extraRestock">Reposición básica (papel, jabón)</span>
@@ -357,15 +341,15 @@
 
   <div id="site-footer"></div>
 
-  <script src="js/i18n.js?v=wiz-icons-1"></script>
+  <script src="js/i18n.js?v=catalog-1"></script>
   <script src="js/validate.js"></script>
-  <script src="js/api.js"></script>
+  <script src="js/api.js?v=catalog-1"></script>
   <script src="js/auth.js"></script>
   <script src="js/layout.js"></script>
-  <script src="js/cities.js"></script>
+  <script src="js/cities.js?v=catalog-1"></script>
   <script src="js/visits.js"></script>
   <script src="js/bookings.js"></script>
   <!-- Wizard, quote, and draft persistence -->
-  <script src="js/main.js?v=wiz-icons-18"></script>
+  <script src="js/main.js?v=catalog-1"></script>
 </body>
 </html>

@@ -241,6 +241,21 @@ window.HandsApi = (function () {
     },
   };
 
+  /**
+   * Public catalog. Readable without a token because the landing page quotes
+   * before the visitor signs in.
+   */
+  var catalog = {
+    /** Active cities only: coverage that can actually be delivered. */
+    cities: function () {
+      return request("/catalog/cities", { method: "GET", auth: false });
+    },
+    /** Sizes, extras, kit price and intensity multipliers. */
+    pricing: function () {
+      return request("/catalog/pricing", { method: "GET", auth: false });
+    },
+  };
+
   return {
     baseUrl: baseUrl,
     getToken: getToken,
@@ -248,6 +263,7 @@ window.HandsApi = (function () {
     clearToken: clearToken,
     request: request,
     auth: auth,
+    catalog: catalog,
     toLocalUser: toLocalUser,
     ApiError: ApiError,
   };

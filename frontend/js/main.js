@@ -1,29 +1,104 @@
 /**
  * Public marketing site and multi-step service-builder wizard.
  *
- * Responsibilities: live quote (base + extras + kit + commission), coverage
- * checks via HandsCities, sessionStorage draft, hash-based step navigation,
- * auth CTA rendering, and checkout handoff into HandsBookings.
+ * Prices come from the API (GET /catalog/pricing) and the totals shown here mirror
+ * what the server computes. The commission is applied inside those totals but is never
+ * displayed: the host sees a final price, not how Hands splits it.
+ *
+ * Responsibilities: live quote from the catalog, coverage checks via HandsCities,
+ * sessionStorage draft, hash-based step navigation, auth CTA rendering, and checkout
+ * handoff into HandsBookings.
  */
 (function () {
-  /* --- Pricing --- */
-  var COMMISSION = 0.12;
-  var KIT = 25000;
-  var EXTRA_PRICES = { linen: 18000, restock: 12000 };
-  var BASE = { xs: 90000, sm: 120000, md: 155000, lg: 195000 };
-  var INTENSITY_MULT = { light: 0.85, standard: 1, intense: 1.3 };
+  /* --- Pricing, replaced by the API catalog once it loads --- */
+  var CATALOG = {
+    base: { xs: 108000, sm: 138000, md: 173000, lg: 213000 },
+    kit: 55000,
+    extras: { restock: 12000 },
+    intensity: { light: 0.85, standard: 1, intense: 1.3 },
+    commission: 0.14,
+    areas: {
+      xs: { min: null, max: 45 },
+      sm: { min: 46, max: 70 },
+      md: { min: 71, max: 100 },
+      lg: { min: 101, max: null },
+    },
+    live: false,
+  };
+
+  var KIT = CATALOG.kit;
+  var EXTRA_PRICES = CATALOG.extras;
+  var BASE = CATALOG.base;
+  var INTENSITY_MULT = CATALOG.intensity;
+  var COMMISSION = CATALOG.commission;
   var DRAFT_KEY = "hands-draft-v3";
   var TOTAL_STEPS = 6;
 
   var CITIES = {
     bogota: "Bogotá",
-    cajica: "Cajicá",
-    chia: "Chía",
     girardot: "Girardot",
-    medellin: "Medellín",
     tunja: "Tunja",
     zipaquira: "Zipaquirá",
   };
+
+  /**
+   * Loads prices once per page and rebinds the local lookup tables.
+   * A failure leaves the built-in defaults in place so the wizard still quotes.
+   */
+  function loadCatalog() {
+    if (!window.HandsApi || !window.HandsApi.catalog) return Promise.resolve(false);
+    return window.HandsApi.catalog
+      .pricing()
+      .then(function (data) {
+        if (!data) return false;
+        (data.sizes || []).forEach(function (s) {
+          if (s && s.size) {
+            BASE[s.size] = s.baseCop;
+            CATALOG.areas[s.size] = { min: s.areaMinSqm, max: s.areaMaxSqm };
+          }
+        });
+        if (typeof data.kitCop === "number") {
+          CATALOG.kit = data.kitCop;
+          KIT = data.kitCop;
+        }
+        (data.extras || []).forEach(function (x) {
+          if (x && x.code) EXTRA_PRICES[x.code] = x.priceCop;
+        });
+        (data.intensities || []).forEach(function (i) {
+          if (i && i.code) INTENSITY_MULT[i.code] = i.multiplier;
+        });
+        CATALOG.live = true;
+        return true;
+      })
+      .catch(function () {
+        return false;
+      });
+  }
+
+  /**
+   * Writes the square-metre hint under each size card from the catalog, so the host can
+   * pick a size objectively. A card whose range is unknown keeps its markup text.
+   */
+  function renderSizeAreas() {
+    var cards = document.querySelectorAll("[data-size]");
+    if (!cards.length) return;
+    cards.forEach(function (card) {
+      var size = card.getAttribute("data-size");
+      var meta = card.querySelector(".size-meta");
+      if (!meta || !size) return;
+      var range = CATALOG.areas[size];
+      if (!range) return;
+      var text = "";
+      if (range.min && range.max) {
+        text = range.min + "–" + range.max + " m²";
+      } else if (range.max) {
+        text = "≤ " + range.max + " m²";
+      } else if (range.min) {
+        text = "≥ " + range.min + " m²";
+      }
+      if (text) meta.textContent = text;
+    });
+  }
 
   function cityName(id) {
     if (window.HandsCities && window.HandsCities.nameById) {
@@ -94,7 +169,6 @@
     time: "",
     extras: [],
     other: [],
-    counterAmount: null,
   };
 
   function dict() {
@@ -108,6 +182,9 @@
   /** Active catalog cities only; "otra" never counts as covered. */
   function hasCoverage() {
     if (!state.city || state.city === "otra") return false;
+    if (window.HandsCities && typeof window.HandsCities.isActive === "function") {
+      return window.HandsCities.isActive(state.city);
+    }
     if (window.HandsCities) {
       return window.HandsCities.list(false).some(function (c) {
         return c.id === state.city;
@@ -142,9 +219,6 @@
       if (state.supplies === "none") state.supplies = "yes";
       if (Array.isArray(draft.other)) state.other = draft.other.slice();
       if (Array.isArray(draft.extras)) state.extras = draft.extras.slice();
-      if (typeof draft.counterAmount === "number" && draft.counterAmount > 0) {
-        state.counterAmount = draft.counterAmount;
-      }
       if (draft.proposalAccepted) proposalAccepted = true;
       if (draft.step) currentStep = Number(draft.step) || 1;
     } catch (e) {}
@@ -185,7 +259,6 @@
           timing: state.timing,
           extras: extrasSelected(),
           other: state.other,
-          counterAmount: state.counterAmount,
           proposalAccepted: proposalAccepted,
           step: currentStep,
         })
@@ -336,6 +409,10 @@
     return state.extras.slice();
   }
 
+  /**
+   * Mirrors the server-side calculation in QuoteCalculator. The commission is part of
+   * the total but is not returned to the view, so the host only ever sees a final price.
+   */
   function quoteTotals() {
     var mult = INTENSITY_MULT[state.intensity] || INTENSITY_MULT.standard;
     var base = Math.round((BASE[state.size] || BASE.sm) * mult);
@@ -345,19 +422,16 @@
     }, 0);
     var other = otherTotal();
     var subtotal = base + kit + extras + other;
-    var fee = subtotal * COMMISSION;
-    var suggested = subtotal + fee;
-    var usingCounter = typeof state.counterAmount === "number" && state.counterAmount > 0;
+    var fee = Math.round(subtotal * COMMISSION);
+    var total = subtotal + fee;
     return {
       base: base,
       kit: kit,
       extras: extras,
       other: other,
+      subtotal: subtotal,
       fee: fee,
-      suggested: suggested,
-      counter: usingCounter ? state.counterAmount : 0,
-      usingCounter: usingCounter,
-      total: usingCounter ? state.counterAmount : suggested,
+      total: total,
     };
   }
 
@@ -589,7 +663,7 @@
     var quickAmount = document.getElementById("quickQuoteAmount");
     if (amount) amount.textContent = formatCop(q.total);
     if (checkout) checkout.textContent = formatCop(q.total);
-    if (quickAmount) quickAmount.textContent = formatCop(q.suggested || q.total);
+    if (quickAmount) quickAmount.textContent = formatCop(q.total);
     if (!amount) return q;
 
     document.getElementById("quoteBase").textContent = formatCop(q.base);
@@ -603,13 +677,6 @@
     if (extrasRow) extrasRow.hidden = !(q.extras > 0);
     var otherRow = document.getElementById("quoteOtherRow");
     if (otherRow) otherRow.hidden = !(q.other > 0);
-    var counterRow = document.getElementById("quoteCounterRow");
-    var counterEl = document.getElementById("quoteCounter");
-    if (counterRow) counterRow.hidden = !q.usingCounter;
-    if (counterEl) counterEl.textContent = q.usingCounter ? formatCop(q.counter) : "—";
-    document.getElementById("quoteFee").textContent = formatCop(q.fee);
-    var feeRow = document.querySelector(".quote-breakdown .fee");
-    if (feeRow) feeRow.hidden = !!q.usingCounter;
     var cityEl = document.getElementById("quoteCity");
     if (cityEl) cityEl.textContent = cityName(state.city);
     var addressEl = document.getElementById("quoteAddress");
@@ -1015,120 +1082,10 @@
         goIncomplete(dict().quoteNeedWhen);
         return;
       }
-      state.counterAmount = null;
-      var panel = document.getElementById("counterPanel");
-      if (panel) panel.hidden = true;
-      var counterBtn = document.getElementById("counterProposal");
-      if (counterBtn) {
-        counterBtn.classList.remove("is-open");
-        counterBtn.setAttribute("aria-expanded", "false");
-      }
       proposalAccepted = true;
       calcQuote();
       saveDraft();
       showStep(6, { replace: true });
-    });
-  }
-
-  var counterProposal = document.getElementById("counterProposal");
-  if (counterProposal) {
-    counterProposal.addEventListener("click", function () {
-      var panel = document.getElementById("counterPanel");
-      var hint = document.getElementById("counterHint");
-      if (hint) {
-        hint.hidden = true;
-        hint.textContent = "";
-      }
-      if (!panel) return;
-      var open = panel.hidden;
-      panel.hidden = !open;
-      counterProposal.classList.toggle("is-open", open);
-      counterProposal.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open) {
-        var input = document.getElementById("counterAmount");
-        if (input) {
-          if (!input.value) input.value = String(quoteTotals().suggested || 120000);
-          input.focus();
-          input.select();
-        }
-      }
-    });
-    counterProposal.setAttribute("aria-expanded", "false");
-    counterProposal.setAttribute("aria-controls", "counterPanel");
-  }
-
-  var counterConfirm = document.getElementById("counterConfirm");
-  if (counterConfirm) {
-    counterConfirm.addEventListener("click", function () {
-      if (!whenComplete()) {
-        goIncomplete(dict().quoteNeedWhen);
-        return;
-      }
-      if (!hasCoverage() || !placeComplete()) {
-        goIncomplete(dict().quoteNeedAddress);
-        return;
-      }
-      var input = document.getElementById("counterAmount");
-      var error = document.getElementById("counterError");
-      var hint = document.getElementById("counterHint");
-      var raw = input ? Number(input.value) : 0;
-      if (!raw || raw < 50000 || !isFinite(raw)) {
-        if (error) error.textContent = dict().proposalCounterInvalid;
-        if (input) input.focus();
-        return;
-      }
-      if (error) error.textContent = "";
-
-      if (!window.HandsAuth || !window.HandsAuth.isLoggedIn()) {
-        saveDraft();
-        if (hint) {
-          hint.hidden = false;
-          hint.textContent = dict().quoteNeedLogin;
-        }
-        window.location.href = "login.html?next=" + encodeURIComponent("build.html#5");
-        return;
-      }
-
-      var session = window.HandsAuth.getSession();
-      var suggested = quoteTotals().suggested || quoteTotals().total;
-      var amount = Math.round(raw);
-      if (!window.HandsBookings) return;
-
-      HandsBookings.create({
-        hostName: session.name,
-        hostEmail: session.email,
-        city: state.city,
-        address: state.address,
-        unit: state.unit,
-        neighborhood: state.neighborhood,
-        phone: state.phone,
-        access: state.access,
-        size: state.size,
-        intensity: state.intensity,
-        date: state.date,
-        time: state.time,
-        timing: state.timing,
-        supplies: state.supplies === "yes" ? "yes" : "no",
-        kit: state.supplies === "kit",
-        extras: extrasSelected(),
-        other: state.other.slice(),
-        total: suggested,
-        rateProposal: {
-          amount: amount,
-          suggestedAmount: Math.round(suggested),
-          status: "pending",
-        },
-      });
-
-      clearDraft();
-      proposalAccepted = false;
-      state.counterAmount = null;
-      if (hint) {
-        hint.hidden = false;
-        hint.textContent = dict().proposalCounterSent;
-      }
-      counterConfirm.disabled = true;
-      window.location.href = "bookings.html?rate=pending";
     });
   }
 
@@ -1346,20 +1303,36 @@
 
   loadAdminTrades();
   if (window.HandsVisits) window.HandsVisits.track();
-  fillCitySelect();
-  if (dateInput && B && !state.date) {
-    state.date = B.ymd(B.addDays(new Date(), 1));
-    dateInput.value = state.date;
+
+  /**
+   * Coverage and prices are both served by the API, so the builder is rendered once
+   * they resolve. Rendering is never blocked on them: a failed request leaves the
+   * built-in defaults in place and the wizard still quotes.
+   */
+  function boot() {
+    renderSizeAreas();
+    fillCitySelect();
+    if (dateInput && B && !state.date) {
+      state.date = B.ymd(B.addDays(new Date(), 1));
+      dateInput.value = state.date;
+    }
+    applyI18n();
+    initQuickQuote();
+    if (wizard) {
+      var hashed = stepFromHash();
+      showStep(hashed || currentStep, { replace: true, silentScroll: true });
+      var selected = document.querySelector(".size-card.is-selected");
+      if (selected) popSize(selected);
+    }
+    calcQuote();
   }
-  applyI18n();
-  initQuickQuote();
-  if (wizard) {
-    var hashed = stepFromHash();
-    showStep(hashed || currentStep, { replace: true, silentScroll: true });
-    var selected = document.querySelector(".size-card.is-selected");
-    if (selected) popSize(selected);
-  }
-  calcQuote();
+
+  var cityReady =
+    window.HandsCities && typeof window.HandsCities.ready === "function"
+      ? window.HandsCities.ready()
+      : Promise.resolve();
+
+  Promise.all([cityReady, loadCatalog()]).then(boot, boot);
 
   /* Results gallery filters */
   var resultsFilters = document.getElementById("resultsFilters");

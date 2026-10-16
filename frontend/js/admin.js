@@ -1460,17 +1460,23 @@
 
     var toggleCity = ev.target.closest("[data-toggle-city]");
     if (toggleCity && window.HandsCities) {
-      window.HandsCities.toggle(
+      // Coverage is owned by the server. Until the admin endpoint exists, the panel
+      // reports that the change cannot be saved rather than silently doing nothing.
+      if (!window.HandsCities.toggle(
         toggleCity.getAttribute("data-toggle-city"),
         toggleCity.getAttribute("data-active") === "1"
-      );
+      )) {
+        window.alert(t("adminCityReadOnly"));
+      }
       renderCities();
       return;
     }
 
     var removeCity = ev.target.closest("[data-remove-city]");
     if (removeCity && window.HandsCities) {
-      window.HandsCities.remove(removeCity.getAttribute("data-remove-city"));
+      if (!window.HandsCities.remove(removeCity.getAttribute("data-remove-city"))) {
+        window.alert(t("adminCityReadOnly"));
+      }
       renderCities();
     }
   });
@@ -1747,7 +1753,11 @@
       var result = window.HandsCities.add(label);
       if (!result.ok) {
         err.textContent =
-          result.error === "exists" ? t("adminCityExists") : t("adminCityNameShort");
+          result.error === "exists"
+            ? t("adminCityExists")
+            : result.error === "readonly"
+              ? t("adminCityReadOnly")
+              : t("adminCityNameShort");
         showMsg("cityMsg", t("valFormFix"), false);
         return;
       }
